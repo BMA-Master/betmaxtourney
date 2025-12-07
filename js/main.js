@@ -6,39 +6,53 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('BetMax Tourney loaded');
 
-    // Mobile menu toggle
+    // Mobile Menu Drawer Toggle
     const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const body = document.body;
 
-    if (menuToggle && navLinks) {
+    // Create overlay element
+    const overlay = document.createElement('div');
+    overlay.className = 'mobile-overlay';
+    body.appendChild(overlay);
+
+    // Toggle mobile menu
+    if (menuToggle && mobileMenu) {
         menuToggle.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
+            const isActive = mobileMenu.classList.contains('active');
 
-            // Toggle aria-expanded for accessibility
-            const isExpanded = navLinks.classList.contains('active');
-            menuToggle.setAttribute('aria-expanded', isExpanded);
-        });
-
-        // Close mobile menu when clicking on a link
-        const navLinkItems = navLinks.querySelectorAll('a');
-        navLinkItems.forEach(link => {
-            link.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
-                    navLinks.classList.remove('active');
-                    menuToggle.setAttribute('aria-expanded', 'false');
-                }
-            });
-        });
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const isClickInsideNav = navLinks.contains(event.target);
-            const isClickOnToggle = menuToggle.contains(event.target);
-
-            if (!isClickInsideNav && !isClickOnToggle && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
+            if (isActive) {
+                // Close menu
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
                 menuToggle.setAttribute('aria-expanded', 'false');
+                body.style.overflow = '';
+            } else {
+                // Open menu
+                mobileMenu.classList.add('active');
+                overlay.classList.add('active');
+                menuToggle.setAttribute('aria-expanded', 'true');
+                body.style.overflow = 'hidden';
             }
+        });
+
+        // Close menu when clicking overlay
+        overlay.addEventListener('click', function() {
+            mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            body.style.overflow = '';
+        });
+
+        // Close menu when clicking a link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                body.style.overflow = '';
+            });
         });
     }
 
@@ -191,4 +205,345 @@ document.addEventListener('DOMContentLoaded', function() {
             img.removeAttribute('data-src');
         });
     }
+
+    // ============================================
+    // Tournament Rotation (How to Compete Section)
+    // ============================================
+    const tournaments = [
+        { title: 'SUNDAY MEGA SLATE', budget: '10,000', players: '487', status: 'LIVE' },
+        { title: 'MONDAY NIGHT SHOWDOWN', budget: '10,000', players: '312', status: 'LIVE' },
+        { title: 'WEEKEND WARRIOR', budget: '10,000', players: '156', status: 'FILLING' },
+        { title: 'FRIDAY NIGHT LIGHTS', budget: '10,000', players: '234', status: 'LIVE' },
+        { title: 'CHAMPIONSHIP CHASE', budget: '10,000', players: '89', status: 'LIVE' },
+        { title: 'MIDWEEK MADNESS', budget: '10,000', players: '203', status: 'LIVE' },
+        { title: 'PRIME TIME PICKS', budget: '10,000', players: '378', status: 'LIVE' }
+    ];
+
+    let currentTournamentIndex = 0;
+
+    function rotateTournament() {
+        const titleEl = document.getElementById('rotating-title');
+        const budgetEl = document.getElementById('rotating-budget');
+        const playersEl = document.getElementById('rotating-players');
+        const statusEl = document.getElementById('rotating-status');
+
+        if (!titleEl || !budgetEl || !playersEl || !statusEl) return;
+
+        // Fade out
+        [titleEl, budgetEl, playersEl, statusEl].forEach(el => {
+            el.style.opacity = '0';
+        });
+
+        setTimeout(() => {
+            // Update to next tournament
+            currentTournamentIndex = (currentTournamentIndex + 1) % tournaments.length;
+            const tournament = tournaments[currentTournamentIndex];
+
+            titleEl.textContent = tournament.title;
+            budgetEl.textContent = tournament.budget;
+            playersEl.textContent = tournament.players;
+            statusEl.textContent = tournament.status;
+
+            // Update status color
+            if (tournament.status === 'LIVE') {
+                statusEl.style.color = 'var(--bma-green)';
+            } else if (tournament.status === 'FILLING') {
+                statusEl.style.color = 'var(--bma-yellow)';
+            } else {
+                statusEl.style.color = 'rgba(255, 255, 255, 0.5)';
+            }
+
+            // Fade in
+            [titleEl, budgetEl, playersEl, statusEl].forEach(el => {
+                el.style.opacity = '1';
+            });
+        }, 400);
+    }
+
+    // Initialize rotation if elements exist
+    if (document.getElementById('rotating-title')) {
+        // Add transitions
+        ['rotating-title', 'rotating-budget', 'rotating-players', 'rotating-status'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.style.transition = 'opacity 0.4s ease';
+            }
+        });
+
+        // Set initial status color
+        const statusEl = document.getElementById('rotating-status');
+        if (statusEl) {
+            statusEl.style.color = 'var(--bma-green)';
+        }
+
+        // Start rotating every 4 seconds
+        setInterval(rotateTournament, 4000);
+    }
+
+    // ============================================
+    // Live Tournament Feed
+    // ============================================
+    async function loadLiveTournaments() {
+        console.log('loadLiveTournaments called');
+        const tournamentList = document.querySelector('.tournament-list');
+        if (!tournamentList) {
+            console.error('tournament-list element not found');
+            return;
+        }
+        console.log('tournament-list found, loading data...');
+
+        // Show loading state
+        tournamentList.innerHTML = `
+            <div class="tournaments-loading">
+                <div class="loading-spinner">
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                </div>
+                <p class="loading-text">Loading Live Tournaments...</p>
+            </div>
+        `;
+
+        try {
+            const response = await fetch('https://machfive-bmacdev-rest.onrender.com/rss/tournaments.xml');
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch tournaments');
+            }
+
+            const xmlText = await response.text();
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+
+            const items = xmlDoc.querySelectorAll('item');
+            console.log(`Found ${items.length} tournament items in XML`);
+            const tournaments = [];
+
+            items.forEach(item => {
+                const title = item.querySelector('title')?.textContent || 'Untitled Tournament';
+                const description = item.querySelector('description')?.textContent || '';
+                const link = item.querySelector('link')?.textContent || '#';
+                const guid = item.querySelector('guid')?.textContent || '';
+                const pubDate = item.querySelector('pubDate')?.textContent || '';
+
+                // Parse description for prize pool, start time, etc
+                const prizeMatch = description.match(/Prize Pool: \$(\d+)/);
+                const startMatch = description.match(/Start: ([^|]+)/);
+                const matchesMatch = description.match(/(\d+) matches/);
+
+                const prizePool = prizeMatch ? parseInt(prizeMatch[1]) : 0;
+                const startDateStr = startMatch ? startMatch[1].trim() : '';
+                const matchCount = matchesMatch ? parseInt(matchesMatch[1]) : 0;
+
+                // Parse start date
+                const startDate = startDateStr ? new Date(startDateStr) : null;
+
+                // Determine sport from title
+                let sport = 'SPORTS';
+                const titleLower = title.toLowerCase();
+                if (titleLower.includes('hoop') || titleLower.includes('basketball') || titleLower.includes('nba')) sport = 'NBA';
+                else if (titleLower.includes('football') || titleLower.includes('nfl')) sport = 'NFL';
+                else if (titleLower.includes('baseball') || titleLower.includes('mlb')) sport = 'MLB';
+                else if (titleLower.includes('soccer') || titleLower.includes('football')) sport = 'SOCCER';
+                else if (titleLower.includes('hockey') || titleLower.includes('nhl')) sport = 'NHL';
+
+                tournaments.push({
+                    title,
+                    description,
+                    link,
+                    guid,
+                    pubDate,
+                    prizePool,
+                    startDate,
+                    matchCount,
+                    sport
+                });
+            });
+
+            // Sort by start date (soonest first)
+            tournaments.sort((a, b) => {
+                if (!a.startDate) return 1;
+                if (!b.startDate) return -1;
+                return a.startDate - b.startDate;
+            });
+
+            // Take first 3 tournaments
+            const displayTournaments = tournaments.slice(0, 3);
+            console.log('Displaying tournaments:', displayTournaments);
+
+            // Build tournament HTML
+            const tournamentHTML = displayTournaments.map(t => {
+                const timeUntil = getTimeUntil(t.startDate);
+                const playerCount = Math.floor(Math.random() * 400) + 100; // Placeholder - not in feed
+
+                return `
+                    <div class="tournament-item">
+                        <div class="tournament-time">
+                            <div class="time-badge ${timeUntil.urgent ? 'urgent' : ''}">${timeUntil.text}</div>
+                            <div class="time-detail">${formatDateTime(t.startDate)}</div>
+                        </div>
+                        <div class="tournament-info">
+                            <div class="tournament-sport-badge">${t.sport}</div>
+                            <h3>${t.title}</h3>
+                            <p>${t.description.split('|')[0].trim()}</p>
+                        </div>
+                        <div class="tournament-stats">
+                            <div class="stat-item">
+                                <strong>${playerCount}</strong>
+                                <span>Competing</span>
+                            </div>
+                            <div class="stat-item">
+                                <strong>FREE</strong>
+                                <span>Entry</span>
+                            </div>
+                        </div>
+                        <div class="tournament-action">
+                            <a href="${t.link}" class="btn btn-primary">Enter Free</a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            tournamentList.innerHTML = tournamentHTML;
+
+        } catch (error) {
+            console.error('Error loading tournaments:', error);
+
+            // Show error state with fallback
+            tournamentList.innerHTML = `
+                <div class="tournaments-error">
+                    <p>Unable to load live tournaments. Showing upcoming events:</p>
+                </div>
+            `;
+
+            // Restore static fallback content after error message
+            setTimeout(() => {
+                loadFallbackTournaments(tournamentList);
+            }, 100);
+        }
+    }
+
+    // Helper: Calculate time until tournament
+    function getTimeUntil(startDate) {
+        if (!startDate || isNaN(startDate.getTime())) {
+            return { text: 'TBD', urgent: false };
+        }
+
+        const now = new Date();
+        const diff = startDate - now;
+
+        if (diff < 0) {
+            return { text: 'LIVE NOW', urgent: true };
+        }
+
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const days = Math.floor(hours / 24);
+
+        if (days > 0) {
+            return { text: `STARTS IN ${days}D ${hours % 24}H`, urgent: false };
+        } else if (hours > 0) {
+            return { text: `STARTS IN ${hours}H ${minutes}M`, urgent: hours < 3 };
+        } else {
+            return { text: `STARTS IN ${minutes}M`, urgent: true };
+        }
+    }
+
+    // Helper: Format date/time
+    function formatDateTime(date) {
+        if (!date || isNaN(date.getTime())) {
+            return 'TBD';
+        }
+
+        const options = {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            timeZoneName: 'short'
+        };
+
+        return date.toLocaleString('en-US', options);
+    }
+
+    // Helper: Load fallback static tournaments
+    function loadFallbackTournaments(container) {
+        container.innerHTML = `
+            <div class="tournament-item">
+                <div class="tournament-time">
+                    <div class="time-badge">STARTS IN 2H 15M</div>
+                    <div class="time-detail">Sun 1:00 PM ET</div>
+                </div>
+                <div class="tournament-info">
+                    <div class="tournament-sport-badge">NFL</div>
+                    <h3>Sunday Showdown</h3>
+                    <p>Full slate tournament - All afternoon games</p>
+                </div>
+                <div class="tournament-stats">
+                    <div class="stat-item">
+                        <strong>487</strong>
+                        <span>Competing</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>FREE</strong>
+                        <span>Entry</span>
+                    </div>
+                </div>
+                <div class="tournament-action">
+                    <a href="#signup" class="btn btn-primary">Enter Free</a>
+                </div>
+            </div>
+            <div class="tournament-item">
+                <div class="tournament-time">
+                    <div class="time-badge">STARTS IN 5H 45M</div>
+                    <div class="time-detail">Sun 7:00 PM ET</div>
+                </div>
+                <div class="tournament-info">
+                    <div class="tournament-sport-badge">NBA</div>
+                    <h3>Sunday Night Hoops</h3>
+                    <p>Primetime showdown - Top teams only</p>
+                </div>
+                <div class="tournament-stats">
+                    <div class="stat-item">
+                        <strong>312</strong>
+                        <span>Competing</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>FREE</strong>
+                        <span>Entry</span>
+                    </div>
+                </div>
+                <div class="tournament-action">
+                    <a href="#signup" class="btn btn-primary">Enter Free</a>
+                </div>
+            </div>
+            <div class="tournament-item">
+                <div class="tournament-time">
+                    <div class="time-badge">STARTS TOMORROW</div>
+                    <div class="time-detail">Mon 1:00 PM ET</div>
+                </div>
+                <div class="tournament-info">
+                    <div class="tournament-sport-badge">MLB</div>
+                    <h3>Monday Matinee</h3>
+                    <p>Day game special - Pitching props</p>
+                </div>
+                <div class="tournament-stats">
+                    <div class="stat-item">
+                        <strong>198</strong>
+                        <span>Competing</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>FREE</strong>
+                        <span>Entry</span>
+                    </div>
+                </div>
+                <div class="tournament-action">
+                    <a href="#signup" class="btn btn-primary">Enter Free</a>
+                </div>
+            </div>
+        `;
+    }
+
+    // Initialize live tournament loading
+    loadLiveTournaments();
 });
