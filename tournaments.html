@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>All Tournaments | BetMax Tourney</title>
+    <meta name="description" content="Browse all active and upcoming tournaments across NFL, NBA, MLB, NHL, and more. Join free, compete live, climb the leaderboard.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/betmaxtourney/css/style.css?v=2">
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <a href="/betmaxtourney/">
+                    <img src="/betmaxtourney/images/BMT-Color-Secondary.png" alt="BetMax Tourney" class="logo-image">
+                </a>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="/betmaxtourney/">Home</a></li>
+                <li><a href="/betmaxtourney/tournaments.html">All Tournaments</a></li>
+                <li><a href="/betmaxtourney/#features">Features</a></li>
+                <li><a href="/betmaxtourney/#how-it-works">How It Works</a></li>
+                <li><a href="/betmaxtourney/terms">Terms</a></li>
+            </ul>
+
+            <div class="nav-auth">
+                <a href="#login" class="btn btn-secondary">Log In</a>
+                <a href="#signup" class="btn btn-primary">Sign Up</a>
+            </div>
+
+            <button class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                ☰
+            </button>
+        </nav>
+
+        <div class="mobile-menu">
+            <ul class="mobile-nav-links">
+                <li><a href="/betmaxtourney/">Home</a></li>
+                <li><a href="/betmaxtourney/tournaments.html">All Tournaments</a></li>
+                <li><a href="/betmaxtourney/#features">Features</a></li>
+                <li><a href="/betmaxtourney/#how-it-works">How It Works</a></li>
+                <li><a href="/betmaxtourney/terms">Terms</a></li>
+            </ul>
+            <div class="mobile-auth">
+                <a href="#signup" class="btn btn-primary btn-large mobile-cta">Sign Up</a>
+                <a href="#login" class="btn btn-secondary btn-large mobile-cta">Log In</a>
+            </div>
+        </div>
+    </header>
+
+    <nav class="breadcrumb" aria-label="Breadcrumb navigation">
+        <div class="container">
+            <ol class="breadcrumb-list">
+                <li class="breadcrumb-item">
+                    <a href="/betmaxtourney/">
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                        </svg>
+                        Home
+                    </a>
+                </li>
+                <li class="breadcrumb-separator">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                    </svg>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    All Tournaments
+                </li>
+            </ol>
+        </div>
+    </nav>
+
+    <section class="tournaments-page">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="tournaments-header">
+                <img src="/betmaxtourney/images/BMT-Color-Primary.png" alt="BetMax Tourney" class="section-logo">
+                <h1>All Tournaments</h1>
+                <p class="tournaments-lead">Browse all active and upcoming tournaments. Filter by sport, sort by start time, and enter free.</p>
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="tournaments-controls">
+                <!-- Status Tabs -->
+                <div class="filter-tabs" role="tablist">
+                    <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">
+                        All Tournaments
+                        <span class="tab-count" id="count-all">0</span>
+                    </button>
+                    <button class="filter-tab" data-filter="live" role="tab">
+                        Live
+                        <span class="tab-count" id="count-live">0</span>
+                    </button>
+                    <button class="filter-tab" data-filter="upcoming" role="tab">
+                        Upcoming
+                        <span class="tab-count" id="count-upcoming">0</span>
+                    </button>
+                    <button class="filter-tab" data-filter="completed" role="tab">
+                        Recently Completed
+                        <span class="tab-count" id="count-completed">0</span>
+                    </button>
+                </div>
+
+                <!-- Sport Filters -->
+                <div class="sport-filters">
+                    <button class="sport-pill active" data-sport="all">All Sports</button>
+                    <button class="sport-pill" data-sport="NFL">
+                        <span class="sport-icon-small NFL"></span>
+                        NFL
+                    </button>
+                    <button class="sport-pill" data-sport="NBA">
+                        <span class="sport-icon-small NBA"></span>
+                        NBA
+                    </button>
+                    <button class="sport-pill" data-sport="MLB">
+                        <span class="sport-icon-small MLB"></span>
+                        MLB
+                    </button>
+                    <button class="sport-pill" data-sport="NHL">
+                        <span class="sport-icon-small NHL"></span>
+                        NHL
+                    </button>
+                    <button class="sport-pill" data-sport="SOCCER">
+                        <span class="sport-icon-small EPL"></span>
+                        Soccer
+                    </button>
+                    <button class="sport-pill" data-sport="NCAAF">
+                        <span class="sport-icon-small NCAAF"></span>
+                        NCAAF
+                    </button>
+                </div>
+
+                <!-- Sort Options -->
+                <div class="sort-controls">
+                    <label for="sort-select">Sort by:</label>
+                    <select id="sort-select" class="sort-select">
+                        <option value="time-asc">Start Time (Soonest First)</option>
+                        <option value="time-desc">Start Time (Latest First)</option>
+                        <option value="participants-desc">Most Participants</option>
+                        <option value="sport">Sport (A-Z)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tournament Grid -->
+            <div class="tournament-grid" id="tournament-grid">
+                <!-- Loading state -->
+                <div class="tournaments-loading">
+                    <div class="loading-spinner">
+                        <div class="spinner-ring"></div>
+                        <div class="spinner-ring"></div>
+                    </div>
+                    <p class="loading-text">Loading Tournaments...</p>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="tournaments-empty" id="empty-state" style="display: none;">
+                <div class="empty-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                </div>
+                <h3>No tournaments found</h3>
+                <p>Try adjusting your filters or check back soon for new tournaments.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <img src="/betmaxtourney/images/BMT-White-Primary.png" alt="BetMax Tourney" class="footer-logo">
+            </div>
+
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/betmaxtourney/">Home</a></li>
+                        <li><a href="/betmaxtourney/tournaments.html">All Tournaments</a></li>
+                        <li><a href="/betmaxtourney/#features">Features</a></li>
+                        <li><a href="/betmaxtourney/#how-it-works">How It Works</a></li>
+                        <li><a href="/betmaxtourney/terms">Terms</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="/betmaxtourney/terms">Terms & Conditions</a></li>
+                        <li><a href="/betmaxtourney/privacy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>BetMax Action</h4>
+                    <ul>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 BetMax Tourney. All rights reserved. Powered by BetMax Action.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/betmaxtourney/js/main.js"></script>
+</body>
+</html>

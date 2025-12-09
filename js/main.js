@@ -425,14 +425,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Helper: Calculate time until tournament
     function getTimeUntil(startDate) {
         if (!startDate || isNaN(startDate.getTime())) {
-            return { text: 'TBD', urgent: false };
+            return { text: 'TBD', badge: 'TBD', isUrgent: false };
         }
 
         const now = new Date();
         const diff = startDate - now;
 
         if (diff < 0) {
-            return { text: 'LIVE NOW', urgent: true };
+            return { text: 'LIVE NOW', badge: 'LIVE NOW', isUrgent: true };
         }
 
         const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -440,11 +440,23 @@ document.addEventListener('DOMContentLoaded', function() {
         const days = Math.floor(hours / 24);
 
         if (days > 0) {
-            return { text: `STARTS IN ${days}D ${hours % 24}H`, urgent: false };
+            return {
+                text: `STARTS IN ${days}D ${hours % 24}H`,
+                badge: `STARTS IN ${days}D ${hours % 24}H`,
+                isUrgent: false
+            };
         } else if (hours > 0) {
-            return { text: `STARTS IN ${hours}H ${minutes}M`, urgent: hours < 3 };
+            return {
+                text: `STARTS IN ${hours}H ${minutes}M`,
+                badge: `STARTS IN ${hours}H ${minutes}M`,
+                isUrgent: hours < 3
+            };
         } else {
-            return { text: `STARTS IN ${minutes}M`, urgent: true };
+            return {
+                text: `STARTS IN ${minutes}M`,
+                badge: `STARTS IN ${minutes}M`,
+                isUrgent: true
+            };
         }
     }
 
@@ -546,4 +558,251 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize live tournament loading
     loadLiveTournaments();
+
+    // ============================================
+    // Tournaments Page - Full Listing with Filters
+    // ============================================
+    const tournamentsPage = document.querySelector('.tournaments-page');
+
+    if (tournamentsPage) {
+        loadAllTournaments();
+    }
+
+    async function loadAllTournaments() {
+        const grid = document.getElementById('tournament-grid');
+        const emptyState = document.getElementById('empty-state');
+
+        if (!grid) return;
+
+        let allTournaments = [];
+        let filteredTournaments = [];
+        let currentStatusFilter = 'all';
+        let currentSportFilter = 'all';
+
+        try {
+            const response = await fetch('https://machfive-bmacdev-rest.onrender.com/rss/tournaments.xml');
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch tournaments');
+            }
+
+            const xmlText = await response.text();
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+            const items = xmlDoc.querySelectorAll('item');
+
+            items.forEach(item => {
+                const title = item.querySelector('title')?.textContent || 'Untitled Tournament';
+                const description = item.querySelector('description')?.textContent || '';
+                const link = item.querySelector('link')?.textContent || '#';
+                const pubDate = item.querySelector('pubDate')?.textContent || '';
+
+                // Parse description for details
+                const prizeMatch = description.match(/Prize Pool: \$(\d+)/);
+                const startMatch = description.match(/Start: ([^|]+)/);
+                const endMatch = description.match(/End: ([^|]+)/);
+                const matchesMatch = description.match(/(\d+) matches/);
+
+                const prizePool = prizeMatch ? parseInt(prizeMatch[1]) : 0;
+                const startDateStr = startMatch ? startMatch[1].trim() : '';
+                const endDateStr = endMatch ? endMatch[1].trim() : '';
+                const matchCount = matchesMatch ? parseInt(matchesMatch[1]) : 0;
+
+                const startDate = startDateStr ? new Date(startDateStr) : null;
+                const endDate = endDateStr ? new Date(endDateStr) : null;
+
+                // Determine sport from title
+                let sport = 'SPORTS';
+                const titleLower = title.toLowerCase();
+                if (titleLower.includes('hoop') || titleLower.includes('basketball') || titleLower.includes('nba')) sport = 'NBA';
+                else if (titleLower.includes('football') || titleLower.includes('nfl')) sport = 'NFL';
+                else if (titleLower.includes('baseball') || titleLower.includes('mlb')) sport = 'MLB';
+                else if (titleLower.includes('soccer') || titleLower.includes('epl') || titleLower.includes('uefa')) sport = 'SOCCER';
+                else if (titleLower.includes('hockey') || titleLower.includes('nhl')) sport = 'NHL';
+                else if (titleLower.includes('college') || titleLower.includes('ncaa')) sport = 'NCAAF';
+
+                // Determine status
+                const now = new Date();
+                let status = 'upcoming';
+
+                if (startDate && endDate) {
+                    if (now >= startDate && now <= endDate) {
+                        status = 'live';
+                    } else if (now > endDate) {
+                        // Check if completed within last 7 days
+                        const daysSinceEnd = (now - endDate) / (1000 * 60 * 60 * 24);
+                        if (daysSinceEnd <= 7) {
+                            status = 'completed';
+                        } else {
+                            return; // Skip tournaments completed more than 7 days ago
+                        }
+                    }
+                } else if (startDate && now >= startDate) {
+                    status = 'live';
+                }
+
+                const playerCount = Math.floor(Math.random() * 400) + 100; // Placeholder
+
+                allTournaments.push({
+                    title,
+                    description,
+                    link,
+                    pubDate,
+                    prizePool,
+                    startDate,
+                    endDate,
+                    matchCount,
+                    sport,
+                    status,
+                    playerCount
+                });
+            });
+
+            filteredTournaments = [...allTournaments];
+            renderTournaments(filteredTournaments);
+            updateCounts();
+
+        } catch (error) {
+            console.error('Error loading tournaments:', error);
+            grid.innerHTML = `
+                <div class="tournaments-error">
+                    <p>Unable to load tournaments. Please try again later.</p>
+                </div>
+            `;
+        }
+
+        // Filter by status tabs
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                filterTabs.forEach(t => {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-selected', 'false');
+                });
+                this.classList.add('active');
+                this.setAttribute('aria-selected', 'true');
+
+                currentStatusFilter = this.dataset.filter;
+                applyFilters();
+            });
+        });
+
+        // Filter by sport
+        const sportPills = document.querySelectorAll('.sport-pill');
+        sportPills.forEach(pill => {
+            pill.addEventListener('click', function() {
+                sportPills.forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+
+                currentSportFilter = this.dataset.sport;
+                applyFilters();
+            });
+        });
+
+        // Sort tournaments
+        const sortSelect = document.getElementById('sort-select');
+        if (sortSelect) {
+            sortSelect.addEventListener('change', function() {
+                sortTournaments(this.value);
+                renderTournaments(filteredTournaments);
+            });
+        }
+
+        function applyFilters() {
+            filteredTournaments = allTournaments.filter(t => {
+                const statusMatch = currentStatusFilter === 'all' || t.status === currentStatusFilter;
+                const sportMatch = currentSportFilter === 'all' || t.sport === currentSportFilter;
+                return statusMatch && sportMatch;
+            });
+
+            sortTournaments(sortSelect ? sortSelect.value : 'time-asc');
+            renderTournaments(filteredTournaments);
+        }
+
+        function sortTournaments(sortBy) {
+            switch(sortBy) {
+                case 'time-asc':
+                    filteredTournaments.sort((a, b) => {
+                        if (!a.startDate) return 1;
+                        if (!b.startDate) return -1;
+                        return a.startDate - b.startDate;
+                    });
+                    break;
+                case 'time-desc':
+                    filteredTournaments.sort((a, b) => {
+                        if (!a.startDate) return 1;
+                        if (!b.startDate) return -1;
+                        return b.startDate - a.startDate;
+                    });
+                    break;
+                case 'participants-desc':
+                    filteredTournaments.sort((a, b) => b.playerCount - a.playerCount);
+                    break;
+                case 'sport':
+                    filteredTournaments.sort((a, b) => a.sport.localeCompare(b.sport));
+                    break;
+            }
+        }
+
+        function renderTournaments(tournaments) {
+            if (tournaments.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'flex';
+                return;
+            }
+
+            grid.style.display = 'flex';
+            emptyState.style.display = 'none';
+
+            const html = tournaments.map(t => {
+                const timeInfo = getTimeUntil(t.startDate);
+                const timeBadgeClass = timeInfo.isUrgent ? 'time-badge urgent' : 'time-badge';
+
+                return `
+                    <div class="tournament-item" data-status="${t.status}" data-sport="${t.sport}">
+                        <div class="tournament-time">
+                            <div class="${timeBadgeClass}">${timeInfo.badge}</div>
+                            <div class="time-detail">${formatDateTime(t.startDate)}</div>
+                        </div>
+                        <div class="tournament-info">
+                            <div class="tournament-sport-badge">${t.sport}</div>
+                            <h3>${t.title}</h3>
+                            <p>${t.description.split('|')[0].trim()}</p>
+                        </div>
+                        <div class="tournament-stats">
+                            <div class="stat-item">
+                                <strong>${t.playerCount}</strong>
+                                <span>Competing</span>
+                            </div>
+                            <div class="stat-item">
+                                <strong>FREE</strong>
+                                <span>Entry</span>
+                            </div>
+                        </div>
+                        <div class="tournament-action">
+                            <a href="${t.link}" class="btn btn-primary">
+                                ${t.status === 'live' ? 'Enter Now' : t.status === 'completed' ? 'View Results' : 'Enter Free'}
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            grid.innerHTML = html;
+        }
+
+        function updateCounts() {
+            const counts = {
+                all: allTournaments.length,
+                live: allTournaments.filter(t => t.status === 'live').length,
+                upcoming: allTournaments.filter(t => t.status === 'upcoming').length,
+                completed: allTournaments.filter(t => t.status === 'completed').length
+            };
+
+            document.getElementById('count-all').textContent = counts.all;
+            document.getElementById('count-live').textContent = counts.live;
+            document.getElementById('count-upcoming').textContent = counts.upcoming;
+            document.getElementById('count-completed').textContent = counts.completed;
+        }
+    }
 });
