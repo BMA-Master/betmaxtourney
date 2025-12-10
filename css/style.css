@@ -3291,3 +3291,1166 @@ footer {
         font-size: 1.1rem;
     }
 }
+
+/* ===== PHASE 1: CRITICAL MOBILE FIXES ===== */
+
+/* Tablet and Below - 768px */
+@media (max-width: 768px) {
+    /* CRITICAL: Fix Marquee Horizontal Scroll */
+    .marquee-brand-start {
+        min-width: 140px;
+        padding: 0 1.5rem 0 1rem;
+    }
+    
+    .marquee-track {
+        padding-left: 150px;
+        padding-right: 1rem;
+    }
+    
+    .marquee-logo {
+        height: 22px;
+        width: auto;
+    }
+    
+    .marquee-brand-text {
+        font-size: 0.65rem;
+    }
+    
+    /* CRITICAL: Hero Section Mobile Layout */
+    .hero {
+        min-height: 500px;
+        height: auto;
+        padding: 6rem 0 4rem;
+    }
+    
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .hero h1 {
+        font-size: 2.25rem !important;
+        line-height: 1.1;
+    }
+    
+    .hero-lead {
+        font-size: 1.05rem;
+    }
+    
+    .hero-left {
+        text-align: center;
+    }
+    
+    .hero-right {
+        display: none;
+    }
+    
+    /* CRITICAL: Tournament Card Grid Collapse */
+    .tournament-item {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .tournament-time {
+        text-align: left;
+    }
+    
+    .time-badge {
+        display: inline-block;
+        margin-right: 0.75rem;
+    }
+    
+    .tournament-info h3 {
+        font-size: 1.25rem;
+    }
+    
+    .tournament-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .tournament-action {
+        width: 100%;
+    }
+    
+    .tournament-action .btn {
+        width: 100%;
+        display: block;
+        text-align: center;
+    }
+    
+    /* Tournament Types Grid */
+    .tournament-types {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .tournament-type-card {
+        padding: 1.5rem 1rem;
+    }
+    
+    /* Mechanics Grid */
+    .mechanics-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    /* Benefits Section */
+    .benefits-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .benefits-left {
+        text-align: center;
+    }
+    
+    .benefits-right {
+        order: -1;
+    }
+    
+    .benefits-logo {
+        max-width: 200px;
+    }
+    
+    /* Final CTA */
+    .final-cta-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .final-cta-left {
+        order: 2;
+    }
+    
+    .final-cta-right {
+        order: 1;
+        text-align: center;
+    }
+}
+
+/* Small Mobile - 480px */
+@media (max-width: 480px) {
+    /* CRITICAL: Marquee Further Optimization */
+    .marquee-brand-start {
+        min-width: 100px;
+        padding: 0 1rem 0 0.75rem;
+    }
+    
+    .marquee-track {
+        padding-left: 110px;
+        gap: 3rem;
+    }
+    
+    .marquee-tournament {
+        font-size: 0.8rem;
+    }
+    
+    .marquee-status {
+        font-size: 0.55rem;
+        padding: 0.2rem 0.6rem;
+    }
+    
+    /* CRITICAL: Navigation Mobile Optimization */
+    nav {
+        border-radius: 30px;
+        padding: 0.75rem 1.25rem;
+        gap: 0.5rem;
+    }
+    
+    .logo-image {
+        height: 50px !important;
+        width: auto !important;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    
+    .menu-toggle {
+        min-width: 44px;
+        min-height: 44px;
+        font-size: 1.25rem;
+    }
+    
+    /* CRITICAL: Hero Further Scaling */
+    .hero {
+        min-height: 450px;
+        padding: 5rem 0 3rem;
+    }
+    
+    .hero h1 {
+        font-size: 1.85rem !important;
+    }
+    
+    .hero-lead {
+        font-size: 0.95rem;
+    }
+    
+    .beta-badge {
+        font-size: 0.7rem;
+        padding: 0.6rem 1.2rem;
+    }
+    
+    .hero-offer {
+        padding: 1rem;
+    }
+    
+    .offer-text {
+        font-size: 0.85rem;
+    }
+    
+    /* CRITICAL: Tournament Stats Single Column */
+    .tournament-item {
+        padding: 1.25rem;
+    }
+    
+    .tournament-info h3 {
+        font-size: 1.1rem;
+    }
+    
+    .tournament-stats {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .stat-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    /* Tournament Types Single Column */
+    .tournament-types {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Bet Types Stack Vertically */
+    .bet-types {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .bet-type-separator {
+        display: none;
+    }
+    
+    /* Phone Mockups */
+    .phone-mockup {
+        max-width: 180px;
+    }
+    
+    /* Benefits Mobile */
+    .benefit-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .benefit-icon {
+        margin-bottom: 0.75rem;
+    }
+    
+    .benefits-logo {
+        max-width: 160px;
+    }
+}
+
+
+/* ===== PHASE 2: HIGH PRIORITY UX IMPROVEMENTS ===== */
+
+/* Touch Interactions - All Breakpoints */
+@media (max-width: 1024px) {
+    /* Add active states for touch devices */
+    .btn:active,
+    .sport-pill:active,
+    .filter-tab:active,
+    .tournament-type-card:active,
+    .sport-card:active {
+        transform: scale(0.98);
+        opacity: 0.9;
+    }
+    
+    /* Ensure all interactive elements have minimum touch target */
+    .btn,
+    .sport-pill,
+    .filter-tab,
+    .menu-toggle {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Remove hover-only effects that don't work on touch */
+    .tournament-type-card:hover,
+    .sport-card:hover {
+        transform: none;
+    }
+    
+    /* Add touch-friendly spacing */
+    .sport-pills {
+        gap: 0.75rem;
+    }
+}
+
+/* Tablet - Additional Typography and Layout */
+@media (max-width: 768px) {
+    /* Typography Scaling */
+    h2 {
+        font-size: 2rem !important;
+    }
+    
+    h3 {
+        font-size: 1.5rem !important;
+    }
+    
+    .section-header h2 {
+        font-size: 2rem !important;
+    }
+    
+    .section-header p {
+        font-size: 1rem;
+    }
+    
+    /* Sport Filter Horizontal Scroll */
+    .sport-filters {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 0.5rem;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;  /* IE and Edge */
+    }
+    
+    .sport-filters::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+    
+    .sport-pill {
+        flex-shrink: 0;
+        scroll-snap-align: start;
+    }
+    
+    /* Filter Tabs Responsive */
+    .filter-tabs {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .filter-tab {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+        flex: 1 1 auto;
+        min-width: 140px;
+    }
+    
+    /* Sort Controls */
+    .sort-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .sort-select {
+        width: 100%;
+    }
+    
+    /* Platform Previews */
+    .platform-previews {
+        gap: 3rem;
+    }
+    
+    .preview-item {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .preview-title {
+        font-size: 1.5rem;
+    }
+    
+    .preview-description {
+        font-size: 0.95rem;
+    }
+    
+    .phone-mockup {
+        max-width: 220px;
+    }
+    
+    /* Sport Icons */
+    .sport-icon {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .sport-card h3 {
+        font-size: 0.95rem;
+    }
+}
+
+/* Small Mobile - Additional Refinements */
+@media (max-width: 480px) {
+    /* Further Typography Scaling */
+    h2 {
+        font-size: 1.5rem !important;
+    }
+    
+    h3 {
+        font-size: 1.2rem !important;
+    }
+    
+    .section-header h2 {
+        font-size: 1.75rem !important;
+    }
+    
+    /* Filter Tabs Full Width */
+    .filter-tabs {
+        flex-direction: column;
+    }
+    
+    .filter-tab {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .sport-pill {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    /* Platform Previews */
+    .platform-previews {
+        gap: 2rem;
+    }
+    
+    /* Sport Icons Further Scaling */
+    .sport-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .sport-card h3 {
+        font-size: 0.85rem;
+    }
+    
+    .category-label {
+        font-size: 0.8rem;
+    }
+    
+    /* Laptop Mockup */
+    .laptop-mockup {
+        max-width: 250px;
+    }
+    
+    .final-cta .phone-mockup {
+        max-width: 120px;
+    }
+    
+    .cta-content h2 {
+        font-size: 1.5rem;
+    }
+    
+    .cta-content p {
+        font-size: 0.9rem;
+    }
+}
+
+
+/* ===== PHASE 3: CRITICAL LAYOUT FIXES ===== */
+
+/* All Breakpoints - Fix Footer Logo */
+@media (max-width: 768px) {
+    /* CRITICAL FIX #3: Footer Logo Sizing */
+    .footer-logo {
+        height: 180px;
+        max-width: 280px;
+    }
+    
+    /* CRITICAL FIX #4: Standardize Section Padding */
+    .hero,
+    .product-showcase,
+    .product-showcase-sports,
+    .how-it-works,
+    .live-tournaments,
+    .beta-benefits,
+    .final-cta {
+        padding: 4rem 0 !important;
+    }
+    
+    /* CRITICAL FIX #5: Hero Offer Box Mobile */
+    .hero-offer {
+        padding: 1rem;
+    }
+    
+    .offer-text {
+        font-size: 0.85rem;
+    }
+    
+    .offer-badge {
+        font-size: 0.7rem;
+    }
+    
+    /* HIGH PRIORITY #6: Platform Preview Negative Margins */
+    .preview-center,
+    .preview-right {
+        margin-top: 0 !important;
+    }
+    
+    .preview-item {
+        text-align: center;
+    }
+    
+    /* HIGH PRIORITY #9: Mechanics Steps */
+    .mechanics-step {
+        gap: 1.25rem;
+    }
+    
+    .step-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+    }
+    
+    /* MEDIUM PRIORITY #13: Section Headers */
+    .section-logo {
+        height: 120px !important;
+        width: 120px !important;
+    }
+    
+    /* HIGH PRIORITY #11: Breadcrumb */
+    .breadcrumb {
+        padding: 0.75rem 0;
+    }
+    
+    .breadcrumb-item {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* CRITICAL FIX #3: Footer Logo Further Reduction */
+    .footer-logo {
+        height: 120px;
+        max-width: 200px;
+    }
+    
+    /* CRITICAL FIX #4: Section Padding Tighter */
+    .hero,
+    .product-showcase,
+    .product-showcase-sports,
+    .how-it-works,
+    .live-tournaments,
+    .beta-benefits,
+    .final-cta {
+        padding: 3rem 0 !important;
+    }
+    
+    /* CRITICAL FIX #5: Hero Offer Box Smaller */
+    .hero-offer {
+        padding: 0.75rem;
+    }
+    
+    .offer-text {
+        font-size: 0.8rem;
+    }
+    
+    .hero-offer-link {
+        font-size: 0.85rem;
+    }
+    
+    /* HIGH PRIORITY #7: Tournament Stats Keep 2 Columns */
+    .tournament-stats {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.75rem;
+    }
+    
+    .stat-item {
+        background: rgba(46, 139, 87, 0.1);
+        padding: 0.5rem;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    
+    .stat-label {
+        font-size: 0.75rem;
+    }
+    
+    .stat-value {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+    
+    /* HIGH PRIORITY #8: Mechanics Steps Smaller */
+    .mechanics-step {
+        gap: 1rem;
+    }
+    
+    .step-number {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+    }
+    
+    /* HIGH PRIORITY #9: Benefits Optimization */
+    .benefit-icon svg {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .benefit-item {
+        margin-bottom: 1.5rem;
+    }
+    
+    /* HIGH PRIORITY #10: View All CTA */
+    .view-all-cta {
+        margin: 2rem 0;
+    }
+    
+    .view-all-cta .btn {
+        padding: 0.75rem 1.5rem;
+    }
+    
+    /* HIGH PRIORITY #11: Breadcrumb Further Reduction */
+    .breadcrumb-item {
+        font-size: 0.8rem;
+    }
+    
+    .breadcrumb .icon {
+        width: 14px;
+        height: 14px;
+    }
+    
+    /* HIGH PRIORITY #12: Sport Filter Visual Indicators */
+    .sport-filters {
+        position: relative;
+    }
+    
+    .sport-filters::before,
+    .sport-filters::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 2rem;
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    .sport-filters::before {
+        left: 0;
+        background: linear-gradient(to right, var(--bma-dark-100), transparent);
+    }
+    
+    .sport-filters::after {
+        right: 0;
+        background: linear-gradient(to left, var(--bma-dark-100), transparent);
+    }
+    
+    .sport-pill {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+    
+    /* MEDIUM PRIORITY #14: Tournament Type Cards */
+    .tournament-type-card {
+        padding: 1.25rem 1rem;
+    }
+    
+    .tournament-type-card svg {
+        width: 36px;
+        height: 36px;
+    }
+    
+    /* MEDIUM PRIORITY #15: Bet Types Visual Separation */
+    .bet-type-label {
+        background: rgba(46, 139, 87, 0.15);
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+    }
+    
+    .bet-types {
+        gap: 0.75rem;
+        text-align: center;
+    }
+    
+    /* MEDIUM PRIORITY #16: Mockup Cards */
+    .tournament-mockup {
+        max-width: 320px;
+        margin: 0 auto;
+    }
+    
+    .mockup-card {
+        padding: 1.25rem;
+    }
+    
+    .mockup-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    
+    /* MEDIUM PRIORITY #17: Hero Offer Link Touch Target */
+    .hero-offer-link {
+        padding: 0.5rem 0;
+        display: block;
+        margin-top: 1rem;
+        text-decoration-thickness: 3px;
+    }
+    
+    /* MEDIUM PRIORITY #18: Final CTA Device Stack */
+    .final-cta .phone-mockup {
+        display: none;
+    }
+    
+    .laptop-mockup {
+        margin: 0 auto;
+    }
+    
+    /* MEDIUM PRIORITY #19: Mobile Menu Spacing */
+    .mobile-auth {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .mobile-cta {
+        width: 100%;
+    }
+    
+    /* MEDIUM PRIORITY #20: Tournament Controls */
+    .tournaments-controls {
+        padding: 1.25rem;
+    }
+    
+    /* LOW PRIORITY #21: Loading Spinner */
+    .loading-spinner {
+        transform: scale(0.8);
+    }
+    
+    /* LOW PRIORITY #22: Empty State Icon */
+    .empty-icon svg {
+        width: 48px;
+        height: 48px;
+    }
+    
+    /* MEDIUM PRIORITY #13: Section Headers */
+    .section-logo {
+        height: 80px !important;
+        width: 80px !important;
+    }
+}
+
+/* 320px - Ultra Small Mobile (iPhone SE) */
+@media (max-width: 380px) {
+    /* CRITICAL FIX #2: Container Padding at 320px */
+    .container {
+        padding: 0 1rem !important;
+    }
+    
+    /* CRITICAL FIX #3: Footer Logo Smallest */
+    .footer-logo {
+        height: 100px;
+        max-width: 160px;
+    }
+    
+    /* CRITICAL FIX #4: Section Padding Minimal */
+    .hero,
+    .product-showcase,
+    .product-showcase-sports,
+    .how-it-works,
+    .live-tournaments,
+    .beta-benefits,
+    .final-cta {
+        padding: 2rem 0 !important;
+    }
+    
+    /* CRITICAL FIX #5: Hero Offer Box Tightest */
+    .hero-offer {
+        padding: 0.6rem;
+    }
+    
+    .offer-text {
+        font-size: 0.75rem;
+    }
+    
+    /* HIGH PRIORITY #7: Tournament Stats Single Column at 320px */
+    .tournament-stats {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* HIGH PRIORITY #8: Mechanics Steps Stack */
+    .mechanics-step {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.75rem;
+    }
+    
+    .step-number {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+    
+    /* HIGH PRIORITY #9: Benefits Smallest Icons */
+    .benefit-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .benefits-logo {
+        max-width: 140px !important;
+    }
+    
+    /* HIGH PRIORITY #10: View All CTA Full Width */
+    .view-all-cta .btn {
+        width: 100%;
+        display: block;
+    }
+    
+    /* HIGH PRIORITY #11: Breadcrumb Smallest */
+    .breadcrumb-item {
+        font-size: 0.75rem;
+    }
+    
+    .breadcrumb .icon {
+        width: 12px;
+        height: 12px;
+    }
+    
+    /* MEDIUM PRIORITY #13: Section Headers Smallest */
+    .section-header h2 {
+        font-size: 1.5rem !important;
+    }
+    
+    .section-header p {
+        font-size: 0.9rem;
+    }
+    
+    .section-logo {
+        height: 60px !important;
+        width: 60px !important;
+    }
+    
+    /* MEDIUM PRIORITY #14: Tournament Type Cards Single Column */
+    .tournament-types {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .tournament-type-card {
+        padding: 1rem 0.75rem;
+    }
+    
+    .tournament-type-card svg {
+        width: 32px;
+        height: 32px;
+    }
+    
+    /* LOW PRIORITY #20: Tournament Controls Tighter */
+    .tournaments-controls {
+        padding: 1rem;
+    }
+    
+    /* LOW PRIORITY #21: Loading Spinner Smaller */
+    .loading-spinner {
+        transform: scale(0.7);
+    }
+    
+    /* LOW PRIORITY #22: Empty State Icon Smaller */
+    .empty-icon svg {
+        width: 40px;
+        height: 40px;
+    }
+    
+    /* LOW PRIORITY #23: Category Labels */
+    .category-label {
+        font-size: 0.75rem !important;
+    }
+    
+    /* MEDIUM PRIORITY #18: Hide Device Stack Entirely */
+    .device-stack {
+        display: none !important;
+    }
+}
+
+/* Landscape Orientation - Edge Case #26 */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        min-height: 400px !important;
+        padding: 3rem 0 2rem !important;
+    }
+    
+    .hero h1 {
+        font-size: 1.75rem !important;
+    }
+    
+    .tournament-marquee {
+        position: relative !important;
+    }
+    
+    header {
+        position: relative !important;
+    }
+}
+
+/* Intermediate Tablet Breakpoint - Edge Case #27 */
+@media (min-width: 900px) and (max-width: 1024px) {
+    .sport-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+}
+
+
+/* ===== CRITICAL FIX #4: Sport Grid Complete Responsive Coverage ===== */
+
+@media (max-width: 768px) {
+    /* Sport grid already handled - verify 3 columns */
+    .sport-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+    
+    .sport-card {
+        padding: 1.25rem 0.75rem;
+    }
+    
+    .sport-icon {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .sport-card h3 {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* CRITICAL: 2 columns for better fit */
+    .sport-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.75rem;
+    }
+    
+    .sport-card {
+        padding: 1rem 0.75rem;
+    }
+    
+    .sport-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .sport-card h3 {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 380px) {
+    /* CRITICAL: Single column for 320px screens */
+    .sport-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.75rem;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .sport-card {
+        padding: 1rem;
+    }
+    
+    .sport-icon {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .sport-card h3 {
+        font-size: 0.95rem;
+    }
+}
+
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+
+/* Reduce motion for accessibility and performance */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .marquee-track {
+        animation: none !important;
+    }
+    
+    .hero-bg-image {
+        animation: none !important;
+    }
+}
+
+/* Optimize background images for mobile */
+@media (max-width: 768px) {
+    .hero-bg-image {
+        background-size: cover;
+        background-position: center;
+    }
+    
+    /* Consider using smaller images or solid colors on mobile */
+    .hero-bg {
+        opacity: 0.5;
+    }
+}
+
+/* Z-index management - Edge Case #28 */
+.mobile-menu {
+    z-index: 9999 !important;
+}
+
+.mobile-menu-overlay {
+    z-index: 9998 !important;
+}
+
+header {
+    z-index: 1000;
+}
+
+.tournament-marquee {
+    z-index: 999;
+}
+
+/* Sticky header optimization on mobile */
+@media (max-width: 768px) {
+    header.scrolled {
+        padding: 0.5rem 0.75rem;
+    }
+    
+    header.scrolled nav {
+        min-height: 50px;
+    }
+    
+    header.scrolled .logo-image {
+        height: 40px !important;
+    }
+}
+
+/* Additional touch target verification */
+@media (max-width: 768px) {
+    /* Ensure all interactive elements meet 44x44px minimum */
+    .btn,
+    .sport-pill,
+    .filter-tab,
+    .tournament-action .btn,
+    .app-store-button,
+    .nav-links a,
+    .mobile-nav-links a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Fix any remaining overflow issues */
+@media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+    }
+    
+    .container {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+}
+
+
+/* ========================================
+   MOBILE FIX: Tournament Type Labels & Bet Types Stacking
+   ======================================== */
+
+/* Tournament Types: Stack vertically on mobile */
+@media (max-width: 768px) {
+    .tournament-types {
+        display: flex;
+        flex-direction: column !important;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .tournament-type-card {
+        width: 100%;
+        max-width: none;
+        flex: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .tournament-types {
+        gap: 0.75rem;
+    }
+    
+    .tournament-type-card {
+        padding: 1rem;
+    }
+    
+    .tournament-type-card h3 {
+        font-size: 1rem;
+    }
+}
+
+/* Bet Types: Stack vertically on mobile, hide separators */
+@media (max-width: 768px) {
+    .bet-types {
+        display: flex;
+        flex-direction: column !important;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 2rem 0;
+    }
+    
+    .bet-type-separator {
+        display: none !important;
+    }
+    
+    .bet-type-label {
+        display: block;
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+        padding: 0.75rem 1.5rem;
+        background: rgba(46, 139, 87, 0.15);
+        border-radius: 24px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--bma-green-bright);
+    }
+}
+
+@media (max-width: 480px) {
+    .bet-types {
+        gap: 0.5rem;
+        margin: 1.5rem 0;
+    }
+    
+    .bet-type-label {
+        padding: 0.6rem 1.25rem;
+        font-size: 0.95rem;
+        max-width: 240px;
+    }
+}
+
+@media (max-width: 380px) {
+    .bet-type-label {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        max-width: 200px;
+    }
+}
+
