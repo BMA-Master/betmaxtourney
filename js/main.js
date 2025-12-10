@@ -1,10 +1,173 @@
 // ============================================
-// BetMax Tourney - Main JavaScript
+// Bet Max Tourney - Main JavaScript
 // Tournament Betting Platform
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('BetMax Tourney loaded');
+    console.log('Bet Max Tourney loaded');
+
+    // ===== Helper Functions for RSS Status Parsing =====
+
+    // Parse status from RSS item (handles <status> element or description fallback)
+    function parseStatus(item) {
+        // Try to get status from dedicated field first
+        const statusElement = item.querySelector('status');
+        if (statusElement) {
+            return statusElement.textContent.toLowerCase().trim();
+        }
+
+        // Fallback to description regex
+        const description = item.querySelector('description')?.textContent || '';
+        const statusMatch = description.match(/Status:\s*(\w+)/i);
+        return statusMatch ? statusMatch[1].toLowerCase().trim() : 'upcoming';
+    }
+
+    // Check if completed tournament is within last 7 days
+    function isRecentlyCompleted(status, endDate) {
+        if (status !== 'completed') return true; // Not completed, always show
+        if (!endDate) return false; // No end date for completed, don't show
+
+        const now = new Date();
+        const daysSinceEnd = (now - endDate) / (1000 * 60 * 60 * 24);
+        return daysSinceEnd <= 7;
+    }
+
+    // ===== Live Tournament Marquee =====
+    async function loadTournamentMarquee() {
+        const marqueeTrack = document.getElementById('marquee-track');
+        if (!marqueeTrack) return;
+
+        try {
+            const response = await fetch('https://machfive-bmacdev-rest.onrender.com/rss/tournaments.xml');
+            const xmlText = await response.text();
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+            const items = xmlDoc.querySelectorAll('item');
+
+            if (items.length === 0) {
+                marqueeTrack.innerHTML = '<div class="marquee-item"><span class="marquee-tournament">No live tournaments</span></div>';
+                return;
+            }
+
+            // Build marquee items (filter for LOCKED, upcoming, and recently completed)
+            let marqueeHTML = '';
+            items.forEach((item, index) => {
+                const title = item.querySelector('title')?.textContent || 'Tournament';
+                const description = item.querySelector('description')?.textContent || '';
+                const pubDate = item.querySelector('pubDate')?.textContent || '';
+
+                // Parse status using helper function
+                const status = parseStatus(item);
+
+                // Parse description for sport, start time, end time
+                const sportMatch = description.match(/Sports?:\s*([^\n|]+)/i); // Match "Sport:" or "Sports:" and capture everything until newline or pipe
+                const startTimeMatch = description.match(/Start Time:\s*([^\n]+)/i);
+                const endTimeMatch = description.match(/End Time:\s*([^\n]+)/i);
+
+                // Parse multiple sports from the RSS feed (e.g., "NFL, NBA, MLB")
+                let sports = [];
+                if (sportMatch) {
+                    // Split by comma and trim whitespace, then normalize multi-word sports
+                    sports = sportMatch[1].split(',').map(s => {
+                        const normalized = s.trim().toUpperCase();
+                        // Map multi-word sports to single CSS-safe names
+                        if (normalized === 'UEFA CHAMPIONS LEAGUE' || normalized === 'CHAMPIONS LEAGUE') return 'UEFA';
+                        if (normalized === 'MIXED MARTIAL ARTS') return 'MMA';
+                        return normalized;
+                    }).filter(s => s);
+                }
+
+                // If no sport in description, infer from title
+                if (sports.length === 0) {
+                    const titleLower = title.toLowerCase();
+                    if (titleLower.includes('hoop') || titleLower.includes('basketball') || titleLower.includes('nba')) sports = ['NBA'];
+                    else if (titleLower.includes('football') || titleLower.includes('nfl')) sports = ['NFL'];
+                    else if (titleLower.includes('baseball') || titleLower.includes('mlb')) sports = ['MLB'];
+                    else if (titleLower.includes('hockey') || titleLower.includes('nhl')) sports = ['NHL'];
+                    else if (titleLower.includes('soccer') || titleLower.includes('epl') || titleLower.includes('uefa')) sports = ['SOCCER'];
+                    else if (titleLower.includes('college') || titleLower.includes('ncaa')) sports = ['NCAAF'];
+                    else if (titleLower.includes('boxing') || titleLower.includes('boxer')) sports = ['BOXING'];
+                    else if (titleLower.includes('mma') || titleLower.includes('ufc') || titleLower.includes('mixed martial')) sports = ['MMA'];
+                }
+
+                const startTime = startTimeMatch ? startTimeMatch[1] : '';
+                const endDate = endTimeMatch ? new Date(endTimeMatch[1]) : null;
+
+                // Filter: Only show LOCKED, upcoming, and recently completed (last 7 days)
+                if (!isRecentlyCompleted(status, endDate)) {
+                    return; // Skip tournaments completed more than 7 days ago
+                }
+
+                // Calculate countdown for upcoming tournaments
+                let countdown = '';
+                if (startTime && status === 'upcoming') {
+                    const startDate = new Date(startTime);
+                    const now = new Date();
+                    const diff = startDate - now;
+
+                    if (diff > 0) {
+                        const hours = Math.floor(diff / (1000 * 60 * 60));
+                        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                        countdown = `<span class="marquee-countdown">Starts in ${hours}h ${minutes}m</span>`;
+                    }
+                }
+
+                // Determine status display and color class based on RSS status
+                let statusClass = 'marquee-status-live';
+                let statusText = '● LIVE';
+
+                if (status === 'locked') {
+                    // LOCKED means active/live
+                    statusClass = 'marquee-status-live';
+                    statusText = '● LIVE';
+                } else if (status === 'upcoming') {
+                    statusClass = 'marquee-status-upcoming';
+                    statusText = '◉ UPCOMING';
+                } else if (status === 'completed') {
+                    statusClass = 'marquee-status-completed';
+                    statusText = '✓ COMPLETED';
+                }
+
+                // Generate sport icons HTML (icon + label for each sport)
+                let sportsHTML = '';
+                if (sports.length > 0) {
+                    console.log(`Tournament "${title}" has sports:`, sports);
+                    sportsHTML = '<span class="marquee-separator">•</span>';
+                    sports.forEach((sport, index) => {
+                        let iconClass = sport;
+                        if (sport === 'BOXING') iconClass = 'MMA';
+                        if (sport === 'UEFA') iconClass = 'EPL';
+                        sportsHTML += `<span class="sport-icon-small ${iconClass}"></span><span class="marquee-sport">${sport}</span>`;
+                        if (index < sports.length - 1) {
+                            sportsHTML += '<span class="marquee-separator">•</span>';
+                        }
+                    });
+                }
+
+                marqueeHTML += `
+                    <div class="marquee-item">
+                        <span class="marquee-status ${statusClass}">${statusText}</span>
+                        ${countdown}
+                        <span class="marquee-tournament">${title}</span>
+                        ${sportsHTML}
+                    </div>
+                `;
+            });
+
+            // Duplicate content for seamless loop
+            marqueeTrack.innerHTML = marqueeHTML + marqueeHTML;
+
+        } catch (error) {
+            console.error('Failed to load tournaments:', error);
+            marqueeTrack.innerHTML = '<div class="marquee-item"><span class="marquee-tournament">Unable to load tournaments</span></div>';
+        }
+    }
+
+    // Load marquee on page load
+    loadTournamentMarquee();
+
+    // Refresh marquee every 60 seconds
+    setInterval(loadTournamentMarquee, 60000);
 
     // Mobile Menu Drawer Toggle
     const menuToggle = document.querySelector('.menu-toggle');
@@ -325,10 +488,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 const guid = item.querySelector('guid')?.textContent || '';
                 const pubDate = item.querySelector('pubDate')?.textContent || '';
 
+                // Parse status using helper function
+                const status = parseStatus(item);
+
+                // FILTER: Only include upcoming tournaments for "Tournaments Starting Soon"
+                if (status !== 'upcoming') {
+                    return; // Skip non-upcoming tournaments
+                }
+
                 // Parse description for prize pool, start time, etc
                 const prizeMatch = description.match(/Prize Pool: \$(\d+)/);
-                const startMatch = description.match(/Start: ([^|]+)/);
+                const startMatch = description.match(/Start(?:\s+Time)?:\s*([^\n|]+)/i);
                 const matchesMatch = description.match(/(\d+) matches/);
+                const sportMatch = description.match(/Sports?:\s*([^\n|]+)/i); // Match "Sport:" or "Sports:" and capture everything until newline or pipe
 
                 const prizePool = prizeMatch ? parseInt(prizeMatch[1]) : 0;
                 const startDateStr = startMatch ? startMatch[1].trim() : '';
@@ -337,14 +509,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Parse start date
                 const startDate = startDateStr ? new Date(startDateStr) : null;
 
-                // Determine sport from title
-                let sport = 'SPORTS';
-                const titleLower = title.toLowerCase();
-                if (titleLower.includes('hoop') || titleLower.includes('basketball') || titleLower.includes('nba')) sport = 'NBA';
-                else if (titleLower.includes('football') || titleLower.includes('nfl')) sport = 'NFL';
-                else if (titleLower.includes('baseball') || titleLower.includes('mlb')) sport = 'MLB';
-                else if (titleLower.includes('soccer') || titleLower.includes('football')) sport = 'SOCCER';
-                else if (titleLower.includes('hockey') || titleLower.includes('nhl')) sport = 'NHL';
+                // Parse multiple sports from the RSS feed (e.g., "NFL, NBA, MLB")
+                let sports = [];
+                if (sportMatch) {
+                    // Split by comma and trim whitespace, then normalize multi-word sports
+                    sports = sportMatch[1].split(',').map(s => {
+                        const normalized = s.trim().toUpperCase();
+                        // Map multi-word sports to single CSS-safe names
+                        if (normalized === 'UEFA CHAMPIONS LEAGUE' || normalized === 'CHAMPIONS LEAGUE') return 'UEFA';
+                        if (normalized === 'MIXED MARTIAL ARTS') return 'MMA';
+                        return normalized;
+                    }).filter(s => s);
+                }
+
+                // If no sport in description, infer from title
+                if (sports.length === 0) {
+                    const titleLower = title.toLowerCase();
+                    if (titleLower.includes('hoop') || titleLower.includes('basketball') || titleLower.includes('nba')) sports = ['NBA'];
+                    else if (titleLower.includes('football') || titleLower.includes('nfl')) sports = ['NFL'];
+                    else if (titleLower.includes('baseball') || titleLower.includes('mlb')) sports = ['MLB'];
+                    else if (titleLower.includes('soccer')) sports = ['SOCCER'];
+                    else if (titleLower.includes('hockey') || titleLower.includes('nhl')) sports = ['NHL'];
+                    else if (titleLower.includes('boxing') || titleLower.includes('boxer')) sports = ['BOXING'];
+                    else if (titleLower.includes('mma') || titleLower.includes('ufc') || titleLower.includes('mixed martial')) sports = ['MMA'];
+                    else sports = ['SPORTS']; // Default fallback
+                }
+
+                // For filtering purposes, use the first sport
+                const sport = sports[0] || 'SPORTS';
 
                 tournaments.push({
                     title,
@@ -355,7 +547,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     prizePool,
                     startDate,
                     matchCount,
-                    sport
+                    sport,
+                    sports, // Array of all sports
+                    status
                 });
             });
 
@@ -366,14 +560,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 return a.startDate - b.startDate;
             });
 
-            // Take first 3 tournaments
+            // Take first 3 upcoming tournaments
             const displayTournaments = tournaments.slice(0, 3);
             console.log('Displaying tournaments:', displayTournaments);
 
             // Build tournament HTML
             const tournamentHTML = displayTournaments.map(t => {
                 const timeUntil = getTimeUntil(t.startDate);
-                const playerCount = Math.floor(Math.random() * 400) + 100; // Placeholder - not in feed
+                const matchCount = t.matchCount || 0;
+
+                // Generate sport text labels for homepage tournament cards
+                const sportsArray = t.sports || [t.sport];
+                const sportLabels = sportsArray.join(', ');
 
                 return `
                     <div class="tournament-item">
@@ -382,14 +580,14 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="time-detail">${formatDateTime(t.startDate)}</div>
                         </div>
                         <div class="tournament-info">
-                            <div class="tournament-sport-badge">${t.sport}</div>
+                            <div class="tournament-sport-badge">${sportLabels}</div>
                             <h3>${t.title}</h3>
                             <p>${t.description.split('|')[0].trim()}</p>
                         </div>
                         <div class="tournament-stats">
                             <div class="stat-item">
-                                <strong>${playerCount}</strong>
-                                <span>Competing</span>
+                                <strong>${matchCount}</strong>
+                                <span>Matches</span>
                             </div>
                             <div class="stat-item">
                                 <strong>FREE</strong>
@@ -425,14 +623,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Helper: Calculate time until tournament
     function getTimeUntil(startDate) {
         if (!startDate || isNaN(startDate.getTime())) {
-            return { text: 'TBD', badge: 'TBD', isUrgent: false };
+            return { text: 'UPCOMING', badge: 'UPCOMING', isUrgent: false };
         }
 
         const now = new Date();
         const diff = startDate - now;
 
+        // For "Tournaments Starting Soon", we only show upcoming tournaments
+        // So negative diff should show as UPCOMING instead of LIVE NOW
         if (diff < 0) {
-            return { text: 'LIVE NOW', badge: 'LIVE NOW', isUrgent: true };
+            return { text: 'UPCOMING', badge: 'UPCOMING', isUrgent: false };
         }
 
         const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -597,11 +797,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 const link = item.querySelector('link')?.textContent || '#';
                 const pubDate = item.querySelector('pubDate')?.textContent || '';
 
+                // Parse status using helper function
+                let status = parseStatus(item);
+
+                // Map RSS status to filter status (LOCKED -> live)
+                if (status === 'locked') {
+                    status = 'live';
+                }
+
                 // Parse description for details
                 const prizeMatch = description.match(/Prize Pool: \$(\d+)/);
                 const startMatch = description.match(/Start: ([^|]+)/);
                 const endMatch = description.match(/End: ([^|]+)/);
                 const matchesMatch = description.match(/(\d+) matches/);
+                const sportMatch = description.match(/Sports?:\s*([^\n|]+)/i); // Match "Sport:" or "Sports:" and capture everything until newline or pipe
 
                 const prizePool = prizeMatch ? parseInt(prizeMatch[1]) : 0;
                 const startDateStr = startMatch ? startMatch[1].trim() : '';
@@ -611,35 +820,41 @@ document.addEventListener('DOMContentLoaded', function() {
                 const startDate = startDateStr ? new Date(startDateStr) : null;
                 const endDate = endDateStr ? new Date(endDateStr) : null;
 
-                // Determine sport from title
-                let sport = 'SPORTS';
-                const titleLower = title.toLowerCase();
-                if (titleLower.includes('hoop') || titleLower.includes('basketball') || titleLower.includes('nba')) sport = 'NBA';
-                else if (titleLower.includes('football') || titleLower.includes('nfl')) sport = 'NFL';
-                else if (titleLower.includes('baseball') || titleLower.includes('mlb')) sport = 'MLB';
-                else if (titleLower.includes('soccer') || titleLower.includes('epl') || titleLower.includes('uefa')) sport = 'SOCCER';
-                else if (titleLower.includes('hockey') || titleLower.includes('nhl')) sport = 'NHL';
-                else if (titleLower.includes('college') || titleLower.includes('ncaa')) sport = 'NCAAF';
+                // TODO: Filter out completed tournaments older than 7 days once RSS feed has end dates
+                // For now, show all completed tournaments since RSS doesn't provide end dates yet
+                // if (!isRecentlyCompleted(status, endDate)) {
+                //     return; // Skip tournaments completed more than 7 days ago
+                // }
 
-                // Determine status
-                const now = new Date();
-                let status = 'upcoming';
-
-                if (startDate && endDate) {
-                    if (now >= startDate && now <= endDate) {
-                        status = 'live';
-                    } else if (now > endDate) {
-                        // Check if completed within last 7 days
-                        const daysSinceEnd = (now - endDate) / (1000 * 60 * 60 * 24);
-                        if (daysSinceEnd <= 7) {
-                            status = 'completed';
-                        } else {
-                            return; // Skip tournaments completed more than 7 days ago
-                        }
-                    }
-                } else if (startDate && now >= startDate) {
-                    status = 'live';
+                // Parse multiple sports from the RSS feed (e.g., "NFL, NBA, MLB")
+                let sports = [];
+                if (sportMatch) {
+                    // Split by comma and trim whitespace, then normalize multi-word sports
+                    sports = sportMatch[1].split(',').map(s => {
+                        const normalized = s.trim().toUpperCase();
+                        // Map multi-word sports to single CSS-safe names
+                        if (normalized === 'UEFA CHAMPIONS LEAGUE' || normalized === 'CHAMPIONS LEAGUE') return 'UEFA';
+                        if (normalized === 'MIXED MARTIAL ARTS') return 'MMA';
+                        return normalized;
+                    }).filter(s => s);
                 }
+
+                // If no sport in description, infer from title
+                if (sports.length === 0) {
+                    const titleLower = title.toLowerCase();
+                    if (titleLower.includes('hoop') || titleLower.includes('basketball') || titleLower.includes('nba')) sports = ['NBA'];
+                    else if (titleLower.includes('football') || titleLower.includes('nfl')) sports = ['NFL'];
+                    else if (titleLower.includes('baseball') || titleLower.includes('mlb')) sports = ['MLB'];
+                    else if (titleLower.includes('soccer') || titleLower.includes('epl') || titleLower.includes('uefa')) sports = ['SOCCER'];
+                    else if (titleLower.includes('hockey') || titleLower.includes('nhl')) sports = ['NHL'];
+                    else if (titleLower.includes('college') || titleLower.includes('ncaa')) sports = ['NCAAF'];
+                    else if (titleLower.includes('boxing') || titleLower.includes('boxer')) sports = ['BOXING'];
+                    else if (titleLower.includes('mma') || titleLower.includes('ufc') || titleLower.includes('mixed martial')) sports = ['MMA'];
+                    else sports = ['SPORTS']; // Default fallback
+                }
+
+                // For filtering purposes, use the first sport
+                const sport = sports[0] || 'SPORTS';
 
                 const playerCount = Math.floor(Math.random() * 400) + 100; // Placeholder
 
@@ -653,6 +868,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     endDate,
                     matchCount,
                     sport,
+                    sports, // Array of all sports
                     status,
                     playerCount
                 });
@@ -755,8 +971,22 @@ document.addEventListener('DOMContentLoaded', function() {
             emptyState.style.display = 'none';
 
             const html = tournaments.map(t => {
-                const timeInfo = getTimeUntil(t.startDate);
-                const timeBadgeClass = timeInfo.isUrgent ? 'time-badge urgent' : 'time-badge';
+                // Show appropriate badge based on tournament status
+                let timeInfo, timeBadgeClass;
+                if (t.status === 'live') {
+                    timeInfo = { text: 'LIVE NOW', badge: 'LIVE NOW', isUrgent: true };
+                    timeBadgeClass = 'time-badge urgent';
+                } else if (t.status === 'completed') {
+                    timeInfo = { text: 'COMPLETED', badge: 'COMPLETED', isUrgent: false };
+                    timeBadgeClass = 'time-badge completed';
+                } else {
+                    timeInfo = getTimeUntil(t.startDate);
+                    timeBadgeClass = timeInfo.isUrgent ? 'time-badge urgent' : 'time-badge';
+                }
+
+                // Generate sport text labels for tournament cards
+                const sportsArray = t.sports || [t.sport];
+                const sportLabels = sportsArray.join(', ');
 
                 return `
                     <div class="tournament-item" data-status="${t.status}" data-sport="${t.sport}">
@@ -765,7 +995,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="time-detail">${formatDateTime(t.startDate)}</div>
                         </div>
                         <div class="tournament-info">
-                            <div class="tournament-sport-badge">${t.sport}</div>
+                            <div class="tournament-sport-badge">${sportLabels}</div>
                             <h3>${t.title}</h3>
                             <p>${t.description.split('|')[0].trim()}</p>
                         </div>
