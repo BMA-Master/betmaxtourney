@@ -875,7 +875,13 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             filteredTournaments = [...allTournaments];
-            renderTournaments(filteredTournaments);
+
+            // Initialize pagination with loaded tournaments
+            pagination.allTournaments = allTournaments;
+            pagination.filteredTournaments = filteredTournaments;
+            pagination.renderFunction = renderTournaments; // Store reference to render function
+            renderPaginatedTournaments();
+
             updateCounts();
 
         } catch (error) {
@@ -920,7 +926,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (sortSelect) {
             sortSelect.addEventListener('change', function() {
                 sortTournaments(this.value);
-                renderTournaments(filteredTournaments);
+                pagination.filteredTournaments = filteredTournaments;
+                pagination.currentPage = 1;
+                renderPaginatedTournaments();
             });
         }
 
@@ -932,7 +940,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             sortTournaments(sortSelect ? sortSelect.value : 'time-asc');
-            renderTournaments(filteredTournaments);
+
+            // Update pagination and reset to page 1
+            pagination.filteredTournaments = filteredTournaments;
+            pagination.currentPage = 1;
+            renderPaginatedTournaments();
+            updateCounts();
         }
 
         function sortTournaments(sortBy) {
@@ -1036,3 +1049,260 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+// ============================================================================
+// PAGINATION SYSTEM
+// ============================================================================
+
+const pagination = {
+    currentPage: 1,
+    itemsPerPage: 10,
+    allTournaments: [],
+    filteredTournaments: [],
+    currentFilter: 'all',
+    currentSport: 'all',
+    currentSort: 'time-asc'
+};
+
+// Initialize pagination
+function initPagination() {
+    console.log('Initializing pagination...');
+    
+    // Get page from URL hash if exists
+    const hash = window.location.hash.match(/page=(\d+)/);
+    if (hash) {
+        pagination.currentPage = parseInt(hash[1]);
+    }
+    
+    // Event listeners for pagination buttons (both top and bottom)
+    ['', '-top'].forEach(suffix => {
+        const firstBtn = document.getElementById(`page-first${suffix}`);
+        const prevBtn = document.getElementById(`page-prev${suffix}`);
+        const nextBtn = document.getElementById(`page-next${suffix}`);
+        const lastBtn = document.getElementById(`page-last${suffix}`);
+
+        if (firstBtn) firstBtn.addEventListener('click', () => goToPage(1));
+        if (prevBtn) prevBtn.addEventListener('click', () => goToPage(pagination.currentPage - 1));
+        if (nextBtn) nextBtn.addEventListener('click', () => goToPage(pagination.currentPage + 1));
+        if (lastBtn) lastBtn.addEventListener('click', () => goToPage(getTotalPages()));
+    });
+
+    const itemsPerPageSelect = document.getElementById('items-per-page');
+    
+    if (itemsPerPageSelect) {
+        itemsPerPageSelect.addEventListener('change', (e) => {
+            pagination.itemsPerPage = parseInt(e.target.value);
+            pagination.currentPage = 1;
+            renderPaginatedTournaments();
+        });
+    }
+    
+    console.log('Pagination initialized');
+}
+
+// Calculate total pages
+function getTotalPages() {
+    return Math.ceil(pagination.filteredTournaments.length / pagination.itemsPerPage);
+}
+
+// Go to specific page
+function goToPage(page) {
+    const totalPages = getTotalPages();
+    
+    if (page < 1 || page > totalPages) {
+        console.log(`Invalid page: ${page}`);
+        return;
+    }
+    
+    pagination.currentPage = page;
+    
+    // Update URL hash
+    const currentHash = window.location.hash;
+    const newHash = currentHash.replace(/page=\d+/, `page=${page}`);
+    if (newHash === currentHash) {
+        window.location.hash = currentHash ? `${currentHash}&page=${page}` : `page=${page}`;
+    } else {
+        window.location.hash = newHash;
+    }
+    
+    renderPaginatedTournaments();
+    
+    // Scroll to top of tournament list smoothly
+    const tournamentsPage = document.querySelector('.tournaments-page');
+    if (tournamentsPage) {
+        tournamentsPage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+// Render current page of tournaments
+function renderPaginatedTournaments() {
+    const start = (pagination.currentPage - 1) * pagination.itemsPerPage;
+    const end = start + pagination.itemsPerPage;
+    const pageData = pagination.filteredTournaments.slice(start, end);
+
+    console.log(`Rendering page ${pagination.currentPage}: items ${start}-${end} of ${pagination.filteredTournaments.length}`);
+
+    // Use the stored render function if available
+    if (pagination.renderFunction && typeof pagination.renderFunction === 'function') {
+        pagination.renderFunction(pageData);
+    }
+
+    // Update pagination controls
+    updatePaginationControls();
+}
+
+// Update pagination UI
+function updatePaginationControls() {
+    const totalPages = getTotalPages();
+    const start = (pagination.currentPage - 1) * pagination.itemsPerPage + 1;
+    const end = Math.min(start + pagination.itemsPerPage - 1, pagination.filteredTournaments.length);
+    
+    // Update info text
+    const startEl = document.getElementById('results-start');
+    const endEl = document.getElementById('results-end');
+    const totalEl = document.getElementById('results-total');
+    
+    if (startEl) startEl.textContent = start;
+    if (endEl) endEl.textContent = end;
+    if (totalEl) totalEl.textContent = pagination.filteredTournaments.length;
+    
+    // Enable/disable buttons (both top and bottom)
+    ['', '-top'].forEach(suffix => {
+        const firstBtn = document.getElementById(`page-first${suffix}`);
+        const prevBtn = document.getElementById(`page-prev${suffix}`);
+        const nextBtn = document.getElementById(`page-next${suffix}`);
+        const lastBtn = document.getElementById(`page-last${suffix}`);
+
+        if (firstBtn) firstBtn.disabled = pagination.currentPage === 1;
+        if (prevBtn) prevBtn.disabled = pagination.currentPage === 1;
+        if (nextBtn) nextBtn.disabled = pagination.currentPage === totalPages;
+        if (lastBtn) lastBtn.disabled = pagination.currentPage === totalPages;
+    });
+
+    // Render page numbers (both top and bottom)
+    renderPageNumbers(totalPages, 'page-numbers');
+    renderPageNumbers(totalPages, 'page-numbers-top');
+
+    // Show/hide pagination (both top and bottom)
+    ['pagination-controls', 'pagination-controls-top'].forEach(id => {
+        const container = document.getElementById(id);
+        if (container) {
+            container.style.display = totalPages > 1 ? 'block' : 'none';
+        }
+    });
+}
+
+// Render page number buttons
+function renderPageNumbers(totalPages, containerId = 'page-numbers') {
+    const numbersContainer = document.getElementById(containerId);
+    if (!numbersContainer) return;
+    
+    numbersContainer.innerHTML = '';
+    
+    // Show max 5 page numbers at a time
+    let startPage = Math.max(1, pagination.currentPage - 2);
+    let endPage = Math.min(totalPages, startPage + 4);
+    
+    // Adjust if near end
+    if (endPage - startPage < 4) {
+        startPage = Math.max(1, endPage - 4);
+    }
+    
+    // Add ellipsis if not showing first page
+    if (startPage > 1) {
+        const btn = createPageButton(1);
+        numbersContainer.appendChild(btn);
+        if (startPage > 2) {
+            const ellipsis = document.createElement('span');
+            ellipsis.textContent = '...';
+            ellipsis.className = 'page-ellipsis';
+            numbersContainer.appendChild(ellipsis);
+        }
+    }
+    
+    // Add page numbers
+    for (let i = startPage; i <= endPage; i++) {
+        const btn = createPageButton(i);
+        if (i === pagination.currentPage) {
+            btn.classList.add('active');
+        }
+        numbersContainer.appendChild(btn);
+    }
+    
+    // Add ellipsis if not showing last page
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+            const ellipsis = document.createElement('span');
+            ellipsis.textContent = '...';
+            ellipsis.className = 'page-ellipsis';
+            numbersContainer.appendChild(ellipsis);
+        }
+        const btn = createPageButton(totalPages);
+        numbersContainer.appendChild(btn);
+    }
+}
+
+// Create page number button
+function createPageButton(pageNum) {
+    const btn = document.createElement('button');
+    btn.className = 'page-number';
+    btn.textContent = pageNum;
+    btn.setAttribute('aria-label', `Go to page ${pageNum}`);
+    btn.addEventListener('click', () => goToPage(pageNum));
+    return btn;
+}
+
+// Set tournaments and apply pagination
+function setPaginatedTournaments(tournaments) {
+    pagination.allTournaments = tournaments;
+    pagination.filteredTournaments = tournaments;
+    pagination.currentPage = 1;
+    renderPaginatedTournaments();
+}
+
+// Apply filters and reset to page 1
+function applyFiltersAndPaginate(filter, sport, sort) {
+    pagination.currentFilter = filter || pagination.currentFilter;
+    pagination.currentSport = sport || pagination.currentSport;
+    pagination.currentSort = sort || pagination.currentSort;
+    
+    // Filter tournaments
+    let filtered = [...pagination.allTournaments];
+    
+    // Apply status filter
+    if (pagination.currentFilter !== 'all') {
+        filtered = filtered.filter(t => t.status === pagination.currentFilter);
+    }
+    
+    // Apply sport filter
+    if (pagination.currentSport !== 'all') {
+        filtered = filtered.filter(t => t.sport === pagination.currentSport);
+    }
+    
+    // Apply sorting
+    filtered.sort((a, b) => {
+        switch (pagination.currentSort) {
+            case 'time-asc':
+                return new Date(a.startTime) - new Date(b.startTime);
+            case 'time-desc':
+                return new Date(b.startTime) - new Date(a.startTime);
+            case 'participants-desc':
+                return (b.players || 0) - (a.players || 0);
+            case 'sport':
+                return a.sport.localeCompare(b.sport);
+            default:
+                return 0;
+        }
+    });
+    
+    pagination.filteredTournaments = filtered;
+    pagination.currentPage = 1;
+    renderPaginatedTournaments();
+}
+
+// Initialize pagination when DOM is loaded
+if (document.querySelector('.tournament-list')) {
+    console.log('Tournament list page detected, initializing pagination');
+    initPagination();
+}
+
