@@ -1306,3 +1306,161 @@ if (document.querySelector('.tournament-list')) {
     initPagination();
 }
 
+// ============================================
+// HOW TO PLAY PAGE
+// Sidebar navigation, accordion, and tabs
+// ============================================
+
+// Sidebar Navigation - Active State & Smooth Scroll
+function initHowToPlayNav() {
+    const sidebar = document.querySelector('.htp-sidebar');
+    if (!sidebar) return;
+
+    const navLinks = sidebar.querySelectorAll('.htp-nav-link, .htp-sub-link');
+    const sections = document.querySelectorAll('.htp-section');
+
+    // Handle expandable nav items
+    const expandableItems = sidebar.querySelectorAll('.htp-nav-item.has-sub');
+    expandableItems.forEach(item => {
+        const link = item.querySelector('.htp-nav-link');
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            item.classList.toggle('expanded');
+        });
+    });
+
+    // Smooth scroll and active state on click
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (!href || href === '#') return;
+
+            e.preventDefault();
+            const targetId = href.substring(1);
+            const targetSection = document.getElementById(targetId);
+
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                // Update active states
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+
+                // Expand parent if clicking sub-item
+                const parentItem = this.closest('.htp-nav-item.has-sub');
+                if (parentItem) {
+                    parentItem.classList.add('expanded');
+                }
+            }
+        });
+    });
+
+    // Update active state on scroll
+    let ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                updateActiveNavOnScroll(sections, navLinks);
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    // Set initial active state
+    updateActiveNavOnScroll(sections, navLinks);
+}
+
+function updateActiveNavOnScroll(sections, navLinks) {
+    const scrollPosition = window.scrollY + 150;
+
+    let currentSection = null;
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + section.offsetHeight;
+
+        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            currentSection = section;
+        }
+    });
+
+    if (currentSection) {
+        const currentId = currentSection.id;
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === `#${currentId}`) {
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+
+                // Auto-expand parent if sub-item is active
+                const parentItem = link.closest('.htp-nav-item.has-sub');
+                if (parentItem) {
+                    parentItem.classList.add('expanded');
+                }
+            }
+        });
+    }
+}
+
+// Accordion Glossary
+function initGlossaryAccordion() {
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', function() {
+            const accordionItem = this.closest('.accordion-item');
+            const wasActive = accordionItem.classList.contains('active');
+
+            // Close all other accordions in same container
+            const container = accordionItem.closest('.glossary-accordion, .sport-tab-content');
+            if (container) {
+                container.querySelectorAll('.accordion-item.active').forEach(item => {
+                    if (item !== accordionItem) {
+                        item.classList.remove('active');
+                    }
+                });
+            }
+
+            // Toggle current accordion
+            if (wasActive) {
+                accordionItem.classList.remove('active');
+            } else {
+                accordionItem.classList.add('active');
+            }
+        });
+    });
+}
+
+// Sports Glossary Tabs
+function initSportsGlossaryTabs() {
+    const tabs = document.querySelectorAll('.sport-tab');
+    const tabContents = document.querySelectorAll('.sport-glossary');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const targetSport = this.getAttribute('data-sport');
+
+            // Update active tab
+            tabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+
+            // Update visible content
+            tabContents.forEach(content => {
+                if (content.id === `sport-${targetSport}`) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+        });
+    });
+}
+
+// Initialize all How to Play features
+if (document.querySelector('.how-to-play-content')) {
+    console.log('How to Play page detected, initializing features');
+    initHowToPlayNav();
+    initGlossaryAccordion();
+    initSportsGlossaryTabs();
+}
+
