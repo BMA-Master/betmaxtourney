@@ -178,14 +178,66 @@ p {
     width: auto;
 }
 
-/* "LIVE TOURNAMENTS" text - simple style */
+/* #5: Enhanced "LIVE TOURNAMENTS" Badge */
 .marquee-brand-text {
-    font-size: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 0.7rem;
     font-weight: 900;
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
     color: var(--bma-white);
-    text-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
+    background: var(--gradient-primary);
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    box-shadow:
+        0 0 15px rgba(0, 230, 118, 0.4),
+        0 0 30px rgba(0, 230, 118, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
     white-space: nowrap;
+    animation: badgePulse 3s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Shimmer effect on badge */
+.marquee-brand-text::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 70%
+    );
+    animation: shimmer 4s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% {
+        box-shadow:
+            0 0 15px rgba(0, 230, 118, 0.4),
+            0 0 30px rgba(0, 230, 118, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    50% {
+        box-shadow:
+            0 0 20px rgba(0, 230, 118, 0.6),
+            0 0 40px rgba(0, 230, 118, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
 }
 
 /* Gradient fade edges */

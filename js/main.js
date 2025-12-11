@@ -1311,25 +1311,15 @@ if (document.querySelector('.tournament-list')) {
 // Sidebar navigation, accordion, and tabs
 // ============================================
 
-// Sidebar Navigation - Active State & Smooth Scroll
+// Sidebar Navigation - Active State & Smooth Scroll with Intersection Observer
 function initHowToPlayNav() {
     const sidebar = document.querySelector('.htp-sidebar');
     if (!sidebar) return;
 
-    const navLinks = sidebar.querySelectorAll('.htp-nav-link, .htp-sub-link');
+    const navLinks = sidebar.querySelectorAll('.nav-link');
     const sections = document.querySelectorAll('.htp-section');
 
-    // Handle expandable nav items
-    const expandableItems = sidebar.querySelectorAll('.htp-nav-item.has-sub');
-    expandableItems.forEach(item => {
-        const link = item.querySelector('.htp-nav-link');
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            item.classList.toggle('expanded');
-        });
-    });
-
-    // Smooth scroll and active state on click
+    // Smooth scroll on click (uses CSS scroll-margin-top for offset)
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
@@ -1341,65 +1331,40 @@ function initHowToPlayNav() {
 
             if (targetSection) {
                 targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
+    // Intersection Observer for automatic active state on scroll
+    const observerOptions = {
+        root: null,
+        rootMargin: '-20% 0px -70% 0px', // Trigger when section is 20% from top
+        threshold: 0
+    };
+
+    const observerCallback = (entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const sectionId = entry.target.id;
 
                 // Update active states
-                navLinks.forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-
-                // Expand parent if clicking sub-item
-                const parentItem = this.closest('.htp-nav-item.has-sub');
-                if (parentItem) {
-                    parentItem.classList.add('expanded');
-                }
+                navLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href === `#${sectionId}`) {
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        link.classList.add('active');
+                    }
+                });
             }
         });
-    });
+    };
 
-    // Update active state on scroll
-    let ticking = false;
-    window.addEventListener('scroll', function() {
-        if (!ticking) {
-            window.requestAnimationFrame(function() {
-                updateActiveNavOnScroll(sections, navLinks);
-                ticking = false;
-            });
-            ticking = true;
-        }
-    });
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    // Set initial active state
-    updateActiveNavOnScroll(sections, navLinks);
-}
-
-function updateActiveNavOnScroll(sections, navLinks) {
-    const scrollPosition = window.scrollY + 150;
-
-    let currentSection = null;
+    // Observe all sections
     sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionBottom = sectionTop + section.offsetHeight;
-
-        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-            currentSection = section;
-        }
+        observer.observe(section);
     });
-
-    if (currentSection) {
-        const currentId = currentSection.id;
-        navLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            if (href === `#${currentId}`) {
-                navLinks.forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
-
-                // Auto-expand parent if sub-item is active
-                const parentItem = link.closest('.htp-nav-item.has-sub');
-                if (parentItem) {
-                    parentItem.classList.add('expanded');
-                }
-            }
-        });
-    }
 }
 
 // Accordion Glossary

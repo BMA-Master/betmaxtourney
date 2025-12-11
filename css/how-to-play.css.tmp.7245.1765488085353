@@ -244,42 +244,12 @@ html {
     font-weight: 700;
     color: var(--bma-white);
     margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.htp-section h2::before {
-    content: '';
-    display: inline-block;
-    width: 48px;
-    height: 48px;
-    background-image: url('../images/X-v1.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    flex-shrink: 0;
 }
 
 .htp-section h3 {
     font-size: 1.5rem;
     color: var(--bma-white);
     margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-}
-
-.htp-section h3::before {
-    content: '';
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    background-image: url('../images/X-v2.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    flex-shrink: 0;
 }
 
 .htp-section p {
