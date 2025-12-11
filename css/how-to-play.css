@@ -6,8 +6,12 @@
 /* Hero Section */
 .how-to-play-hero {
     position: relative;
-    padding: 6rem 0 4rem 0;
+    padding-top: calc(6rem + 120px);
+    padding-bottom: 4rem;
+    margin-top: -120px;
     margin-bottom: 3rem;
+    overflow: hidden;
+    background: #000;
 }
 
 .how-to-play-hero .hero-bg,
@@ -24,14 +28,56 @@
     overflow: hidden;
 }
 
+/* Animated Background Images with Ken Burns Effect */
 .how-to-play-hero .hero-bg-image {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--gradient-hero);
-    opacity: 0.15;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: all 2s ease-in-out;
+    animation: backgroundSlide 20s infinite;
+}
+
+.how-to-play-hero .hero-bg-image:nth-child(1) {
+    background-image: url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    animation-delay: 0s;
+}
+
+.how-to-play-hero .hero-bg-image:nth-child(2) {
+    background-image: url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    animation-delay: 6.66s;
+}
+
+.how-to-play-hero .hero-bg-image:nth-child(3) {
+    background-image: url('https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    animation-delay: 13.33s;
+}
+
+@keyframes backgroundSlide {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    25% {
+        opacity: 1;
+        transform: scale(1.08);
+    }
+    30% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    33.33% {
+        opacity: 0;
+        transform: scale(1.15);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.15);
+    }
 }
 
 .how-to-play-hero .hero-overlay {
