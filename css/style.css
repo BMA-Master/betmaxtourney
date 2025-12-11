@@ -3381,14 +3381,16 @@ footer {
         text-align: center;
     }
     
-    /* Tournament Types Grid */
+    /* Tournament Types Grid - Stack Vertically */
     .tournament-types {
-        grid-template-columns: repeat(2, 1fr);
+        display: grid;
+        grid-template-columns: 1fr;
         gap: 1rem;
     }
-    
+
     .tournament-type-card {
         padding: 1.5rem 1rem;
+        width: 100%;
     }
     
     /* Mechanics Grid */
@@ -3527,10 +3529,17 @@ footer {
     
     /* Bet Types Stack Vertically */
     .bet-types {
+        display: flex;
         flex-direction: column;
+        align-items: center;
         gap: 0.5rem;
     }
-    
+
+    .bet-type-label {
+        display: block;
+        text-align: center;
+    }
+
     .bet-type-separator {
         display: none;
     }
@@ -4357,100 +4366,3 @@ header {
         justify-content: center;
     }
 }
-
-/* Fix any remaining overflow issues */
-@media (max-width: 768px) {
-    body {
-        overflow-x: hidden;
-    }
-    
-    .container {
-        max-width: 100%;
-        overflow-x: hidden;
-    }
-}
-
-
-/* ========================================
-   MOBILE FIX: Tournament Type Labels & Bet Types Stacking
-   ======================================== */
-
-/* Tournament Types: Stack vertically on mobile */
-@media (max-width: 768px) {
-    .tournament-types {
-        display: flex;
-        flex-direction: column !important;
-        gap: 1rem;
-        align-items: stretch;
-    }
-    
-    .tournament-type-card {
-        width: 100%;
-        max-width: none;
-        flex: none;
-    }
-}
-
-@media (max-width: 480px) {
-    .tournament-types {
-        gap: 0.75rem;
-    }
-    
-    .tournament-type-card {
-        padding: 1rem;
-    }
-    
-    .tournament-type-card h3 {
-        font-size: 1rem;
-    }
-}
-
-/* Bet Types: Stack vertically on mobile, hide separators */
-@media (max-width: 768px) {
-    .bet-types {
-        display: flex;
-        flex-direction: column !important;
-        align-items: center;
-        gap: 0.75rem;
-        margin: 2rem 0;
-    }
-    
-    .bet-type-separator {
-        display: none !important;
-    }
-    
-    .bet-type-label {
-        display: block;
-        width: 100%;
-        max-width: 280px;
-        text-align: center;
-        padding: 0.75rem 1.5rem;
-        background: rgba(46, 139, 87, 0.15);
-        border-radius: 24px;
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(--bma-green-bright);
-    }
-}
-
-@media (max-width: 480px) {
-    .bet-types {
-        gap: 0.5rem;
-        margin: 1.5rem 0;
-    }
-    
-    .bet-type-label {
-        padding: 0.6rem 1.25rem;
-        font-size: 0.95rem;
-        max-width: 240px;
-    }
-}
-
-@media (max-width: 380px) {
-    .bet-type-label {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
-        max-width: 200px;
-    }
-}
-
