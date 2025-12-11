@@ -2334,24 +2334,6 @@ nav {
         gap: 1.25rem;
     }
 
-    .bet-types {
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-    .bet-type-separator {
-        display: none;
-    }
-
-    .bet-type-label {
-        display: block;
-        text-align: center;
-        padding: 0.75rem 1.5rem;
-        background: rgba(46, 139, 87, 0.15);
-        border-radius: 24px;
-        color: var(--bma-green-bright);
-    }
-
     .final-cta-grid {
         grid-template-columns: 1fr;
         gap: 3rem;
@@ -2588,8 +2570,8 @@ footer {
 
     /* Benefits mobile */
     .benefit-icon {
-        width: 64px;
-        height: 64px;
+        width: 32px;
+        height: 32px;
     }
 
     /* Hero offer box */
