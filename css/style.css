@@ -91,7 +91,23 @@ p {
     font-weight: 900;
     margin-bottom: 1.5rem;
     color: var(--bma-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     line-height: 1.1;
+}
+
+.section-header h2::before {
+    content: '';
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    background-image: url('../images/X-v1.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-shrink: 0;
 }
 
 .section-header p {
@@ -2256,14 +2272,7 @@ nav {
 /* ===== Final CTA ===== */
 .final-cta {
     padding: 10rem 0;
-    background:
-        radial-gradient(circle at 20% -20%, rgba(0, 230, 118, 0.25) 0%, rgba(0, 230, 118, 0.1) 30%, transparent 50%),
-        radial-gradient(circle at 80% -20%, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0.08) 30%, transparent 50%),
-        radial-gradient(circle at 30% 120%, rgba(255, 215, 0, 0.25) 0%, rgba(255, 215, 0, 0.1) 30%, transparent 50%),
-        radial-gradient(circle at 70% 120%, rgba(0, 230, 118, 0.2) 0%, rgba(0, 230, 118, 0.08) 30%, transparent 50%),
-        linear-gradient(135deg, var(--bma-dark-100) 0%, rgba(46, 139, 87, 0.15) 50%, var(--bma-dark-100) 100%);
-    background-size: 200% 200%;
-    animation: gradientShift 15s ease infinite;
+    background: var(--bma-dark-100);
     text-align: center;
     position: relative;
     overflow: hidden;
