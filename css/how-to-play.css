@@ -788,18 +788,138 @@ html {
         margin-bottom: 2rem;
     }
 
+    .how-to-play-hero {
+        padding-top: calc(4rem + 120px);
+        padding-bottom: 2.5rem;
+    }
+
     .how-to-play-hero h1 {
-        font-size: 2rem;
+        font-size: 2.25rem;
+        line-height: 1.2;
     }
 
     .htp-section h2 {
-        font-size: 1.5rem;
+        font-size: 1.65rem;
+    }
+
+    .htp-section h2::before {
+        width: 36px;
+        height: 36px;
+    }
+
+    .htp-section h3::before {
+        width: 20px;
+        height: 20px;
+    }
+
+    .step-card {
+        padding: 1.25rem;
+    }
+
+    .step-card h4 {
+        font-size: 1rem;
+    }
+
+    .step-card p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .accordion-header {
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+    }
+
+    .accordion-content {
+        padding: 0 1rem;
+    }
+
+    .accordion-item.active .accordion-content {
+        padding: 0.75rem 1rem 1rem 1rem;
     }
 
     .concept-grid,
     .odds-explainer,
     .outcomes-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .sports-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        padding-bottom: 0.5rem;
+    }
+
+    .sport-tab {
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .container-full {
+        padding: 0 0.75rem;
+    }
+
+    .how-to-play-hero {
+        padding-top: calc(3rem + 120px);
+        padding-bottom: 2rem;
+    }
+
+    .how-to-play-hero h1 {
+        font-size: 1.75rem;
+    }
+
+    .htp-section h2 {
+        font-size: 1.4rem;
+    }
+
+    .htp-section h2::before {
+        width: 28px;
+        height: 28px;
+    }
+
+    .htp-section h3 {
+        font-size: 1.25rem;
+    }
+
+    .htp-section h3::before {
+        width: 18px;
+        height: 18px;
+    }
+
+    .step-card {
+        padding: 1rem;
+        gap: 0.85rem;
+    }
+
+    .step-number {
+        width: 32px;
+        height: 32px;
+        font-size: 0.95rem;
+    }
+
+    .step-card h4 {
+        font-size: 0.95rem;
+    }
+
+    .step-card p {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+
+    .accordion-header {
+        padding: 0.65rem 0.85rem;
+        font-size: 0.9rem;
+    }
+
+    .sport-tab {
+        padding: 0.65rem 1rem;
+        font-size: 0.9rem;
     }
 }
 
