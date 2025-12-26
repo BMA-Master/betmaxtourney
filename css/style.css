@@ -1,7 +1,7 @@
 /* Updated $(date) */
 /* ============================================
    Bet Max Tourney - Product-Focused Landing Page
-   Powered by BetMax Action Brand System
+   Powered by Bet Max Action Brand System
    ============================================ */
 
 /* ===== BMA Brand Color Variables ===== */
@@ -662,23 +662,27 @@ nav {
     background-size: cover;
     background-position: center;
     opacity: 0;
-    transition: all 2s ease-in-out;
     animation: backgroundSlide 20s infinite;
 }
 
 .hero-bg-image:nth-child(1) {
-    background-image: url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    background-image: url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
     animation-delay: 0s;
 }
 
 .hero-bg-image:nth-child(2) {
-    background-image: url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
-    animation-delay: 6.66s;
+    background-image: url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    animation-delay: 5s;
 }
 
 .hero-bg-image:nth-child(3) {
-    background-image: url('https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
-    animation-delay: 13.33s;
+    background-image: url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    animation-delay: 10s;
+}
+
+.hero-bg-image:nth-child(4) {
+    background-image: url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    animation-delay: 15s;
 }
 
 @keyframes backgroundSlide {
@@ -686,15 +690,11 @@ nav {
         opacity: 1;
         transform: scale(1);
     }
-    25% {
-        opacity: 1;
-        transform: scale(1.08);
-    }
-    30% {
+    22% {
         opacity: 1;
         transform: scale(1.1);
     }
-    33.33% {
+    25% {
         opacity: 0;
         transform: scale(1.15);
     }
@@ -2553,6 +2553,17 @@ footer {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.9rem;
+}
+
+.footer-bottom a {
+    color: var(--bma-yellow);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-bottom a:hover {
+    color: var(--bma-yellow-bright);
+    text-decoration: underline;
 }
 
 /* ===== Responsive Tablet (768px - 968px) ===== */
