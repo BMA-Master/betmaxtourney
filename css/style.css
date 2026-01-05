@@ -2258,6 +2258,10 @@ nav {
 
 .tournament-time {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .time-badge {
@@ -2268,7 +2272,6 @@ nav {
     font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 1px;
-    margin-bottom: 0.5rem;
 }
 
 .time-badge.urgent {
@@ -2300,7 +2303,6 @@ nav {
     font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 0.5px;
-    margin-bottom: 0.5rem;
 }
 
 .tournament-info h3 {
@@ -5047,6 +5049,7 @@ header {
 /* ============================================
 COMPREHENSIVE MOBILE RESPONSIVENESS FIX
 Priority: Homepage mobile experience improvements
+RESET AND REBUILD APPROACH
 ============================================ */
 
 /* Tablet breakpoint improvements */
@@ -5090,62 +5093,117 @@ Priority: Homepage mobile experience improvements
         margin: 0 0.1em !important;
     }
 
-    /* Tournament cards mobile redesign */
+    /* AUTHORITATIVE TOURNAMENT CARD MOBILE RESET */
     .tournament-item {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 1rem !important;
+        /* Reset desktop grid completely */
+        display: block !important;
+        grid-template-columns: unset !important;
+        gap: unset !important;
+
+        /* Mobile-optimized padding and styling */
         padding: 1.25rem !important;
         background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%) !important;
+        border-radius: 12px !important;
     }
 
-    .tournament-time {
+    /* Top section - badges and time in a row */
+    .tournament-item .tournament-time {
         display: flex !important;
-        justify-content: space-between !important;
+        flex-direction: row !important;
+        justify-content: flex-start !important;
         align-items: center !important;
-        width: 100% !important;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        gap: 0.5rem !important;
+        margin-bottom: 1rem !important;
+        text-align: left !important;
     }
 
-    .time-badge {
-        font-size: 0.7rem !important;
-        padding: 0.3rem 0.6rem !important;
+    .tournament-item .tournament-sport-badge {
+        order: 1 !important;
+        margin: 0 !important;
     }
 
-    .time-detail {
-        font-size: 0.8rem !important;
+    .tournament-item .time-badge {
+        order: 2 !important;
+        margin: 0 !important;
     }
 
-    .tournament-info {
-        padding: 0.5rem 0 !important;
+    .tournament-item .time-detail {
+        order: 3 !important;
+        margin: 0 !important;
+        font-size: 0.75rem !important;
+        opacity: 0.6 !important;
     }
 
-    .tournament-info h3 {
-        font-size: 1.25rem !important;
+    /* Info section */
+    .tournament-item .tournament-info {
+        margin-bottom: 1rem !important;
+        padding: 0 !important;
+        flex: unset !important;
+    }
+
+    .tournament-item .tournament-info h3 {
+        font-size: 1.2rem !important;
         margin-bottom: 0.5rem !important;
     }
 
-    .tournament-info p {
+    .tournament-item .tournament-info p {
         font-size: 0.85rem !important;
         line-height: 1.4 !important;
     }
 
-    .tournament-stats {
+    /* Stats section */
+    .tournament-item .tournament-stats {
         display: flex !important;
         justify-content: space-around !important;
         padding: 0.75rem 0 !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 0.75rem !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
 
-    .tournament-action {
-        padding-top: 0.75rem !important;
+    .tournament-item .stat-item {
+        text-align: center !important;
+        flex: 1 !important;
     }
 
-    .tournament-action .btn {
+    .tournament-item .stat-item strong {
+        display: block !important;
+        font-size: 1.25rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+
+    .tournament-item .stat-item span {
+        display: block !important;
+        font-size: 0.7rem !important;
+        opacity: 0.7 !important;
+    }
+
+    /* CTA Button - PROPERLY CENTERED */
+    .tournament-item .tournament-action {
+        padding: 0 !important;
+        margin: 0 !important;
         width: 100% !important;
-        padding: 0.75rem !important;
+    }
+
+    .tournament-item .tournament-action a.btn,
+    .tournament-item .tournament-action .btn-primary {
+        /* Reset any inherited styles */
+        display: block !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0.875rem 1rem !important;
+
+        /* Center the text */
+        text-align: center !important;
+        line-height: 1.2 !important;
+
+        /* Ensure it's treated as a block */
+        box-sizing: border-box !important;
+        text-decoration: none !important;
+
+        /* Force center alignment */
+        justify-content: center !important;
+        align-items: center !important;
     }
 
     /* Improve general spacing */

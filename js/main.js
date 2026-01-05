@@ -653,11 +653,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 return `
                     <div class="tournament-item" ${t.startDate ? `data-start-time="${t.startDate.toISOString()}"` : ''}>
                         <div class="tournament-time">
+                            <div class="tournament-sport-badge">${sportLabels}</div>
                             <div class="time-badge ${timeUntil.isUrgent ? 'urgent' : ''}">${timeUntil.text}</div>
                             <div class="time-detail">${formatDateTime(t.startDate)}</div>
                         </div>
                         <div class="tournament-info">
-                            <div class="tournament-sport-badge">${sportLabels}</div>
                             <h3>${t.title}</h3>
                             <p>${t.description.split('|')[0].trim()}</p>
                         </div>
