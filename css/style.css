@@ -5186,24 +5186,28 @@ RESET AND REBUILD APPROACH
     }
 
     .tournament-item .tournament-action a.btn,
-    .tournament-item .tournament-action .btn-primary {
-        /* Reset any inherited styles */
+    .tournament-item .tournament-action .btn-primary,
+    .tournament-action a {
+        /* Reset EVERYTHING */
         display: block !important;
         width: 100% !important;
-        margin: 0 auto !important;
-        padding: 0.875rem 1rem !important;
+        margin: 0 !important;
+        padding: 0.875rem 0 !important;
 
-        /* Center the text */
+        /* FORCE CENTER ALIGNMENT */
         text-align: center !important;
-        line-height: 1.2 !important;
+        text-align: -webkit-center !important;
+        text-align: -moz-center !important;
 
-        /* Ensure it's treated as a block */
+        /* Reset any inherited alignment */
+        text-indent: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+
+        /* Line height and box model */
+        line-height: normal !important;
         box-sizing: border-box !important;
         text-decoration: none !important;
-
-        /* Force center alignment */
-        justify-content: center !important;
-        align-items: center !important;
     }
 
     /* Improve general spacing */
