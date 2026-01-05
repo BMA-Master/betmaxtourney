@@ -201,10 +201,14 @@ article.container .content a:hover {
     }
 }
 
-/* ===== Section Headers ===== */
+/* ===== Section Headers - True Edge-to-Edge Typography ===== */
 .section-header {
     text-align: center;
     margin-bottom: 4rem;
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    overflow: visible;
 }
 
 .section-logo {
@@ -216,34 +220,109 @@ article.container .content a:hover {
 }
 
 .section-header h2 {
-    font-size: 3rem;
+    font-size: clamp(3rem, 7vw, 5rem);
     font-weight: 900;
+    margin: 0;
     margin-bottom: 1.5rem;
+    padding: 0 1rem;
     color: var(--bma-white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.15rem;
     line-height: 1.1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    position: relative;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    white-space: normal;
+    overflow-wrap: break-word;
 }
 
-.section-header h2::before {
+/* Subtle underline - optional, disabled by default */
+.section-header h2::after {
+    display: none;
+    /* Uncomment below to enable a subtle underline
     content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1px;
+    */
+}
+
+/* Highlight key words with clean brand accent - single color */
+.section-header h2 .accent {
+    color: var(--bma-green-bright);
+    font-weight: 900;
     display: inline-block;
-    width: 1.5em;
-    height: 1.5em;
-    background-image: url('../images/X-v1.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    flex-shrink: 0;
+    transform: skewX(-2deg);
+    margin: 0 0.15em;
+    position: relative;
+    text-shadow: 0 0 20px rgba(0, 230, 118, 0.4);
+}
+
+/* Yellow accent for tournament section on green background */
+.section-header h2 .accent-yellow {
+    color: var(--bma-yellow);
+    font-weight: 900;
+    display: inline-block;
+    transform: skewX(-2deg);
+    margin: 0 0.15em;
+    position: relative;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+/* Alternative: Large display headlines for maximum impact */
+.section-header.display-large h2 {
+    font-size: clamp(4rem, 9vw, 7rem);
+    line-height: 0.95;
+    margin-bottom: 2.5rem;
+    font-weight: 900;
+    padding: 0 0.5rem;
+    white-space: normal;
+    word-spacing: normal;
+}
+
+.section-header.display-large h2::after {
+    display: none;
+}
+
+/* Animated entrance - triggered by JS intersection observer */
+.section-header h2 {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.section-header h2.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger animation for accent words */
+.section-header h2 .accent {
+    transition: all 0.8s ease-out 0.2s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .section-header p {
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.7);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.8);
     max-width: 700px;
     margin: 0 auto;
+    line-height: 1.6;
+    font-weight: 500;
 }
 
 
@@ -1963,28 +2042,46 @@ nav {
     position: relative;
 }
 
+/* Mobile first approach - start with stacked layout */
 .preview-item {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
     align-items: center;
+    text-align: center;
     position: relative;
     overflow: visible;
 }
 
-/* Alternating layout */
-.preview-left {
-    /* Content on left, phone on right */
-}
+/* Desktop layout - side by side */
+@media (min-width: 769px) {
+    .preview-item {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        text-align: left;
+        align-items: center;
+    }
 
-.preview-center {
-    /* Phone on left, content on right */
-    margin-top: -3rem;
-}
+    .preview-center {
+        margin-top: -3rem;
+    }
 
-.preview-right {
-    /* Content on left, phone on right */
-    margin-top: -3rem;
+    .preview-center .preview-content {
+        order: 2;
+    }
+
+    .preview-center .phone-mockup {
+        order: 1;
+    }
+
+    .preview-right {
+        margin-top: -3rem;
+    }
+
+    .preview-content {
+        align-items: flex-start;
+    }
 }
 
 .preview-content {
@@ -2801,7 +2898,17 @@ footer {
     }
 
     .section-header h2 {
-        font-size: 2rem;
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        white-space: normal;
+        padding: 0 0.5rem;
+    }
+
+    /* Underline removed for cleaner look */
+
+    .section-header.display-large h2 {
+        font-size: clamp(3rem, 8vw, 5rem);
+        word-spacing: normal;
+        line-height: 0.9;
     }
 
     /* Mobile pill header */
@@ -2976,7 +3083,25 @@ footer {
     }
 
     .section-header h2 {
-        font-size: 1.75rem;
+        font-size: clamp(2rem, 7vw, 3.5rem);
+        padding: 0 0.5rem;
+        line-height: 1;
+        white-space: normal;
+    }
+
+    /* Underline removed for cleaner look */
+
+    .section-header h2 .accent,
+    .section-header h2 .accent-yellow {
+        transform: skewX(-1deg);
+        margin: 0 0.05em;
+        display: inline-block;
+    }
+
+    .section-header.display-large h2 {
+        font-size: clamp(2.5rem, 9vw, 4rem);
+        padding: 0 0.25rem;
+        word-spacing: normal;
     }
 
     /* Tighter container padding */
@@ -3968,11 +4093,12 @@ footer {
     }
     
     .section-header h2 {
-        font-size: 2rem !important;
+        font-size: clamp(2.25rem, 8vw, 3.5rem) !important;
+        line-height: 0.9 !important;
     }
-    
+
     .section-header p {
-        font-size: 1rem;
+        font-size: clamp(0.9rem, 1.5vw, 1.1rem);
     }
     
     /* Sport Filter Horizontal Scroll */
@@ -4024,11 +4150,6 @@ footer {
         gap: 3rem;
     }
     
-    .preview-item {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-    
     .preview-title {
         font-size: 1.5rem;
     }
@@ -4064,7 +4185,7 @@ footer {
     }
     
     .section-header h2 {
-        font-size: 1.75rem !important;
+        font-size: clamp(1.5rem, 4.5vw, 2rem) !important;
     }
     
     /* Filter Tabs Full Width */
@@ -4489,11 +4610,11 @@ footer {
     
     /* MEDIUM PRIORITY #13: Section Headers Smallest */
     .section-header h2 {
-        font-size: 1.5rem !important;
+        font-size: clamp(1.25rem, 4vw, 1.75rem) !important;
     }
-    
+
     .section-header p {
-        font-size: 0.9rem;
+        font-size: clamp(0.85rem, 1.2vw, 1rem);
     }
     
     .section-logo {
@@ -4922,4 +5043,261 @@ header {
         font-size: 0.85rem;
     }
 }
+
+/* ============================================
+COMPREHENSIVE MOBILE RESPONSIVENESS FIX
+Priority: Homepage mobile experience improvements
+============================================ */
+
+/* Tablet breakpoint improvements */
+@media (max-width: 768px) {
+    /* Fix phone module overlapping issues */
+    .phone-mockup {
+        position: relative !important;
+        z-index: 1;
+        max-width: 200px;
+        margin: 2rem auto;
+    }
+
+    /* Prevent phone module overflow */
+    .final-cta .phone-mockup {
+        position: static !important;
+        margin: 2rem auto 0;
+        transform: none !important;
+    }
+
+    /* Hero phone module adjustments */
+    .hero-phone-mockup {
+        width: 280px;
+        max-width: 90%;
+        margin: 2rem auto;
+    }
+
+    /* Make headlines bolder and more impactful */
+    .section-header h2 {
+        font-size: clamp(2.5rem, 10vw, 4rem) !important;
+        font-weight: 900 !important;
+        line-height: 0.95 !important;
+        letter-spacing: -0.04em !important;
+        padding: 0 0.5rem !important;
+        text-align: center;
+        word-break: break-word;
+    }
+
+    .section-header h2 .accent,
+    .section-header h2 .accent-yellow {
+        display: inline !important;
+        margin: 0 0.1em !important;
+    }
+
+    /* Tournament cards mobile redesign */
+    .tournament-item {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+        padding: 1.25rem !important;
+        background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%) !important;
+    }
+
+    .tournament-time {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .time-badge {
+        font-size: 0.7rem !important;
+        padding: 0.3rem 0.6rem !important;
+    }
+
+    .time-detail {
+        font-size: 0.8rem !important;
+    }
+
+    .tournament-info {
+        padding: 0.5rem 0 !important;
+    }
+
+    .tournament-info h3 {
+        font-size: 1.25rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .tournament-info p {
+        font-size: 0.85rem !important;
+        line-height: 1.4 !important;
+    }
+
+    .tournament-stats {
+        display: flex !important;
+        justify-content: space-around !important;
+        padding: 0.75rem 0 !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .tournament-action {
+        padding-top: 0.75rem !important;
+    }
+
+    .tournament-action .btn {
+        width: 100% !important;
+        padding: 0.75rem !important;
+    }
+
+    /* Improve general spacing */
+    section {
+        padding: 3rem 0 !important;
+    }
+
+    .container {
+        padding: 0 1rem !important;
+    }
+}
+
+/* Mobile breakpoint enhancements */
+@media (max-width: 480px) {
+    /* Phone modules need more aggressive positioning fixes */
+    .phone-mockup,
+    .hero-phone-mockup {
+        position: relative !important;
+        z-index: 1 !important;
+        max-width: 160px !important;
+        margin: 1.5rem auto !important;
+        transform: none !important;
+    }
+
+    /* Complete removal of overlapping phone in final CTA */
+    .final-cta .phone-mockup {
+        display: none !important;
+    }
+
+    /* Make headlines even more dramatic on small screens */
+    .section-header h2 {
+        font-size: clamp(2.2rem, 12vw, 3.5rem) !important;
+        font-weight: 900 !important;
+        line-height: 0.9 !important;
+        letter-spacing: -0.05em !important;
+        text-align: center !important;
+        padding: 0 0.25rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .section-header h2 .accent,
+    .section-header h2 .accent-yellow {
+        font-size: 1.05em !important;
+        display: block !important;
+        margin: 0.1em 0 !important;
+        transform: none !important;
+    }
+
+    /* Tournament cards ultra-compact mobile design */
+    .tournament-list {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+
+    .tournament-item {
+        padding: 1rem !important;
+        border-radius: 12px !important;
+    }
+
+    .tournament-time {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.5rem !important;
+    }
+
+    .time-badge {
+        font-size: 0.65rem !important;
+        padding: 0.25rem 0.5rem !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    .tournament-info h3 {
+        font-size: 1.1rem !important;
+        line-height: 1.2 !important;
+    }
+
+    .tournament-sport-badge {
+        font-size: 0.65rem !important;
+        padding: 0.2rem 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .tournament-stats {
+        flex-direction: row !important;
+        gap: 1.5rem !important;
+    }
+
+    .stat-item {
+        text-align: center !important;
+    }
+
+    .stat-item strong {
+        font-size: 1rem !important;
+    }
+
+    .stat-item span {
+        font-size: 0.7rem !important;
+    }
+
+    /* Spacing improvements */
+    section {
+        padding: 2rem 0 !important;
+    }
+
+    .hero {
+        padding: 2rem 0 3rem !important;
+    }
+
+    .value-props {
+        padding: 2rem 0 !important;
+    }
+
+    .how-to-play {
+        padding: 2rem 0 !important;
+    }
+
+    /* Fix overlapping elements in hero */
+    .hero-content {
+        position: relative !important;
+        z-index: 10 !important;
+    }
+
+    .hero-ctas {
+        margin: 1.5rem 0 !important;
+        gap: 0.75rem !important;
+    }
+
+    .hero-ctas .btn {
+        padding: 0.75rem 1.5rem !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Ultra-small mobile adjustments */
+@media (max-width: 375px) {
+    /* Even more aggressive headline sizing */
+    .section-header h2 {
+        font-size: clamp(1.8rem, 11vw, 2.8rem) !important;
+        padding: 0 0.2rem !important;
+    }
+
+    /* Tournament cards minimal padding */
+    .tournament-item {
+        padding: 0.875rem !important;
+    }
+
+    /* Smaller buttons */
+    .btn {
+        font-size: 0.85rem !important;
+        padding: 0.65rem 1.25rem !important;
+    }
+}
+
 

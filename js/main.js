@@ -6,6 +6,28 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Bet Max Tourney loaded');
 
+    // ===== Animate Headlines on Scroll =====
+    const observerOptions = {
+        threshold: 0.2,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const headlineObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+                // Optional: unobserve after animation to prevent re-triggering
+                headlineObserver.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe all section headers
+    const sectionHeadlines = document.querySelectorAll('.section-header h2');
+    sectionHeadlines.forEach(headline => {
+        headlineObserver.observe(headline);
+    });
+
     // ===== Helper Functions for RSS Status Parsing =====
 
     // Parse status from RSS item (handles <status> element or description fallback)
@@ -61,8 +83,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Parse description for sport, start time, end time
                 const sportMatch = description.match(/Sports?:\s*([^\n|]+)/i); // Match "Sport:" or "Sports:" and capture everything until newline or pipe
-                const startTimeMatch = description.match(/Start Time:\s*([^\n]+)/i);
-                const endTimeMatch = description.match(/End Time:\s*([^\n]+)/i);
+                const startTimeMatch = description.match(/Start(?:\s+Time)?:\s*([^\n|]+)/i); // Matches both "Start:" and "Start Time:"
+                const endTimeMatch = description.match(/End(?:\s+Time)?:\s*([^\n|]+)/i); // Matches both "End:" and "End Time:"
 
                 // Parse multiple sports from the RSS feed (e.g., "NFL, NBA, MLB")
                 let sports = [];
@@ -90,40 +112,76 @@ document.addEventListener('DOMContentLoaded', function() {
                     else if (titleLower.includes('mma') || titleLower.includes('ufc') || titleLower.includes('mixed martial')) sports = ['MMA'];
                 }
 
-                const startTime = startTimeMatch ? startTimeMatch[1] : '';
+                const startTimeStr = startTimeMatch ? startTimeMatch[1].trim() : '';
                 const endDate = endTimeMatch ? new Date(endTimeMatch[1]) : null;
+
+                // Parse start date properly
+                let startDate = null;
+                if (startTimeStr) {
+                    startDate = new Date(startTimeStr);
+                    if (isNaN(startDate.getTime())) {
+                        // Try replacing UTC with GMT if parsing failed
+                        const altDateStr = startTimeStr.replace(/UTC/i, 'GMT');
+                        startDate = new Date(altDateStr);
+                        if (isNaN(startDate.getTime())) {
+                            startDate = null;
+                        }
+                    }
+                }
 
                 // Filter: Only show LOCKED, upcoming, and recently completed (last 7 days)
                 if (!isRecentlyCompleted(status, endDate)) {
                     return; // Skip tournaments completed more than 7 days ago
                 }
 
-                // Calculate countdown for upcoming tournaments
+                // Calculate countdown for upcoming tournaments only
                 let countdown = '';
-                if (startTime && status === 'upcoming') {
-                    const startDate = new Date(startTime);
+                if (startDate && !isNaN(startDate.getTime())) {
                     const now = new Date();
                     const diff = startDate - now;
 
+                    // Only show countdown if tournament hasn't started yet
                     if (diff > 0) {
                         const hours = Math.floor(diff / (1000 * 60 * 60));
                         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                        countdown = `<span class="marquee-countdown">Starts in ${hours}h ${minutes}m</span>`;
+
+                        if (hours > 24) {
+                            const days = Math.floor(hours / 24);
+                            countdown = `<span class="marquee-countdown">Starts in ${days}d ${hours % 24}h</span>`;
+                        } else {
+                            countdown = `<span class="marquee-countdown">Starts in ${hours}h ${minutes}m</span>`;
+                        }
                     }
                 }
 
-                // Determine status display and color class based on RSS status
+                // Determine status display based on both RSS status and actual time
                 let statusClass = 'marquee-status-live';
                 let statusText = '● LIVE';
+                let actualStatus = status;
 
-                if (status === 'locked') {
-                    // LOCKED means active/live
+                // Only override status if tournament marked as upcoming but has started
+                if (status === 'upcoming' && startDate && !isNaN(startDate.getTime())) {
+                    const now = new Date();
+                    const diff = startDate - now;
+
+                    console.log(`Tournament "${title}" - Status: ${status}, Start: ${startTimeStr} -> ${startDate}, Now: ${now}, Diff: ${diff}ms (${diff/3600000}h)`);
+
+                    // If start time has passed, mark as live (RSS will update to completed when done)
+                    if (diff < 0) {
+                        actualStatus = 'live';
+                    }
+                } else if (!startDate) {
+                    console.log(`Tournament "${title}" - No start time available, using RSS status: ${status}`);
+                }
+
+                if (actualStatus === 'locked' || actualStatus === 'live') {
+                    // LOCKED or LIVE means active/live
                     statusClass = 'marquee-status-live';
                     statusText = '● LIVE';
-                } else if (status === 'upcoming') {
+                } else if (actualStatus === 'upcoming') {
                     statusClass = 'marquee-status-upcoming';
                     statusText = '◉ UPCOMING';
-                } else if (status === 'completed') {
+                } else if (actualStatus === 'completed') {
                     statusClass = 'marquee-status-completed';
                     statusText = '✓ COMPLETED';
                 }
@@ -145,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 marqueeHTML += `
-                    <div class="marquee-item">
+                    <div class="marquee-item" ${startDate ? `data-start-time="${startDate.toISOString()}"` : ''}>
                         <span class="marquee-status ${statusClass}">${statusText}</span>
                         ${countdown}
                         <span class="marquee-tournament">${title}</span>
@@ -506,8 +564,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 const startDateStr = startMatch ? startMatch[1].trim() : '';
                 const matchCount = matchesMatch ? parseInt(matchesMatch[1]) : 0;
 
-                // Parse start date
-                const startDate = startDateStr ? new Date(startDateStr) : null;
+                // Parse start date - handle various formats
+                let startDate = null;
+                if (startDateStr) {
+                    // Try parsing the date string
+                    startDate = new Date(startDateStr);
+
+                    // Log for debugging
+                    console.log(`Parsing date for ${title}: "${startDateStr}" -> ${startDate}`);
+
+                    // If invalid, try alternative parsing
+                    if (isNaN(startDate.getTime())) {
+                        // Try replacing UTC with GMT
+                        const altDateStr = startDateStr.replace(/UTC/i, 'GMT');
+                        startDate = new Date(altDateStr);
+
+                        if (isNaN(startDate.getTime())) {
+                            console.warn(`Could not parse date: ${startDateStr}`);
+                            startDate = null;
+                        }
+                    }
+                }
 
                 // Parse multiple sports from the RSS feed (e.g., "NFL, NBA, MLB")
                 let sports = [];
@@ -574,9 +651,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const sportLabels = sportsArray.join(', ');
 
                 return `
-                    <div class="tournament-item">
+                    <div class="tournament-item" ${t.startDate ? `data-start-time="${t.startDate.toISOString()}"` : ''}>
                         <div class="tournament-time">
-                            <div class="time-badge ${timeUntil.urgent ? 'urgent' : ''}">${timeUntil.text}</div>
+                            <div class="time-badge ${timeUntil.isUrgent ? 'urgent' : ''}">${timeUntil.text}</div>
                             <div class="time-detail">${formatDateTime(t.startDate)}</div>
                         </div>
                         <div class="tournament-info">
@@ -620,24 +697,40 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Helper: Calculate time until tournament
+    // Helper: Calculate time until tournament with robust timezone handling
     function getTimeUntil(startDate) {
-        if (!startDate || isNaN(startDate.getTime())) {
+        // If startDate is null or invalid, show UPCOMING
+        if (!startDate) {
+            console.log('getTimeUntil: No start date provided');
             return { text: 'UPCOMING', badge: 'UPCOMING', isUrgent: false };
         }
 
+        // Ensure we have a Date object
+        if (typeof startDate === 'string') {
+            startDate = new Date(startDate);
+        }
+
+        // Check if the date is valid
+        if (!(startDate instanceof Date) || isNaN(startDate.getTime())) {
+            console.log('getTimeUntil: Invalid date:', startDate);
+            return { text: 'UPCOMING', badge: 'UPCOMING', isUrgent: false };
+        }
+
+        // Get current time in user's timezone
         const now = new Date();
-        const diff = startDate - now;
+        const diff = startDate.getTime() - now.getTime();
 
-        // For "Tournaments Starting Soon", we only show upcoming tournaments
-        // So negative diff should show as UPCOMING instead of LIVE NOW
+        // Tournament has already started - show as LIVE
         if (diff < 0) {
-            return { text: 'UPCOMING', badge: 'UPCOMING', isUrgent: false };
+            return { text: 'LIVE', badge: 'LIVE', isUrgent: true };
         }
 
-        const hours = Math.floor(diff / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const days = Math.floor(hours / 24);
+        // Calculate time components
+        const totalMinutes = Math.floor(diff / (1000 * 60));
+        const totalHours = Math.floor(totalMinutes / 60);
+        const days = Math.floor(totalHours / 24);
+        const hours = totalHours % 24;
+        const minutes = totalMinutes % 60;
 
         if (days > 0) {
             return {
@@ -758,6 +851,53 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize live tournament loading
     loadLiveTournaments();
+
+    // Update countdowns every 30 seconds for live tournaments
+    setInterval(() => {
+        updateAllCountdowns();
+    }, 30000);
+
+    // ============================================
+    // Function to update all countdown timers on the page
+    // ============================================
+    function updateAllCountdowns() {
+        // Update tournament cards
+        const tournamentCards = document.querySelectorAll('.tournament-item[data-start-time]');
+        tournamentCards.forEach(card => {
+            const startTime = card.getAttribute('data-start-time');
+            if (startTime) {
+                const startDate = new Date(startTime);
+                const timeInfo = getTimeUntil(startDate);
+
+                const timeBadge = card.querySelector('.time-badge');
+                if (timeBadge) {
+                    timeBadge.textContent = timeInfo.badge;
+                    timeBadge.classList.toggle('urgent', timeInfo.isUrgent);
+                }
+            }
+        });
+
+        // Update marquee countdowns
+        const marqueeCountdowns = document.querySelectorAll('.marquee-item[data-start-time]');
+        marqueeCountdowns.forEach(item => {
+            const startTime = item.getAttribute('data-start-time');
+            if (startTime) {
+                const startDate = new Date(startTime);
+                const now = new Date();
+                const diff = startDate - now;
+
+                if (diff > 0) {
+                    const hours = Math.floor(diff / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+                    const countdownSpan = item.querySelector('.marquee-countdown');
+                    if (countdownSpan) {
+                        countdownSpan.textContent = `Starts in ${hours}h ${minutes}m`;
+                    }
+                }
+            }
+        });
+    }
 
     // ============================================
     // Tournaments Page - Full Listing with Filters
