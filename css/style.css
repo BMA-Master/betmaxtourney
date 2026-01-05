@@ -3849,7 +3849,7 @@ footer {
         width: 100%;
         display: block;
         text-align: center;
-        padding: 1rem 1.5rem;
+        padding: 1rem; /* Fixed to be symmetric */
         font-size: 1rem;
         min-height: 48px;
     }
@@ -4831,10 +4831,10 @@ header {
 /* Additional touch target verification */
 @media (max-width: 768px) {
     /* Ensure all interactive elements meet 44x44px minimum */
-    .btn,
+    /* .btn, -- REMOVED: was overriding tournament button display */
     .sport-pill,
     .filter-tab,
-    .tournament-action .btn,
+    /* .tournament-action .btn, -- REMOVED to prevent inline-flex override */
     .app-store-button,
     .nav-links a,
     .mobile-nav-links a {
@@ -5094,16 +5094,26 @@ RESET AND REBUILD APPROACH
     }
 
     /* AUTHORITATIVE TOURNAMENT CARD MOBILE RESET */
-    .tournament-item {
-        /* Reset desktop grid completely */
+    .live-tournaments .tournament-item {
+        /* FORCE BLOCK LAYOUT - NOT GRID */
         display: block !important;
-        grid-template-columns: unset !important;
-        gap: unset !important;
+        grid-template-columns: none !important;
+        grid-auto-columns: unset !important;
+        gap: 0 !important;
 
         /* Mobile-optimized padding and styling */
         padding: 1.25rem !important;
         background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%) !important;
         border-radius: 12px !important;
+    }
+
+    /* Force ALL direct children to be block and full width */
+    .live-tournaments .tournament-item > div {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        float: none !important;
+        grid-column: unset !important;
     }
 
     /* Top section - badges and time in a row */
@@ -5178,36 +5188,39 @@ RESET AND REBUILD APPROACH
         opacity: 0.7 !important;
     }
 
-    /* CTA Button - PROPERLY CENTERED */
+    /* CTA Button - COMPLETE ARCHITECTURAL REBUILD */
     .tournament-item .tournament-action {
         padding: 0 !important;
         margin: 0 !important;
         width: 100% !important;
     }
 
-    .tournament-item .tournament-action a.btn,
-    .tournament-item .tournament-action .btn-primary,
-    .tournament-action a {
-        /* Reset EVERYTHING */
+    /* ABSOLUTE NUCLEAR - IF GRID WON'T DIE, SPAN ALL COLUMNS */
+    body .live-tournaments .tournament-list .tournament-item .tournament-action {
+        /* Force it to span all 4 grid columns */
+        grid-column-start: 1 !important;
+        grid-column-end: 5 !important;
+        grid-row: 4 !important;
+
+        /* Make it block and full width */
         display: block !important;
         width: 100% !important;
+        max-width: none !important;
+        padding: 0 !important;
         margin: 0 !important;
-        padding: 0.875rem 0 !important;
+    }
 
-        /* FORCE CENTER ALIGNMENT */
+    body .live-tournaments .tournament-list .tournament-item .tournament-action a {
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        padding: 0.875rem !important;
+        margin: 0 !important;
         text-align: center !important;
-        text-align: -webkit-center !important;
-        text-align: -moz-center !important;
-
-        /* Reset any inherited alignment */
-        text-indent: 0 !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-
-        /* Line height and box model */
-        line-height: normal !important;
+        background: var(--bma-green) !important;
+        color: white !important;
+        border-radius: 8px !important;
         box-sizing: border-box !important;
-        text-decoration: none !important;
     }
 
     /* Improve general spacing */
@@ -5217,6 +5230,29 @@ RESET AND REBUILD APPROACH
 
     .container {
         padding: 0 1rem !important;
+    }
+}
+
+/* FORCE TOURNAMENT BUTTONS FULL WIDTH ON MOBILE */
+@media (max-width: 768px) {
+    .live-tournaments .tournament-item {
+        display: flex !important;
+        flex-direction: column !important;
+        grid-template-columns: none !important;
+    }
+
+    .live-tournaments .tournament-item > div {
+        width: 100% !important;
+    }
+
+    .live-tournaments .tournament-action {
+        width: 100% !important;
+        display: block !important;
+    }
+
+    .live-tournaments .tournament-action a {
+        display: block !important;
+        width: 100% !important;
     }
 }
 
@@ -5363,3 +5399,86 @@ RESET AND REBUILD APPROACH
 }
 
 
+
+
+/* ============================================
+FINAL CSS FIX - TOURNAMENT BUTTONS FULL WIDTH
+This MUST be at the END of the file to override everything
+============================================ */
+@media (max-width: 768px) {
+    /* Force tournament items to NOT be grid */
+    section.live-tournaments .tournament-list .tournament-item {
+        display: flex !important;
+        flex-direction: column !important;
+        grid-template-columns: none !important;
+        grid-template-rows: none !important;
+    }
+
+    /* Force ALL children to be full width blocks */
+    section.live-tournaments .tournament-list .tournament-item > * {
+        display: block !important;
+        width: 100% !important;
+        grid-column: unset !important;
+        grid-row: unset !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* Specific fix for tournament action */
+    section.live-tournaments .tournament-list .tournament-item .tournament-action {
+        display: block !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Specific fix for the button */
+    section.live-tournaments .tournament-list .tournament-item .tournament-action a {
+        display: block !important;
+        width: 100% !important;
+        text-align: center !important;
+        margin: 0 !important;
+        max-width: none !important;
+    }
+}
+
+
+/* Spacing for bet-types-display in how-it-works section */
+.how-it-works .bet-types-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.how-it-works .bet-type-label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.how-it-works .bet-type-separator {
+    color: var(--bma-green-bright);
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin: 0 1rem;
+}
+
+@media (max-width: 768px) {
+    .how-it-works .bet-types-display {
+        gap: 1rem;
+    }
+    
+    .how-it-works .bet-type-separator {
+        margin: 0 0.5rem;
+        font-size: 1.2rem;
+    }
+    
+    .how-it-works .bet-type-label {
+        font-size: 0.9rem;
+    }
+}

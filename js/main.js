@@ -1569,3 +1569,5 @@ if (document.querySelector('.how-to-play-content')) {
     initSportsGlossaryTabs();
 }
 
+// Removed JavaScript hack - CSS solution implemented at end of style.css
+
