@@ -2219,15 +2219,6 @@ nav {
     left: 0;
 }
 
-/* Remove phone-frame padding when there's a screenshot */
-.phone-screen:has(.phone-screenshot) {
-    padding: 0 !important;
-}
-
-.phone-frame:has(.phone-screenshot) {
-    padding: 0 !important;
-}
-
 /* ===== Live Tournaments ===== */
 .live-tournaments {
     padding: 8rem 0;
