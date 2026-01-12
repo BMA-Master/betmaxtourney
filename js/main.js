@@ -147,9 +147,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         if (hours > 24) {
                             const days = Math.floor(hours / 24);
-                            countdown = `<span class="marquee-countdown">Starts in ${days}d ${hours % 24}h</span>`;
+                            countdown = `<span class="marquee-countdown">Locks in ${days}d ${hours % 24}h</span>`;
                         } else {
-                            countdown = `<span class="marquee-countdown">Starts in ${hours}h ${minutes}m</span>`;
+                            countdown = `<span class="marquee-countdown">Locks in ${hours}h ${minutes}m</span>`;
                         }
                     }
                 }
@@ -549,9 +549,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Parse status using helper function
                 const status = parseStatus(item);
 
-                // FILTER: Only include upcoming tournaments for "Tournaments Starting Soon"
-                if (status !== 'upcoming') {
-                    return; // Skip non-upcoming tournaments
+                // FILTER: Include upcoming and live tournaments for "Tournaments Starting Soon"
+                if (status !== 'upcoming' && status !== 'live' && status !== 'locked') {
+                    return; // Skip completed tournaments
                 }
 
                 // Parse description for prize pool, start time, etc
@@ -650,11 +650,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 const sportsArray = t.sports || [t.sport];
                 const sportLabels = sportsArray.join(', ');
 
+                // Determine state class and badge classes
+                const stateClass = timeUntil.isLocked ? 'state-locked' : 'state-upcoming';
+                const badgeClass = timeUntil.isLocked ? 'time-badge locked-live' : `time-badge countdown ${timeUntil.isUrgent ? 'urgent-pulse' : ''}`;
+                const buttonClass = timeUntil.isLocked ? 'btn btn-secondary' : 'btn btn-primary';
+
                 return `
-                    <div class="tournament-item" ${t.startDate ? `data-start-time="${t.startDate.toISOString()}"` : ''}>
+                    <div class="tournament-item ${stateClass}" ${t.startDate ? `data-start-time="${t.startDate.toISOString()}"` : ''}>
                         <div class="tournament-time">
                             <div class="tournament-sport-badge">${sportLabels}</div>
-                            <div class="time-badge ${timeUntil.isUrgent ? 'urgent' : ''}">${timeUntil.text}</div>
+                            ${timeUntil.isLocked ? `
+                                <span class="time-badge-dual">
+                                    <span class="time-badge locked">LOCKED</span>
+                                    <span class="time-badge live"><span class="live-dot"></span>LIVE</span>
+                                </span>
+                            ` : `
+                                <div class="${badgeClass}">${timeUntil.text}</div>
+                            `}
                             <div class="time-detail">${formatDateTime(t.startDate)}</div>
                         </div>
                         <div class="tournament-info">
@@ -672,7 +684,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </div>
                         <div class="tournament-action">
-                            <a href="${t.link}" class="btn btn-primary">Enter Free</a>
+                            <a href="${t.link}" class="${buttonClass}">${timeUntil.isLocked ? 'View Results' : 'Enter Free'}</a>
                         </div>
                     </div>
                 `;
@@ -720,9 +732,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const now = new Date();
         const diff = startDate.getTime() - now.getTime();
 
-        // Tournament has already started - show as LIVE
+        // Tournament has already started - show as LOCKED • LIVE
         if (diff < 0) {
-            return { text: 'LIVE', badge: 'LIVE', isUrgent: true };
+            return { text: 'LOCKED • LIVE', badge: 'LOCKED • LIVE', isUrgent: true, isLocked: true };
         }
 
         // Calculate time components
@@ -734,21 +746,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (days > 0) {
             return {
-                text: `STARTS IN ${days}D ${hours % 24}H`,
-                badge: `STARTS IN ${days}D ${hours % 24}H`,
-                isUrgent: false
+                text: `LOCKS IN ${days}D ${hours % 24}H`,
+                badge: `LOCKS IN ${days}D ${hours % 24}H`,
+                isUrgent: false,
+                isLocked: false
             };
         } else if (hours > 0) {
             return {
-                text: `STARTS IN ${hours}H ${minutes}M`,
-                badge: `STARTS IN ${hours}H ${minutes}M`,
-                isUrgent: hours < 3
+                text: `LOCKS IN ${hours}H ${minutes}M`,
+                badge: `LOCKS IN ${hours}H ${minutes}M`,
+                isUrgent: hours < 3,
+                isLocked: false
             };
         } else {
             return {
-                text: `STARTS IN ${minutes}M`,
-                badge: `STARTS IN ${minutes}M`,
-                isUrgent: true
+                text: `LOCKS IN ${minutes}M`,
+                badge: `LOCKS IN ${minutes}M`,
+                isUrgent: true,
+                isLocked: false
             };
         }
     }
@@ -787,7 +802,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="tournament-stats">
                     <div class="stat-item">
                         <strong>487</strong>
-                        <span>Competing</span>
+                        <span>Matches</span>
                     </div>
                     <div class="stat-item">
                         <strong>FREE</strong>
@@ -811,7 +826,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="tournament-stats">
                     <div class="stat-item">
                         <strong>312</strong>
-                        <span>Competing</span>
+                        <span>Matches</span>
                     </div>
                     <div class="stat-item">
                         <strong>FREE</strong>
@@ -835,7 +850,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="tournament-stats">
                     <div class="stat-item">
                         <strong>198</strong>
-                        <span>Competing</span>
+                        <span>Matches</span>
                     </div>
                     <div class="stat-item">
                         <strong>FREE</strong>
@@ -1127,10 +1142,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Show appropriate badge based on tournament status
                 let timeInfo, timeBadgeClass;
                 if (t.status === 'live') {
-                    timeInfo = { text: 'LIVE NOW', badge: 'LIVE NOW', isUrgent: true };
+                    timeInfo = { text: 'LOCKED • LIVE', badge: 'LOCKED • LIVE', isUrgent: true, isLocked: true };
                     timeBadgeClass = 'time-badge urgent';
                 } else if (t.status === 'completed') {
-                    timeInfo = { text: 'COMPLETED', badge: 'COMPLETED', isUrgent: false };
+                    timeInfo = { text: 'COMPLETED', badge: 'COMPLETED', isUrgent: false, isLocked: true };
                     timeBadgeClass = 'time-badge completed';
                 } else {
                     timeInfo = getTimeUntil(t.startDate);
@@ -1141,10 +1156,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 const sportsArray = t.sports || [t.sport];
                 const sportLabels = sportsArray.join(', ');
 
+                // Determine state class and badge classes
+                const stateClass = timeInfo.isLocked ? 'state-locked' : 'state-upcoming';
+                const badgeClass = timeInfo.isLocked ? 'time-badge locked-live' : `time-badge countdown ${timeInfo.isUrgent ? 'urgent-pulse' : ''}`;
+                const buttonClass = timeInfo.isLocked ? 'btn btn-secondary' : 'btn btn-primary';
+
                 return `
-                    <div class="tournament-item" data-status="${t.status}" data-sport="${t.sport}">
+                    <div class="tournament-item ${stateClass}" data-status="${t.status}" data-sport="${t.sport}">
                         <div class="tournament-time">
-                            <div class="${timeBadgeClass}">${timeInfo.badge}</div>
+                            ${timeInfo.isLocked && t.status !== 'completed' ? `
+                                <span class="time-badge-dual">
+                                    <span class="time-badge locked">LOCKED</span>
+                                    <span class="time-badge live"><span class="live-dot"></span>LIVE</span>
+                                </span>
+                            ` : `
+                                <div class="${t.status === 'completed' ? 'time-badge completed' : badgeClass}">${timeInfo.badge}</div>
+                            `}
                             <div class="time-detail">${formatDateTime(t.startDate)}</div>
                         </div>
                         <div class="tournament-info">
@@ -1155,7 +1182,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="tournament-stats">
                             <div class="stat-item">
                                 <strong>${t.playerCount}</strong>
-                                <span>Competing</span>
+                                <span>Matches</span>
                             </div>
                             <div class="stat-item">
                                 <strong>FREE</strong>
@@ -1163,8 +1190,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </div>
                         <div class="tournament-action">
-                            <a href="${t.link}" class="btn btn-primary">
-                                ${t.status === 'live' ? 'Enter Now' : t.status === 'completed' ? 'View Results' : 'Enter Free'}
+                            <a href="${t.link}" class="${buttonClass}">
+                                ${timeInfo.isLocked ? 'View Results' : 'Enter Free'}
                             </a>
                         </div>
                     </div>

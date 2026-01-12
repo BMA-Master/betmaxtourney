@@ -1,4 +1,4 @@
-/* Updated $(date) */
+/* Updated 2026-01-12 - LIVE badge red dot styling */
 /* ============================================
    Bet Max Tourney - Product-Focused Landing Page
    Powered by Bet Max Action Brand System
@@ -2209,12 +2209,21 @@ nav {
     letter-spacing: 0.5px;
 }
 
+.phone-screenshot {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    border-radius: 32px;
+}
+
 /* ===== Live Tournaments ===== */
 .live-tournaments {
     padding: 8rem 0;
     position: relative;
     overflow: hidden;
-    background: #000;
+    background: var(--bma-dark-200);
 }
 
 .live-tournaments .container {
@@ -2235,11 +2244,8 @@ nav {
 }
 
 .tournament-item {
-    background:
-        linear-gradient(135deg, rgba(30, 30, 30, 0.85) 0%, rgba(20, 20, 20, 0.9) 100%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: #1a1a1a;
+    border: 2px solid rgba(46, 139, 87, 0.3);
     border-radius: 16px;
     padding: 2rem;
     display: grid;
@@ -2247,13 +2253,31 @@ nav {
     gap: 2rem;
     align-items: center;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    position: relative;
+    overflow: hidden;
+}
+
+.tournament-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--bma-green-bright), var(--bma-yellow));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
 }
 
 .tournament-item:hover {
-    border-color: var(--bma-green-bright);
-    box-shadow: 0 15px 50px rgba(0, 230, 118, 0.3);
-    transform: translateY(-5px) scale(1.01);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(0, 230, 118, 0.4);
+}
+
+.tournament-item:hover::before {
+    opacity: 1;
 }
 
 .tournament-time {
@@ -2262,6 +2286,8 @@ nav {
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
+    position: relative;
+    z-index: 1;
 }
 
 .time-badge {
@@ -2283,6 +2309,12 @@ nav {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
     color: rgba(255, 255, 255, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.time-badge.live {
+    background: linear-gradient(135deg, #FF1744 0%, #C62828 100%) !important;
+    color: var(--bma-white) !important;
+    animation: live-glow 1.5s ease-in-out infinite !important;
 }
 
 .time-detail {
@@ -5103,7 +5135,8 @@ RESET AND REBUILD APPROACH
 
         /* Mobile-optimized padding and styling */
         padding: 1.25rem !important;
-        background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%) !important;
+        background: #1a1a1a !important;
+        border: 2px solid rgba(46, 139, 87, 0.3) !important;
         border-radius: 12px !important;
     }
 
@@ -5480,5 +5513,260 @@ This MUST be at the END of the file to override everything
     
     .how-it-works .bet-type-label {
         font-size: 0.9rem;
+    }
+}
+
+/* ============================================
+   TOURNAMENT STATE VISUAL SYSTEM
+   Performance-optimized animations (GPU-accelerated)
+   ============================================ */
+
+/* GPU Acceleration - Performance Optimization */
+@keyframes pulse-green {
+    0%, 100% {
+        transform: translateZ(0) scale(1);
+        box-shadow: 0 0 25px rgba(0, 230, 118, 0.4), 0 0 50px rgba(0, 230, 118, 0.2);
+    }
+    50% {
+        transform: translateZ(0) scale(1.04);
+        box-shadow: 0 0 35px rgba(0, 230, 118, 0.7), 0 0 70px rgba(0, 230, 118, 0.4);
+    }
+}
+
+@keyframes pulse-red {
+    0%, 100% {
+        transform: translateZ(0) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translateZ(0) scale(1.15);
+        opacity: 0.7;
+    }
+}
+
+@keyframes urgent-pulse {
+    0%, 100% {
+        transform: translateZ(0) scale(1);
+        box-shadow: 0 0 30px rgba(220, 20, 60, 0.6), 0 0 60px rgba(220, 20, 60, 0.3);
+    }
+    50% {
+        transform: translateZ(0) scale(1.05);
+        box-shadow: 0 0 45px rgba(220, 20, 60, 0.9), 0 0 90px rgba(220, 20, 60, 0.5);
+    }
+}
+
+@keyframes live-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(220, 20, 60, 0.6), 0 0 40px rgba(220, 20, 60, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(220, 20, 60, 0.9), 0 0 60px rgba(220, 20, 60, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* Dual Badge Container - INLINE LAYOUT */
+.time-badge-dual {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    gap: 0.4rem;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+/* UPCOMING State - Countdown Badge with MASSIVE GLOW */
+.time-badge.countdown {
+    background: linear-gradient(135deg, var(--bma-green-bright) 0%, var(--bma-yellow) 100%);
+    color: var(--bma-black);
+    padding: 0.6rem 1.2rem;
+    border-radius: 24px;
+    font-size: 0.85rem;
+    font-weight: 900;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    box-shadow: 0 0 25px rgba(0, 230, 118, 0.5), 0 0 50px rgba(0, 230, 118, 0.3);
+    animation: pulse-green 2s ease-in-out infinite;
+    will-change: transform, box-shadow;
+    transform: translateZ(0);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+/* Urgent Countdown (<3 hours) - INTENSE RED FLASH */
+.time-badge.countdown.urgent-pulse {
+    background: linear-gradient(135deg, #FF1744 0%, #DC143C 100%);
+    color: var(--bma-white);
+    animation: urgent-pulse 1.2s ease-in-out infinite;
+    box-shadow: 0 0 30px rgba(220, 20, 60, 0.7), 0 0 60px rgba(220, 20, 60, 0.4);
+    border: 2px solid rgba(255, 23, 68, 0.5);
+}
+
+/* LOCKED Badge - Compact, Subdued */
+span.time-badge.locked,
+.time-badge.locked {
+    background: linear-gradient(135deg, rgba(100, 100, 100, 0.4) 0%, rgba(80, 80, 80, 0.3) 100%) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    padding: 0.35rem 0.7rem !important;
+    border-radius: 14px !important;
+    font-size: 0.65rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 1px !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    text-transform: uppercase !important;
+    display: inline-block !important;
+    box-shadow: none !important;
+    animation: none !important;
+}
+
+/* LIVE Badge with HUGE GLOW and Pulsing Dot */
+span.time-badge.live,
+.time-badge.live {
+    background: linear-gradient(135deg, #FF1744 0%, #C62828 100%) !important;
+    color: var(--bma-white) !important;
+    padding: 0.35rem 0.7rem !important;
+    border-radius: 14px !important;
+    font-size: 0.65rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 1px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    text-transform: uppercase !important;
+    animation: live-glow 1.5s ease-in-out infinite !important;
+    will-change: box-shadow !important;
+    transform: translateZ(0) !important;
+    border: 1px solid rgba(255, 23, 68, 0.6) !important;
+}
+
+/* Live Recording Dot - RED SOLID */
+.live-dot {
+    width: 8px;
+    height: 8px;
+    background: #FF0000;
+    border-radius: 50%;
+    display: inline-block;
+    animation: pulse-red 1s ease-in-out infinite;
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.8), 0 0 12px rgba(255, 0, 0, 0.4);
+}
+
+/* Tournament Card State Classes - ENHANCED BORDERS */
+.tournament-item.state-upcoming {
+    border-color: rgba(0, 230, 118, 0.3);
+    position: relative;
+}
+
+.tournament-item.state-upcoming::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, var(--bma-green-bright), var(--bma-yellow));
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+    filter: blur(8px);
+}
+
+.tournament-item.state-upcoming:hover {
+    border-color: var(--bma-green-bright);
+    box-shadow: 0 20px 60px rgba(0, 230, 118, 0.4);
+}
+
+.tournament-item.state-upcoming:hover::before {
+    opacity: 0.4;
+}
+
+.tournament-item.state-locked {
+    border-color: rgba(220, 20, 60, 0.3);
+    position: relative;
+}
+
+.tournament-item.state-locked::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, #FF1744, #C62828);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+    filter: blur(8px);
+}
+
+.tournament-item.state-locked:hover {
+    border-color: var(--bma-red);
+    box-shadow: 0 20px 60px rgba(220, 20, 60, 0.35);
+}
+
+.tournament-item.state-locked:hover::before {
+    opacity: 0.3;
+}
+
+/* Button States */
+.btn-secondary {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+    color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Respect User Motion Preferences - Performance */
+@media (prefers-reduced-motion: reduce) {
+    .time-badge.countdown,
+    .time-badge.countdown.urgent-pulse,
+    .live-dot {
+        animation: none !important;
+    }
+
+    .tournament-item.state-upcoming:hover,
+    .tournament-item.state-locked:hover,
+    .btn-secondary:hover {
+        transform: none !important;
+    }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .time-badge-dual {
+        gap: 0.3rem;
+    }
+
+    .time-badge.countdown {
+        font-size: 0.7rem;
+        padding: 0.5rem 0.9rem;
+    }
+
+    .time-badge.locked,
+    .time-badge.live {
+        font-size: 0.6rem;
+        padding: 0.3rem 0.6rem;
+    }
+
+    .live-dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    /* Reduce glow intensity on mobile for performance */
+    .time-badge.countdown {
+        box-shadow: 0 0 15px rgba(0, 230, 118, 0.4);
+    }
+
+    .time-badge.countdown.urgent-pulse {
+        box-shadow: 0 0 20px rgba(220, 20, 60, 0.5);
     }
 }
