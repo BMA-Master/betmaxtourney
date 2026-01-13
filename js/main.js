@@ -1227,7 +1227,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                         <div class="tournament-stats">
                             <div class="stat-item">
-                                <strong>${t.playerCount}</strong>
+                                <strong>${t.matchCount || 0}</strong>
                                 <span>Matches</span>
                             </div>
                             <div class="stat-item">
