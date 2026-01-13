@@ -614,7 +614,7 @@ article.container .content a:hover {
 .marquee-separator {
     color: rgba(255, 255, 255, 0.3);
     font-size: 0.6rem;
-    margin: 0 0.5rem;
+    margin: 0 0.25rem;
 }
 
 .marquee-countdown {
@@ -639,16 +639,16 @@ article.container .content a:hover {
 /* Sport icon in marquee - uses background image classes with green glow */
 .marquee-item .sport-icon-small {
     display: inline-block;
-    margin-right: 0.35rem;
+    margin-right: 0.1rem;
     margin-left: 0;
     vertical-align: middle;
     /* Ensure icon shows with proper sizing */
-    width: 20px !important;
-    height: 20px !important;
+    width: 28px !important;
+    height: 28px !important;
     /* Override any conflicting styles to ensure visibility */
     opacity: 1;
     /* Add green glow filter for visibility on dark background */
-    filter: brightness(0) saturate(100%) invert(79%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(98%) contrast(119%) drop-shadow(0 0 8px rgba(0, 230, 118, 0.6));
+    filter: brightness(0) saturate(100%) invert(79%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(98%) contrast(119%) drop-shadow(0 0 12px rgba(0, 230, 118, 0.8));
 }
 
 /* ===== Pill-Shaped Header - Clean & Professional ===== */
