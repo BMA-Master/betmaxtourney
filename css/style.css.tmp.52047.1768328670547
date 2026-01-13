@@ -2301,34 +2301,30 @@ nav {
 }
 
 .tournament-sport-icons {
-    display: inline-flex;
-    gap: 0.4rem;
+    display: flex;
+    gap: 0.5rem;
     align-items: center;
+    justify-content: center;
     margin-bottom: 0.5rem;
     flex-wrap: nowrap;
-    line-height: 1.2;
 }
 
 .tournament-sport-icons .sport-icon {
-    width: 16px !important;
-    height: 16px !important;
+    width: 24px !important;
+    height: 24px !important;
     display: inline-block;
-    margin-right: 0.15rem;
     flex-shrink: 0;
     opacity: 1;
-    vertical-align: middle;
     /* Add green glow filter like marquee */
-    filter: brightness(0) saturate(100%) invert(79%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(98%) contrast(119%) drop-shadow(0 0 6px rgba(0, 230, 118, 0.6));
+    filter: brightness(0) saturate(100%) invert(79%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(98%) contrast(119%) drop-shadow(0 0 8px rgba(0, 230, 118, 0.6));
 }
 
 .tournament-sport-icons .sport-label {
     color: var(--bma-green-bright);
-    font-size: 0.7rem;
-    font-weight: 700;
-    margin-right: 0.4rem;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-    line-height: 1;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-right: 0.75rem;
+    letter-spacing: 0.5px;
 }
 
 .time-badge {

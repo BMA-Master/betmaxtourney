@@ -3,6 +3,27 @@
 // Tournament Betting Platform
 // ============================================
 
+// Map RSS sport codes to icon classes
+function mapSportToIcon(sportCode) {
+    const sportMap = {
+        'americanfootball_nfl': 'NFL',
+        'basketball_nba': 'NBA',
+        'baseball_mlb': 'MLB',
+        'icehockey_nhl': 'NHL',
+        'mma_mixed_martial_arts': 'MMA',
+        'boxing_boxing': 'Boxing',
+        'soccer_epl': 'EPL',
+        'soccer_uefa': 'UEFA',
+        'soccer_mls': 'MLS',
+        'americanfootball_ncaaf': 'NCAAF',
+        'americanfootball_cfl': 'CFL',
+        'australianfootball_afl': 'AFL',
+        'rugbyleague_nrl': 'NRL'
+    };
+
+    return sportMap[sportCode] || 'NFL'; // Default to NFL if not found
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Bet Max Tourney loaded');
 
@@ -86,16 +107,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 const startTimeMatch = description.match(/Start(?:\s+Time)?:\s*([^\n|]+)/i); // Matches both "Start:" and "Start Time:"
                 const endTimeMatch = description.match(/End(?:\s+Time)?:\s*([^\n|]+)/i); // Matches both "End:" and "End Time:"
 
-                // Parse multiple sports from the RSS feed (e.g., "NFL, NBA, MLB")
+                // Parse multiple sports from the RSS feed (e.g., "icehockey_nhl, boxing_boxing")
                 let sports = [];
                 if (sportMatch) {
-                    // Split by comma and trim whitespace, then normalize multi-word sports
+                    // Split by comma and trim whitespace, then map to icon classes
                     sports = sportMatch[1].split(',').map(s => {
-                        const normalized = s.trim().toUpperCase();
-                        // Map multi-word sports to single CSS-safe names
-                        if (normalized === 'UEFA CHAMPIONS LEAGUE' || normalized === 'CHAMPIONS LEAGUE') return 'UEFA';
-                        if (normalized === 'MIXED MARTIAL ARTS') return 'MMA';
-                        return normalized;
+                        const sportCode = s.trim().toLowerCase();
+                        return mapSportToIcon(sportCode);
                     }).filter(s => s);
                 }
 
@@ -586,16 +604,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
 
-                // Parse multiple sports from the RSS feed (e.g., "NFL, NBA, MLB")
+                // Parse multiple sports from the RSS feed (e.g., "icehockey_nhl, boxing_boxing")
                 let sports = [];
                 if (sportMatch) {
-                    // Split by comma and trim whitespace, then normalize multi-word sports
+                    // Split by comma and trim whitespace, then map to icon classes
                     sports = sportMatch[1].split(',').map(s => {
-                        const normalized = s.trim().toUpperCase();
-                        // Map multi-word sports to single CSS-safe names
-                        if (normalized === 'UEFA CHAMPIONS LEAGUE' || normalized === 'CHAMPIONS LEAGUE') return 'UEFA';
-                        if (normalized === 'MIXED MARTIAL ARTS') return 'MMA';
-                        return normalized;
+                        const sportCode = s.trim().toLowerCase();
+                        return mapSportToIcon(sportCode);
                     }).filter(s => s);
                 }
 
@@ -646,9 +661,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const timeUntil = getTimeUntil(t.startDate);
                 const matchCount = t.matchCount || 0;
 
-                // Generate sport text labels for homepage tournament cards
+                // Generate sport icons HTML for homepage tournament cards
                 const sportsArray = t.sports || [t.sport];
-                const sportLabels = sportsArray.join(', ');
+                const sportIconsHTML = sportsArray.map(sport =>
+                    `<div class="sport-icon ${sport}"></div><span class="sport-label">${sport}</span>`
+                ).join('');
 
                 // Determine state class and badge classes
                 const stateClass = timeUntil.isLocked ? 'state-locked' : 'state-upcoming';
@@ -658,7 +675,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return `
                     <div class="tournament-item ${stateClass}" ${t.startDate ? `data-start-time="${t.startDate.toISOString()}"` : ''}>
                         <div class="tournament-time">
-                            <div class="tournament-sport-badge">${sportLabels}</div>
                             ${timeUntil.isLocked ? `
                                 <span class="time-badge-dual">
                                     <span class="time-badge locked">LOCKED</span>
@@ -670,8 +686,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="time-detail">${formatDateTime(t.startDate)}</div>
                         </div>
                         <div class="tournament-info">
+                            <div class="tournament-sport-icons">${sportIconsHTML}</div>
                             <h3>${t.title}</h3>
-                            <p>${t.description.split('|')[0].trim()}</p>
                         </div>
                         <div class="tournament-stats">
                             <div class="stat-item">
@@ -681,6 +697,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="stat-item">
                                 <strong>FREE</strong>
                                 <span>Entry</span>
+                            </div>
+                            <div class="stat-item">
+                                <strong>${t.prizePool.toLocaleString()}</strong>
+                                <span>TD$</span>
                             </div>
                         </div>
                         <div class="tournament-action">
@@ -884,10 +904,38 @@ document.addEventListener('DOMContentLoaded', function() {
                 const startDate = new Date(startTime);
                 const timeInfo = getTimeUntil(startDate);
 
-                const timeBadge = card.querySelector('.time-badge');
-                if (timeBadge) {
-                    timeBadge.textContent = timeInfo.badge;
-                    timeBadge.classList.toggle('urgent', timeInfo.isUrgent);
+                const tournamentTime = card.querySelector('.tournament-time');
+                if (tournamentTime) {
+                    // Check if we need to switch to dual badge structure
+                    if (timeInfo.isLocked) {
+                        // Replace with dual badge if it became locked
+                        const existingDual = tournamentTime.querySelector('.time-badge-dual');
+                        if (!existingDual) {
+                            const sportBadge = tournamentTime.querySelector('.tournament-sport-badge');
+                            const timeBadgeContainer = tournamentTime.querySelector('.time-badge');
+                            if (timeBadgeContainer) {
+                                timeBadgeContainer.remove();
+                            }
+                            const dualBadge = document.createElement('span');
+                            dualBadge.className = 'time-badge-dual';
+                            dualBadge.innerHTML = `
+                                <span class="time-badge locked">LOCKED</span>
+                                <span class="time-badge live"><span class="live-dot"></span>LIVE</span>
+                            `;
+                            if (sportBadge && sportBadge.nextSibling) {
+                                tournamentTime.insertBefore(dualBadge, sportBadge.nextSibling);
+                            } else {
+                                tournamentTime.appendChild(dualBadge);
+                            }
+                        }
+                    } else {
+                        // Update regular badge
+                        const timeBadge = card.querySelector('.time-badge');
+                        if (timeBadge) {
+                            timeBadge.textContent = timeInfo.badge;
+                            timeBadge.classList.toggle('urgent', timeInfo.isUrgent);
+                        }
+                    }
                 }
             }
         });
@@ -981,16 +1029,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 //     return; // Skip tournaments completed more than 7 days ago
                 // }
 
-                // Parse multiple sports from the RSS feed (e.g., "NFL, NBA, MLB")
+                // Parse multiple sports from the RSS feed (e.g., "icehockey_nhl, boxing_boxing")
                 let sports = [];
                 if (sportMatch) {
-                    // Split by comma and trim whitespace, then normalize multi-word sports
+                    // Split by comma and trim whitespace, then map to icon classes
                     sports = sportMatch[1].split(',').map(s => {
-                        const normalized = s.trim().toUpperCase();
-                        // Map multi-word sports to single CSS-safe names
-                        if (normalized === 'UEFA CHAMPIONS LEAGUE' || normalized === 'CHAMPIONS LEAGUE') return 'UEFA';
-                        if (normalized === 'MIXED MARTIAL ARTS') return 'MMA';
-                        return normalized;
+                        const sportCode = s.trim().toLowerCase();
+                        return mapSportToIcon(sportCode);
                     }).filter(s => s);
                 }
 
@@ -1152,9 +1197,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     timeBadgeClass = timeInfo.isUrgent ? 'time-badge urgent' : 'time-badge';
                 }
 
-                // Generate sport text labels for tournament cards
+                // Generate sport icons HTML for tournament cards
                 const sportsArray = t.sports || [t.sport];
-                const sportLabels = sportsArray.join(', ');
+                const sportIconsHTML = sportsArray.map(sport =>
+                    `<div class="sport-icon ${sport}"></div><span class="sport-label">${sport}</span>`
+                ).join('');
 
                 // Determine state class and badge classes
                 const stateClass = timeInfo.isLocked ? 'state-locked' : 'state-upcoming';
@@ -1175,9 +1222,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="time-detail">${formatDateTime(t.startDate)}</div>
                         </div>
                         <div class="tournament-info">
-                            <div class="tournament-sport-badge">${sportLabels}</div>
+                            <div class="tournament-sport-icons">${sportIconsHTML}</div>
                             <h3>${t.title}</h3>
-                            <p>${t.description.split('|')[0].trim()}</p>
                         </div>
                         <div class="tournament-stats">
                             <div class="stat-item">
@@ -1187,6 +1233,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="stat-item">
                                 <strong>FREE</strong>
                                 <span>Entry</span>
+                            </div>
+                            <div class="stat-item">
+                                <strong>${t.prizePool.toLocaleString()}</strong>
+                                <span>TD$</span>
                             </div>
                         </div>
                         <div class="tournament-action">
