@@ -1660,29 +1660,14 @@ nav {
 /* ===== How It Works - Tournament Mechanics ===== */
 .how-it-works {
     padding: 8rem 0;
-    background-color: var(--bma-dark-200);
-    background-image: url('../images/bet-max-action-gray-background.jpg');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+    background:
+        linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.85)),
+        url('../images/bet%20max%20action%20gray%20background.jpg') center/cover no-repeat;
     position: relative;
     overflow: visible;
 }
 
 .how-it-works .container {
-    position: relative;
-    z-index: 1;
-}
-
-/* ===== How to Compete Section ===== */
-.how-to-compete {
-    padding: 8rem 0;
-    background: var(--bma-dark-200);
-    position: relative;
-    overflow: visible;
-}
-
-.how-to-compete .container {
     position: relative;
     z-index: 1;
 }
@@ -2591,7 +2576,7 @@ nav {
 /* ===== Final CTA ===== */
 .final-cta {
     padding: 10rem 0;
-    background: url('../images/bet-max-action-gray-background.jpg') center/cover no-repeat;
+    background: var(--bma-dark-100);
     text-align: center;
     position: relative;
     overflow: hidden;
