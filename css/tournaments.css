@@ -31,17 +31,17 @@
 }
 
 .tournaments-page .hero-bg-image:nth-child(1) {
-    background-image: url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    background-image: url('https://images.unsplash.com/photo-1471295253337-3ceaaedca402?q=80&w=2336&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     animation-delay: 0s;
 }
 
 .tournaments-page .hero-bg-image:nth-child(2) {
-    background-image: url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    background-image: url('https://images.unsplash.com/photo-1770067665792-9975acdec4fb?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     animation-delay: 6.66s;
 }
 
 .tournaments-page .hero-bg-image:nth-child(3) {
-    background-image: url('https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    background-image: url('https://images.unsplash.com/photo-1629217855633-79a6925d6c47?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     animation-delay: 13.33s;
 }
 
@@ -356,7 +356,7 @@
 /* Tournament Grid */
 .tournament-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
 }
 

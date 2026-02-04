@@ -108,6 +108,11 @@ article.container .content h3 {
     color: var(--bma-yellow);
 }
 
+article.container .content {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
 article.container .content p {
     margin-bottom: 1.5rem;
     color: rgba(255, 255, 255, 0.85);
@@ -212,8 +217,8 @@ article.container .content a:hover {
 }
 
 .section-logo {
-    height: 240px;
-    width: 240px;
+    height: clamp(140px, 25vw, 240px);
+    width: clamp(140px, 25vw, 240px);
     margin: 0 auto 2rem;
     display: block;
     object-fit: contain;
@@ -392,7 +397,7 @@ article.container .content a:hover {
     align-items: center;
     gap: 0.75rem;
     padding: 0 3rem 0 2rem;
-    min-width: 240px;
+    min-width: clamp(160px, 25vw, 240px);
     background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.98) 60%, rgba(0, 0, 0, 0.9) 85%, transparent 100%);
     z-index: 3;
     pointer-events: none;
@@ -874,22 +879,22 @@ nav {
 }
 
 .hero-bg-image:nth-child(1) {
-    background-image: url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    background-image: url('https://images.unsplash.com/photo-1471295253337-3ceaaedca402?q=80&w=2336&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     animation-delay: 0s;
 }
 
 .hero-bg-image:nth-child(2) {
-    background-image: url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    background-image: url('https://images.unsplash.com/photo-1770067665792-9975acdec4fb?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     animation-delay: 5s;
 }
 
 .hero-bg-image:nth-child(3) {
-    background-image: url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    background-image: url('https://images.unsplash.com/photo-1629217855633-79a6925d6c47?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     animation-delay: 10s;
 }
 
 .hero-bg-image:nth-child(4) {
-    background-image: url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    background-image: url('https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=2338&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     animation-delay: 15s;
 }
 
@@ -898,17 +903,17 @@ nav {
         opacity: 1;
         transform: scale(1);
     }
-    22% {
-        opacity: 1;
-        transform: scale(1.1);
-    }
     25% {
+        opacity: 1;
+        transform: scale(1.06);
+    }
+    40% {
         opacity: 0;
-        transform: scale(1.15);
+        transform: scale(1.1);
     }
     100% {
         opacity: 0;
-        transform: scale(1.15);
+        transform: scale(1.1);
     }
 }
 
@@ -1158,7 +1163,7 @@ nav {
 
 /* Hero Phone Mockup */
 .hero-phone-mockup {
-    width: 340px;
+    width: clamp(220px, 80vw, 340px);
     max-width: 340px;
     margin: 0;
     position: relative;
@@ -1311,7 +1316,7 @@ nav {
 }
 
 .hero-showcase-logo {
-    width: 250px;
+    width: clamp(180px, 40vw, 250px);
     height: auto;
     margin-bottom: 2rem;
 }
@@ -1659,7 +1664,7 @@ nav {
 
 /* ===== How It Works - Tournament Mechanics ===== */
 .how-it-works {
-    padding: 8rem 0;
+    padding: clamp(4rem, 8vw, 8rem) 0;
     background-color: var(--bma-dark-200);
     background-image: url('../images/bet-max-action-gray-background.jpg');
     background-position: center;
@@ -1676,7 +1681,7 @@ nav {
 
 /* ===== How to Compete Section ===== */
 .how-to-compete {
-    padding: 8rem 0;
+    padding: clamp(4rem, 8vw, 8rem) 0;
     background: var(--bma-dark-200);
     position: relative;
     overflow: visible;
@@ -1934,13 +1939,13 @@ nav {
 
 @keyframes mockupBackgroundRotate {
     0%, 33.33% {
-        background-image: url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+        background-image: url('https://images.unsplash.com/photo-1471295253337-3ceaaedca402?q=80&w=2336&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     }
     33.34%, 66.66% {
-        background-image: url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+        background-image: url('https://images.unsplash.com/photo-1770067665792-9975acdec4fb?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     }
     66.67%, 100% {
-        background-image: url('https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+        background-image: url('https://images.unsplash.com/photo-1629217855633-79a6925d6c47?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     }
 }
 
@@ -2051,7 +2056,7 @@ nav {
 .platform-previews {
     display: flex;
     flex-direction: column;
-    gap: 6rem;
+    gap: clamp(2rem, 5vw, 6rem);
     margin-top: 5rem;
     max-width: 1000px;
     margin-left: auto;
@@ -2247,7 +2252,7 @@ nav {
 
 /* ===== Live Tournaments ===== */
 .live-tournaments {
-    padding: 8rem 0;
+    padding: clamp(4rem, 8vw, 8rem) 0;
     position: relative;
     overflow: hidden;
     background: var(--bma-dark-200);
@@ -2436,14 +2441,14 @@ nav {
 
 /* ===== Beta Benefits ===== */
 .beta-benefits {
-    padding: 8rem 0;
+    padding: clamp(4rem, 8vw, 8rem) 0;
     background: var(--bma-dark-200);
 }
 
 .benefits-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: clamp(2rem, 4vw, 4rem);
     align-items: start;
 }
 
@@ -2590,7 +2595,7 @@ nav {
 
 /* ===== Final CTA ===== */
 .final-cta {
-    padding: 10rem 0;
+    padding: clamp(5rem, 10vw, 10rem) 0;
     background: url('../images/bet-max-action-gray-background.jpg') center/cover no-repeat;
     text-align: center;
     position: relative;
@@ -2612,20 +2617,20 @@ nav {
 .final-cta-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8rem;
+    gap: clamp(2.5rem, 6vw, 8rem);
     align-items: center;
 }
 
 .final-cta-left {
     position: relative;
     z-index: 2;
-    padding: 3rem;
+    padding: clamp(1.5rem, 3vw, 3rem);
 }
 
 .final-cta-right {
     position: relative;
     z-index: 2;
-    padding: 3rem;
+    padding: clamp(1.5rem, 3vw, 3rem);
 }
 
 .device-stack {
