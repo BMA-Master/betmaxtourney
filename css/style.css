@@ -48,6 +48,31 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* Global scrollbar branding */
+html {
+    scrollbar-color: var(--bma-green-bright) var(--bma-dark-200);
+    scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bma-dark-200);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bma-green-bright);
+    border-radius: 999px;
+    border: 2px solid var(--bma-dark-200);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--bma-green);
+}
+
 .container {
     max-width: 1400px;
     margin: 0 auto;
@@ -211,8 +236,8 @@ article.container .content a:hover {
     text-align: center;
     margin-bottom: 4rem;
     position: relative;
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
+    width: 100%;
+    margin-left: 0;
     overflow: visible;
 }
 
@@ -337,17 +362,17 @@ article.container .content a:hover {
     top: 0;
     z-index: 1001;
     background:
-        linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(10, 10, 10, 0.98) 50%, rgba(0, 0, 0, 0.95) 100%);
-    backdrop-filter: blur(20px) saturate(150%);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
+        linear-gradient(135deg, rgba(6, 6, 6, 0.92) 0%, rgba(12, 12, 12, 0.96) 100%);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
     border-bottom: 2px solid transparent;
-    border-image: linear-gradient(90deg, transparent 0%, var(--bma-green-bright) 20%, var(--bma-yellow) 50%, var(--bma-green-bright) 80%, transparent 100%);
+    border-image: linear-gradient(90deg, transparent 0%, var(--bma-green-bright) 30%, var(--bma-yellow) 50%, var(--bma-green-bright) 70%, transparent 100%);
     border-image-slice: 1;
     overflow: hidden;
-    height: 45px;
+    height: 48px;
     box-shadow:
-        0 4px 20px rgba(0, 230, 118, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        0 3px 10px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 /* Animated background pattern - very subtle */
@@ -363,10 +388,10 @@ article.container .content a:hover {
             90deg,
             transparent,
             transparent 80px,
-            rgba(0, 230, 118, 0.008) 80px,
-            rgba(0, 230, 118, 0.008) 160px
+            rgba(0, 230, 118, 0.006) 80px,
+            rgba(0, 230, 118, 0.006) 160px
         );
-    animation: patternSlide 40s linear infinite;
+    animation: none;
     pointer-events: none;
 }
 
@@ -385,70 +410,76 @@ article.container .content a:hover {
     position: relative;
     display: flex;
     align-items: center;
+    gap: 0;
 }
 
-/* Branded logo/text section */
-.marquee-brand-start {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
+/* Promo segment */
+.marquee-promo {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0 3rem 0 2rem;
-    min-width: clamp(160px, 25vw, 240px);
-    background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.98) 60%, rgba(0, 0, 0, 0.9) 85%, transparent 100%);
-    z-index: 3;
-    pointer-events: none;
+    gap: 0.5rem;
+    padding: 0 1.75rem;
+    min-width: clamp(220px, 26vw, 300px);
+    height: 100%;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(135deg, rgba(6, 6, 6, 0.92) 0%, rgba(12, 12, 12, 0.96) 100%);
+    z-index: 2;
 }
 
-.marquee-logo {
-    height: 28px;
-    width: auto;
+.marquee-promo-icon {
+    color: var(--bma-green-bright);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 0 8px rgba(0, 230, 118, 0.35));
 }
 
-/* "LIVE TOURNAMENTS" text - simple style */
-.marquee-brand-text {
-    font-size: 0.75rem;
-    font-weight: 900;
-    letter-spacing: 1.5px;
-    color: var(--bma-white);
-    text-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
+.marquee-promo-text {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
     white-space: nowrap;
+}
+
+.marquee-promo-title {
+    font-weight: 700;
+}
+
+.marquee-promo-subtext {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 /* Gradient fade edges */
 .marquee-content::before,
 .marquee-content::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 150px;
-    z-index: 2;
-    pointer-events: none;
+    content: none;
 }
 
 .marquee-content::before {
     left: 0;
-    background: linear-gradient(90deg, #000000 0%, rgba(0, 0, 0, 0.5) 60%, transparent 100%);
+    background: none;
 }
 
 .marquee-content::after {
     right: 0;
-    background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.5) 40%, #000000 100%);
+    background: none;
 }
 
 .marquee-track {
     display: flex;
     align-items: center;
-    gap: 5rem;
-    animation: marqueeScroll 60s linear infinite;
+    gap: 2.25rem;
+    animation: marqueeScroll 115s linear infinite;
     white-space: nowrap;
     height: 100%;
-    padding-left: 260px;
-    padding-right: 260px;
+    padding: 0 1.5rem 0 1.25rem;
+    flex: 1;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 80px, #000 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 80px, #000 100%);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
 }
 
 /* Pause animation on hover */
@@ -470,21 +501,21 @@ article.container .content a:hover {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.4rem 0.85rem;
-    background: rgba(26, 26, 26, 0.6);
+    padding: 0.35rem 0.85rem;
+    background: rgba(16, 16, 16, 0.7);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
+    border-radius: 999px;
     transition: all 0.3s ease;
 }
 
 /* #7: Hover state with lift effect */
 .marquee-item:hover {
     cursor: pointer;
-    transform: translateY(-2px) scale(1.02);
-    background: rgba(26, 26, 26, 0.8);
+    transform: translateY(-1px);
+    background: rgba(20, 20, 20, 0.8);
     border-color: rgba(0, 230, 118, 0.2);
-    box-shadow: 0 4px 12px rgba(0, 230, 118, 0.15);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
 }
 
 /* Loading state centered */
@@ -498,15 +529,16 @@ article.container .content a:hover {
 .marquee-status {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: 0.65rem;
-    letter-spacing: 1px;
-    padding: 0.3rem 0.75rem;
-    border-radius: 14px;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid;
     position: relative;
     overflow: hidden;
+    text-transform: uppercase;
 }
 
 /* Shimmer effect for all status badges */
@@ -523,40 +555,32 @@ article.container .content a:hover {
         rgba(255, 255, 255, 0.2) 50%,
         transparent 100%
     );
-    animation: statusShimmer 3s ease-in-out infinite;
+    animation: none;
 }
 
 /* #3: LIVE status with breathing pulse */
 .marquee-status-live {
     color: var(--bma-white);
-    background: linear-gradient(135deg, rgba(220, 20, 60, 0.3) 0%, rgba(220, 20, 60, 0.15) 100%);
-    border-color: rgba(220, 20, 60, 0.5);
-    box-shadow:
-        0 0 15px rgba(220, 20, 60, 0.4),
-        0 0 25px rgba(220, 20, 60, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    animation: breathingPulse 2s ease-in-out infinite;
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.22) 0%, rgba(220, 20, 60, 0.12) 100%);
+    border-color: rgba(220, 20, 60, 0.45);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    animation: none;
 }
 
 .marquee-status-upcoming {
     color: var(--bma-yellow);
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.25) 0%, rgba(255, 215, 0, 0.12) 100%);
-    border-color: rgba(255, 215, 0, 0.4);
-    box-shadow:
-        0 0 10px rgba(255, 215, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    animation: gentlePulse 3s ease-in-out infinite;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.18) 0%, rgba(255, 215, 0, 0.1) 100%);
+    border-color: rgba(255, 215, 0, 0.35);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    animation: none;
 }
 
 .marquee-status-ending {
     color: var(--bma-white);
-    background: linear-gradient(135deg, rgba(255, 237, 78, 0.3) 0%, rgba(255, 237, 78, 0.18) 100%);
-    border-color: rgba(255, 237, 78, 0.5);
-    box-shadow:
-        0 0 12px rgba(255, 237, 78, 0.4),
-        0 0 20px rgba(255, 237, 78, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    animation: breathingPulse 1.5s ease-in-out infinite;
+    background: linear-gradient(135deg, rgba(255, 237, 78, 0.2) 0%, rgba(255, 237, 78, 0.12) 100%);
+    border-color: rgba(255, 237, 78, 0.45);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    animation: none;
 }
 
 .marquee-status-completed {
@@ -597,36 +621,51 @@ article.container .content a:hover {
 }
 
 /* #6: Enhanced typography with brand fonts */
-.marquee-tournament {
+.marquee-tournament,
+.marquee-item-title {
     font-family: var(--font-primary);
-    color: var(--bma-white);
-    font-weight: 700;
-    font-size: 0.9rem;
-    letter-spacing: 0.3px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    color: rgba(255, 255, 255, 0.92);
+    font-weight: 600;
+    font-size: 0.88rem;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    text-shadow: none;
+}
+
+.marquee-item-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.75rem;
+}
+
+.marquee-meta-divider {
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 0.7rem;
 }
 
 .marquee-sport {
     font-family: var(--font-display);
-    color: var(--bma-green-bright);
-    font-weight: 800;
-    font-size: 0.75rem;
+    color: rgba(0, 230, 118, 0.9);
+    font-weight: 700;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
-    text-shadow: 0 0 8px rgba(0, 230, 118, 0.4);
+    letter-spacing: 0.9px;
+    text-shadow: none;
 }
 
 .marquee-separator {
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.25);
     font-size: 0.6rem;
-    margin: 0 0.25rem;
+    margin: 0 0.35rem;
 }
 
 .marquee-countdown {
-    color: var(--bma-yellow-bright);
+    color: rgba(255, 237, 78, 0.9);
     font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 0.3px;
+    font-size: 0.72rem;
+    letter-spacing: 0.4px;
 }
 
 .marquee-sport-icon {
@@ -653,14 +692,14 @@ article.container .content a:hover {
     /* Override any conflicting styles to ensure visibility */
     opacity: 1;
     /* Add green glow filter for visibility on dark background */
-    filter: brightness(0) saturate(100%) invert(79%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(98%) contrast(119%) drop-shadow(0 0 12px rgba(0, 230, 118, 0.8));
+    filter: brightness(0) saturate(100%) invert(79%) sepia(79%) saturate(1800%) hue-rotate(86deg) brightness(98%) contrast(115%);
 }
 
 /* ===== Pill-Shaped Header - Clean & Professional ===== */
 header {
     padding: 1.5rem 2rem;
     position: sticky;
-    top: 45px;
+    top: 48px;
     z-index: 1000;
     background: transparent;
 }
@@ -1127,6 +1166,24 @@ nav {
     position: relative;
     display: flex;
     justify-content: center;
+}
+
+.hero .device-stack {
+    max-width: 560px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.hero .laptop-mockup {
+    max-width: 520px;
+}
+
+.hero .phone-mockup {
+    position: absolute;
+    bottom: -40px;
+    right: -40px;
+    width: 180px;
+    z-index: 3;
 }
 
 /* Hero Laptop Mockup */
@@ -2659,6 +2716,14 @@ nav {
     aspect-ratio: 16 / 10;
 }
 
+.laptop-screenshot {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
 .laptop-screen .placeholder-content {
     width: 100%;
     height: 100%;
@@ -2918,6 +2983,28 @@ footer {
         justify-content: center;
     }
 
+    .marquee-promo-subtext {
+        display: none;
+    }
+
+    .hero-right {
+        margin-top: 3rem;
+    }
+
+    .hero .device-stack {
+        max-width: 100%;
+        align-items: center;
+    }
+
+    .hero .laptop-mockup {
+        max-width: 100%;
+    }
+
+    .hero .phone-mockup {
+        position: static;
+        margin: 1.5rem auto 0;
+    }
+
     .tournament-item {
         grid-template-columns: 1fr;
         gap: 1.5rem;
@@ -3083,6 +3170,11 @@ footer {
         font-size: 0.85rem;
     }
 
+    .hero .hero-bg,
+    .hero .hero-overlay {
+        top: -120px;
+    }
+
     /* Further reduce section padding */
     .hero,
     .product-showcase,
@@ -3091,6 +3183,11 @@ footer {
     .beta-benefits,
     .final-cta {
         padding: 3rem 0;
+    }
+
+    .hero {
+        margin-top: 0;
+        padding-top: calc(48px + 60px + 2.5rem);
     }
 
     .cta-trust {
@@ -3827,14 +3924,23 @@ footer {
 /* Tablet and Below - 768px */
 @media (max-width: 768px) {
     /* CRITICAL: Fix Marquee Horizontal Scroll */
-    .marquee-brand-start {
-        min-width: 140px;
-        padding: 0 1.5rem 0 1rem;
+    .marquee-promo {
+        min-width: 0 !important;
+        width: auto !important;
+        flex: 0 0 auto;
+        padding: 0 0.3rem 0 0.5rem !important;
+        border-right: none;
     }
+
+    .marquee-promo-text {
+        font-size: 0.72rem;
+    }
+
     
     .marquee-track {
-        padding-left: 150px;
-        padding-right: 1rem;
+        padding: 0 0.75rem;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 20px, #000 100%);
+        mask-image: linear-gradient(90deg, transparent 0, #000 20px, #000 100%);
     }
     
     .marquee-logo {
@@ -3842,20 +3948,17 @@ footer {
         width: auto;
     }
     
-    .marquee-brand-text {
-        font-size: 0.65rem;
-    }
     
     /* CRITICAL: Hero Section Mobile Layout */
     .hero {
         min-height: 500px;
         height: auto;
-        padding: 6rem 0 4rem;
+        padding: calc(48px + 60px + 2.5rem) 0 4rem;
     }
     
     .hero-content {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 4rem;
     }
     
     .hero h1 {
@@ -3872,7 +3975,25 @@ footer {
     }
     
     .hero-right {
-        display: none;
+        display: flex;
+        order: 2;
+        margin-top: 4rem;
+    }
+
+    .hero-left {
+        order: 1;
+    }
+
+    .hero .device-stack {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    .hero .phone-mockup {
+        position: static;
+        margin: 1.5rem auto 0;
     }
     
     /* CRITICAL: Tournament Card Grid Collapse */
@@ -4006,23 +4127,32 @@ footer {
 /* Small Mobile - 480px */
 @media (max-width: 480px) {
     /* CRITICAL: Marquee Further Optimization */
-    .marquee-brand-start {
-        min-width: 100px;
-        padding: 0 1rem 0 0.75rem;
+    .marquee-promo {
+        min-width: 0 !important;
+        width: auto !important;
+        flex: 0 0 auto;
+        padding: 0 0.2rem 0 0.4rem !important;
+        border-right: none;
+    }
+
+    .marquee-promo-text {
+        font-size: 0.68rem;
     }
     
     .marquee-track {
-        padding-left: 110px;
-        gap: 3rem;
+        padding: 0 0.5rem;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 100%);
+        mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 100%);
+        gap: 2.5rem;
     }
     
     .marquee-tournament {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
     }
     
     .marquee-status {
-        font-size: 0.55rem;
-        padding: 0.2rem 0.6rem;
+        font-size: 0.52rem;
+        padding: 0.2rem 0.5rem;
     }
     
     /* CRITICAL: Navigation Mobile Optimization */
@@ -4055,7 +4185,7 @@ footer {
     /* CRITICAL: Hero Further Scaling */
     .hero {
         min-height: 450px;
-        padding: 5rem 0 3rem;
+        padding: calc(48px + 60px + 2rem) 0 3rem;
     }
     
     .hero h1 {
@@ -5446,7 +5576,7 @@ RESET AND REBUILD APPROACH
     }
 
     .hero {
-        padding: 2rem 0 3rem !important;
+        padding: calc(48px + 60px + 2rem) 0 3rem !important;
     }
 
     .value-props {

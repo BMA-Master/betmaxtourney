@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const items = xmlDoc.querySelectorAll('item');
 
             if (items.length === 0) {
-                marqueeTrack.innerHTML = '<div class="marquee-item"><span class="marquee-tournament">No live tournaments</span></div>';
+                marqueeTrack.innerHTML = '<div class="marquee-item"><span class="marquee-item-title">No live tournaments</span></div>';
                 return;
             }
 
@@ -208,7 +208,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 let sportsHTML = '';
                 if (sports.length > 0) {
                     console.log(`Tournament "${title}" has sports:`, sports);
-                    sportsHTML = '<span class="marquee-separator">•</span>';
                     sports.forEach((sport, index) => {
                         let iconClass = sport;
                         if (sport === 'BOXING') iconClass = 'MMA';
@@ -220,12 +219,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
 
+                const metaParts = [];
+                if (countdown) metaParts.push(countdown);
+                if (sportsHTML) metaParts.push(sportsHTML);
+                const metaHTML = metaParts.join('<span class="marquee-separator">•</span>');
+
                 marqueeHTML += `
                     <div class="marquee-item" ${startDate ? `data-start-time="${startDate.toISOString()}"` : ''}>
                         <span class="marquee-status ${statusClass}">${statusText}</span>
-                        ${countdown}
-                        <span class="marquee-tournament">${title}</span>
-                        ${sportsHTML}
+                        <span class="marquee-item-title">${title}</span>
+                        ${metaHTML ? `<span class="marquee-meta-divider">•</span><span class="marquee-item-meta">${metaHTML}</span>` : ''}
                     </div>
                 `;
             });
@@ -235,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         } catch (error) {
             console.error('Failed to load tournaments:', error);
-            marqueeTrack.innerHTML = '<div class="marquee-item"><span class="marquee-tournament">Unable to load tournaments</span></div>';
+            marqueeTrack.innerHTML = '<div class="marquee-item"><span class="marquee-item-title">Unable to load tournaments</span></div>';
         }
     }
 
