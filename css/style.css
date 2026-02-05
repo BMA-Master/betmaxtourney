@@ -1069,25 +1069,30 @@ nav {
 }
 
 .hero-offer {
-    background: linear-gradient(135deg, rgba(46, 139, 87, 0.3) 0%, rgba(46, 139, 87, 0.2) 100%);
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.72) 0%, rgba(20, 20, 20, 0.6) 100%);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(46, 139, 87, 0.5);
+    border: 1px solid rgba(255, 215, 0, 0.35);
     border-radius: 12px;
     padding: 1.25rem;
     margin-bottom: 0;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
 }
 
 .offer-badge {
     display: inline-block;
-    background: var(--gradient-primary);
-    color: var(--bma-white);
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 1px;
+    background: rgba(0, 0, 0, 0.35);
+    color: var(--bma-yellow-bright);
+    padding: 0.2rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 1px solid rgba(255, 237, 78, 0.55);
+    box-shadow:
+        inset 0 0 0 1px rgba(0, 0, 0, 0.4),
+        0 6px 16px rgba(0, 0, 0, 0.35);
     margin-bottom: 0.75rem;
 }
 
@@ -1098,14 +1103,14 @@ nav {
 }
 
 .offer-text strong {
-    color: var(--bma-green-bright);
+    color: var(--bma-yellow);
     text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
 }
 
 .hero-offer-link {
     display: inline-block;
     margin-top: 0.75rem;
-    color: var(--bma-white);
+    color: var(--bma-yellow);
     font-weight: 600;
     font-size: 1rem;
     text-decoration: underline;
@@ -1116,7 +1121,7 @@ nav {
 }
 
 .hero-offer-link:hover {
-    color: var(--bma-yellow);
+    color: var(--bma-yellow-bright);
     text-decoration-thickness: 3px;
 }
 
@@ -1731,6 +1736,7 @@ nav {
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: fixed;
     position: relative;
     overflow: visible;
 }
@@ -2317,6 +2323,7 @@ nav {
     position: relative;
     overflow: hidden;
     background: var(--bma-dark-200);
+    background-attachment: fixed;
 }
 
 .live-tournaments .container {
@@ -2659,6 +2666,7 @@ nav {
 .final-cta {
     padding: clamp(5rem, 10vw, 10rem) 0;
     background: url('../images/bet-max-action-gray-background.jpg') center/cover no-repeat;
+    background-attachment: fixed;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -5606,6 +5614,18 @@ RESET AND REBUILD APPROACH
     .hero-ctas .btn {
         padding: 0.75rem 1.5rem !important;
         font-size: 0.9rem !important;
+    }
+
+    .how-it-works {
+        background-attachment: scroll;
+    }
+
+    .live-tournaments {
+        background-attachment: scroll;
+    }
+
+    .final-cta {
+        background-attachment: scroll;
     }
 }
 
