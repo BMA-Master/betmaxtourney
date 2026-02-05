@@ -40,12 +40,16 @@
 
 body {
     font-family: var(--font-primary);
-    background: var(--bma-dark-200);
+    background: var(--bma-dark-100);
     color: var(--bma-white);
     line-height: 1.7;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    background: var(--bma-dark-100);
 }
 
 /* Global scrollbar branding */
