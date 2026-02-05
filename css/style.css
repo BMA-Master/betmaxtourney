@@ -2618,7 +2618,7 @@ nav {
 }
 
 .benefits-visual {
-    background: #141414;
+    background: url('../images/Bet Max Tourney Home.jpg') left center/cover no-repeat;
     border: 1px solid rgba(255, 215, 0, 0.2);
     border-radius: 20px;
     padding: 5rem 3rem;
@@ -2631,8 +2631,9 @@ nav {
     content: '';
     position: absolute;
     inset: 0;
-    background: transparent;
-    opacity: 0;
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.65) 0%, rgba(10, 10, 10, 0.35) 100%);
+    opacity: 1;
+    z-index: 0;
 }
 
 .visual-placeholder {
