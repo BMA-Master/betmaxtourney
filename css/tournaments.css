@@ -173,15 +173,14 @@
     margin-top: 2rem;
 }
 
-.tournaments-page .tabulator {
-    border-color: rgba(0, 230, 118, 0.32);
+/* Force tournaments table to have exact same header style as homepage */
+.tournaments-page #tournaments-table.tabulator .tabulator-header,
+.tournaments-page #tournaments-table.tabulator .tabulator-col {
+    background-color: rgba(6, 6, 6, 0.98) !important;
 }
 
-.tournaments-page .tabulator .tabulator-header {
-    background:
-        linear-gradient(135deg, rgba(0, 230, 118, 0.2), rgba(255, 215, 0, 0.16)),
-        rgba(6, 6, 6, 0.98);
-}
+/* The rest of the dark theme styles are inherited from style.css
+   since #tournaments-table is styled there alongside #starting-soon-table */
 
 @media (max-width: 768px) {
     .tournaments-page .tournament-table {

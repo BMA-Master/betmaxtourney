@@ -305,17 +305,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 guid,
                 prizePool,
                 startDate,
+                endDate,
                 matchCount,
                 sport: sports[0] || '',
                 sports,
                 status
             });
-        });
-
-        tournaments.sort((a, b) => {
-            if (!a.startDate) return 1;
-            if (!b.startDate) return -1;
-            return a.startDate - b.startDate;
         });
 
         return tournaments;
@@ -324,16 +319,21 @@ document.addEventListener('DOMContentLoaded', function() {
     function buildTabulatorRows(tournaments) {
         return tournaments.map(t => {
             const timeInfo = getTimeUntil(t.startDate);
-            const statusGroup = normalizeStatus(t.status, timeInfo);
-            let statusLabel = timeInfo.badge || 'UPCOMING';
-            if (statusGroup === 'completed') statusLabel = 'COMPLETED';
-            if (statusGroup === 'live') statusLabel = 'LOCKED • LIVE';
+            const startTs = t.startDate ? t.startDate.getTime() : Number.MAX_SAFE_INTEGER;
+            const endTs = t.endDate ? t.endDate.getTime() : null;
+            const normalized = normalizeTournamentStatus({
+                rawStatus: t.status,
+                startTs,
+                timeInfo
+            });
 
             return {
-                status: statusLabel,
+                status: normalized.statusLabel,
                 time: t.startDate ? formatDateTime(t.startDate) : 'TBD',
-                startTs: t.startDate ? t.startDate.getTime() : Number.MAX_SAFE_INTEGER,
+                startTs,
+                statusRank: normalized.statusRank,
                 title: t.title,
+                titleText: t.title,
                 sports: (t.sports || []).join(', '),
                 sportsRaw: t.sports || [],
                 sportFilter: normalizeSportFilter(t.sport || ''),
@@ -343,31 +343,73 @@ document.addEventListener('DOMContentLoaded', function() {
                 td: t.prizePool ? t.prizePool.toLocaleString() : '—',
                 link: t.link || '#',
                 rawStatus: t.status,
-                statusGroup
+                statusGroup: normalized.statusGroup
             };
         });
     }
 
     function initStartingSoonTable(rows) {
         const target = document.getElementById('starting-soon-table');
-        if (!target || typeof Tabulator === 'undefined') return;
+        if (!target || typeof Tabulator === 'undefined') {
+            return;
+        }
 
-        const data = rows.filter(row => row.statusGroup !== 'completed').slice(0, 3);
-        new Tabulator(target, {
+        // Ensure each row has proper status normalization before sorting
+        const normalizedRows = rows.map(row => {
+            const normalized = normalizeTournamentStatus({
+                rawStatus: row.rawStatus,
+                startTs: row.startTs,
+                timeInfo: null
+            });
+            return {
+                ...row,
+                statusGroup: normalized.statusGroup,
+                statusRank: normalized.statusRank,
+                status: normalized.statusLabel
+            };
+        });
+
+        // Sort the data before passing to Tabulator
+        const data = sortRowsByStatusAndStart(normalizedRows);
+        // Remove responsiveLayout temporarily to fix the error
+        const table = new Tabulator(target, {
             data,
             layout: "fitColumns",
+            sortMode: "local",
             height: "auto",
-            responsiveLayout: "collapse",
+            // responsiveLayout: "collapse",  // Temporarily disabled
+            // responsiveLayoutCollapseStartOpen: false,
+            // responsiveLayoutCollapseFormatter: collapseFormatter,
+            pagination: "local",
+            paginationSize: 20,
+            paginationSizeSelector: [20, 50, 100],
+            // Let's try without initialSort to see if that's the issue
+            // initialSort: [
+            //     {column: "statusRank", dir: "asc"},
+            //     {column: "startTs", dir: "asc"}
+            // ],
+            rowHeight: 56,
+            rowFormatter: rowAccentFormatter,
+            columnDefaults: {
+                minWidth: 80,  // Reduced from 120
+                vertAlign: "middle"
+            },
             columns: [
-                {title: "Status", field: "status", headerSort: false, formatter: statusFormatter},
-                {title: "Start", field: "startTs", headerSort: true, sorter: "number", formatter: timeFormatter},
-                {title: "Tournament", field: "title", headerSort: true},
-                {title: "Sports", field: "sports", headerSort: false},
-                {title: "Matches", field: "matches", hozAlign: "center"},
-                {title: "Entry", field: "entry", hozAlign: "center"},
-                {title: "TD$", field: "td", hozAlign: "center"},
-                {title: "", field: "link", headerSort: false, formatter: ctaFormatter}
+                {title: "Rank", field: "statusRank", visible: false, headerSort: false, sorter: "number", sorterParams: {alignEmptyValues: "bottom"}},
+                {title: "Status", field: "status", headerSort: true, formatter: statusFormatter, sorter: statusSorter, minWidth: 100},
+                {title: "Start", field: "startTs", headerSort: true, sorter: "number", formatter: timeFormatter, hozAlign: "left", minWidth: 140},
+                {title: "Tournament", field: "title", headerSort: true, minWidth: 200, formatter: titleFormatter},
+                {title: "Sports", field: "sports", headerSort: true, minWidth: 100},
+                {title: "Matches", field: "matches", headerSort: true, hozAlign: "right", minWidth: 80},
+                {title: "Entry", field: "entry", headerSort: true, hozAlign: "right", minWidth: 70},
+                {title: "TD$", field: "td", headerSort: true, hozAlign: "right", minWidth: 80},
+                {title: "", field: "link", headerSort: false, formatter: ctaFormatter, hozAlign: "right", minWidth: 120}
             ]
+        });
+
+        // Wait for table to be built before initializing toolbar
+        table.on("tableBuilt", function(){
+            initStartingSoonToolbar(table, data);
         });
     }
 
@@ -375,38 +417,92 @@ document.addEventListener('DOMContentLoaded', function() {
         const target = document.getElementById('tournaments-table');
         if (!target || typeof Tabulator === 'undefined') return;
 
+        // For tournaments page, default to 40 items per page
         const sizeSelect = document.getElementById('items-per-page');
-        const pageSize = sizeSelect ? parseInt(sizeSelect.value, 10) || 10 : 10;
+        const pageSize = sizeSelect ? parseInt(sizeSelect.value, 10) || 40 : 40;
+
+        // Normalize and sort the data before passing to Tabulator
+        const normalizedRows = rows.map(row => {
+            const normalized = normalizeTournamentStatus({
+                rawStatus: row.rawStatus,
+                startTs: row.startTs,
+                timeInfo: null
+            });
+            return {
+                ...row,
+                statusGroup: normalized.statusGroup,
+                statusRank: normalized.statusRank,
+                status: normalized.statusLabel
+            };
+        });
+
+        // Sort the data before passing to Tabulator
+        const data = sortRowsByStatusAndStart(normalizedRows);
 
         const table = new Tabulator(target, {
-            data: rows,
+            data,
             layout: "fitColumns",
-            responsiveLayout: "collapse",
+            sortMode: "local",
+            height: "auto",
+            // responsiveLayout disabled to avoid errors
             pagination: "local",
             paginationSize: pageSize,
-            paginationSizeSelector: [10, 25, 50],
+            paginationSizeSelector: [20, 40, 60, 100],
+            // No initialSort - we pre-sort the data
+            rowHeight: 56,
+            rowFormatter: rowAccentFormatter,
+            columnDefaults: {
+                minWidth: 80,
+                vertAlign: "middle"
+            },
             columns: [
-                {title: "Status", field: "status", headerSort: false, formatter: statusFormatter},
-                {title: "Start", field: "startTs", headerSort: true, sorter: "number", formatter: timeFormatter},
-                {title: "Tournament", field: "title", headerSort: true},
-                {title: "Sports", field: "sports", headerSort: false},
-                {title: "Matches", field: "matches", hozAlign: "center"},
-                {title: "Entry", field: "entry", hozAlign: "center"},
-                {title: "TD$", field: "td", hozAlign: "center"},
-                {title: "", field: "link", headerSort: false, formatter: ctaFormatter}
+                {title: "Rank", field: "statusRank", visible: false, headerSort: false, sorter: "number", sorterParams: {alignEmptyValues: "bottom"}},
+                {title: "Status", field: "status", headerSort: true, formatter: statusFormatter, sorter: statusSorter, minWidth: 100},
+                {title: "Start", field: "startTs", headerSort: true, sorter: "number", formatter: timeFormatter, hozAlign: "left", minWidth: 140},
+                {title: "Tournament", field: "title", headerSort: true, minWidth: 200, formatter: titleFormatter},
+                {title: "Sports", field: "sports", headerSort: true, minWidth: 100},
+                {title: "Matches", field: "matches", headerSort: true, hozAlign: "right", minWidth: 80},
+                {title: "Entry", field: "entry", headerSort: true, hozAlign: "right", minWidth: 70},
+                {title: "TD$", field: "td", headerSort: true, hozAlign: "right", minWidth: 80},
+                {title: "", field: "link", headerSort: false, formatter: ctaFormatter, hozAlign: "right", minWidth: 120}
             ]
         });
 
-        initTournamentsFilters(table, rows);
+        // Wait for table to be built before initializing filters
+        table.on("tableBuilt", function(){
+            initTournamentsFilters(table, rows);
+        });
     }
 
     function statusFormatter(cell) {
+        const rowData = cell.getRow().getData();
+        const normalized = normalizeTournamentStatus({
+            rawStatus: rowData.rawStatus,
+            startTs: rowData.startTs,
+            timeInfo: null
+        });
         const value = cell.getValue();
-        const status = cell.getRow().getData().statusGroup || cell.getRow().getData().rawStatus;
+        const status = normalized.statusGroup || rowData.statusGroup || rowData.rawStatus;
         let statusClass = 'status-upcoming';
         if (status === 'completed') statusClass = 'status-completed';
         if (status === 'live' || status === 'locked') statusClass = 'status-live';
         return `<span class="tab-status ${statusClass}">${value}</span>`;
+    }
+
+    function statusSorter(a, b, aRow, bRow) {
+        const aData = aRow.getData();
+        const bData = bRow.getData();
+        const aNormalized = normalizeTournamentStatus({
+            rawStatus: aData.rawStatus,
+            startTs: aData.startTs,
+            timeInfo: null
+        });
+        const bNormalized = normalizeTournamentStatus({
+            rawStatus: bData.rawStatus,
+            startTs: bData.startTs,
+            timeInfo: null
+        });
+        return aNormalized.statusRank - bNormalized.statusRank;
     }
 
     function ctaFormatter(cell) {
@@ -417,6 +513,144 @@ document.addEventListener('DOMContentLoaded', function() {
     function timeFormatter(cell) {
         const data = cell.getRow().getData();
         return data.time || 'TBD';
+    }
+
+    function titleFormatter(cell) {
+        const data = cell.getRow().getData();
+        const title = data.title || '';
+        const safeTitle = title.replace(/"/g, '&quot;');
+        return `<span class="tab-title" title="${safeTitle}">${title}</span>`;
+    }
+
+    function collapseFormatter(data) {
+        if (!data || !data.length) return '';
+        const rows = data.map(item => {
+            const value = typeof item.value === 'string' ? item.value : `${item.value}`;
+            return `
+                <div class="tab-collapse-row">
+                    <span class="tab-collapse-label">${item.title}</span>
+                    <span class="tab-collapse-value">${value}</span>
+                </div>
+            `;
+        }).join('');
+        return `<div class="tab-collapse">${rows}</div>`;
+    }
+
+    function sortRowsByStatusAndStart(rows) {
+        return [...rows].sort((a, b) => {
+            // Ensure statusRank is always a number (1=live, 2=upcoming, 3=completed)
+            const rankA = typeof a.statusRank === 'number' ? a.statusRank : 3;
+            const rankB = typeof b.statusRank === 'number' ? b.statusRank : 3;
+
+            // First sort by status rank (live first, then upcoming, then completed)
+            if (rankA !== rankB) return rankA - rankB;
+
+            // Within same status group, sort by start time
+            const startA = typeof a.startTs === 'number' ? a.startTs : Number.MAX_SAFE_INTEGER;
+            const startB = typeof b.startTs === 'number' ? b.startTs : Number.MAX_SAFE_INTEGER;
+            return startA - startB;
+        });
+    }
+
+    function rowAccentFormatter(row) {
+        const data = row.getData();
+        const element = row.getElement();
+        if (!element) return;
+        element.classList.remove('row-live', 'row-upcoming', 'row-completed');
+        if (data.statusGroup === 'live') element.classList.add('row-live');
+        if (data.statusGroup === 'upcoming') element.classList.add('row-upcoming');
+        if (data.statusGroup === 'completed') element.classList.add('row-completed');
+    }
+
+    function normalizeTournamentStatus({ rawStatus, startTs, timeInfo }) {
+        const status = (rawStatus || '').toLowerCase();
+        const now = Date.now();
+        let group = 'upcoming';
+
+        // First check if it's explicitly completed
+        if (status === 'completed') {
+            group = 'completed';
+        }
+        // Then check if it's explicitly live or locked
+        else if (status === 'live' || status === 'locked') {
+            group = 'live';
+        }
+        // Then check if start time has passed (makes it live)
+        else if (typeof startTs === 'number' && startTs <= now) {
+            group = 'live';
+        }
+        // Otherwise it's upcoming
+        else {
+            group = 'upcoming';
+        }
+
+        const rank = group === 'live' ? 1 : group === 'upcoming' ? 2 : 3;
+        const label = group === 'completed' ? 'COMPLETED' : group === 'live' ? 'LOCKED • LIVE' : (timeInfo?.badge || 'UPCOMING');
+
+
+        return { statusGroup: group, statusRank: Number(rank), statusLabel: label };
+    }
+
+    function initStartingSoonToolbar(table, data) {
+        const searchInput = document.getElementById('starting-soon-search');
+        const filterButtons = document.querySelectorAll('.starting-soon-toolbar .toolbar-pill');
+        if (!table) return;
+
+        let currentStatus = 'all';
+        let currentQuery = '';
+
+        function applyFilters() {
+            table.setFilter((row) => {
+                const normalized = normalizeTournamentStatus({
+                    rawStatus: row.rawStatus,
+                    startTs: row.startTs,
+                    timeInfo: null
+                });
+
+                // Status filter
+                const matchesStatus = currentStatus === 'all' || normalized.statusGroup === currentStatus;
+
+                // Search filter
+                const query = currentQuery.toLowerCase();
+                const matchesQuery = !query ||
+                    (row.title || '').toLowerCase().includes(query) ||
+                    (row.sports || '').toLowerCase().includes(query);
+
+                return matchesStatus && matchesQuery;
+            });
+
+            // Don't call setSort here - the initialSort already handles sorting
+            // The sort order will be maintained automatically
+        }
+
+        // Set up search input
+        if (searchInput) {
+            searchInput.addEventListener('input', (event) => {
+                currentQuery = event.target.value || '';
+                applyFilters();
+            });
+        }
+
+        // Set up filter buttons
+        if (filterButtons.length > 0) {
+            filterButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    // Update active state
+                    filterButtons.forEach((btn) => {
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-selected', 'false');
+                    });
+                    button.classList.add('active');
+                    button.setAttribute('aria-selected', 'true');
+
+                    // Update filter
+                    currentStatus = button.dataset.status || 'all';
+                    applyFilters();
+                });
+            });
+        }
+
+        // Don't apply filters initially - the table already has the sorted data
     }
 
     function normalizeStatus(status, timeInfo) {
@@ -530,19 +764,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (sortSelect) {
             sortSelect.addEventListener('change', function() {
+                // Always maintain statusRank as primary sort
                 switch (this.value) {
                     case 'time-desc':
-                        table.setSort([{column: 'startTs', dir: 'desc'}]);
+                        table.setSort([
+                            {column: 'statusRank', dir: 'asc'},
+                            {column: 'startTs', dir: 'desc'}
+                        ]);
                         break;
                     case 'participants-desc':
-                        table.setSort([{column: 'matches', dir: 'desc'}]);
+                        table.setSort([
+                            {column: 'statusRank', dir: 'asc'},
+                            {column: 'matches', dir: 'desc'}
+                        ]);
                         break;
                     case 'sport':
-                        table.setSort([{column: 'sports', dir: 'asc'}]);
+                        table.setSort([
+                            {column: 'statusRank', dir: 'asc'},
+                            {column: 'sports', dir: 'asc'}
+                        ]);
+                        break;
+                    case 'status':
+                        // Default status sort
+                        table.setSort([
+                            {column: 'statusRank', dir: 'asc'},
+                            {column: 'startTs', dir: 'asc'}
+                        ]);
                         break;
                     case 'time-asc':
                     default:
-                        table.setSort([{column: 'startTs', dir: 'asc'}]);
+                        table.setSort([
+                            {column: 'statusRank', dir: 'asc'},
+                            {column: 'startTs', dir: 'asc'}
+                        ]);
                         break;
                 }
             });
@@ -563,6 +817,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const tournaments = await fetchTournamentData();
             const rows = buildTabulatorRows(tournaments);
+
             initStartingSoonTable(rows);
             initTournamentsTable(rows);
         } catch (error) {
