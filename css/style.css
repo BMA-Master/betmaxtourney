@@ -52,6 +52,35 @@ html {
     background: var(--bma-dark-100);
 }
 
+/* ===== Shared Badge System ===== */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    box-shadow:
+        inset 0 0 0 1px rgba(0, 0, 0, 0.35),
+        0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+.badge--gold {
+    background: rgba(0, 0, 0, 0.35);
+    color: var(--bma-yellow-bright);
+    border-color: rgba(255, 237, 78, 0.55);
+}
+
+.badge--green {
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--bma-green-bright);
+    border-color: rgba(0, 230, 118, 0.55);
+}
+
 /* Global scrollbar branding */
 html {
     scrollbar-color: var(--bma-green-bright) var(--bma-dark-200);
@@ -97,8 +126,8 @@ h1, h2, h3, h4, h5, h6,
 }
 
 p {
-    font-size: 1.1rem;
-    line-height: 1.8;
+    font-size: 1rem;
+    line-height: 1.7;
 }
 
 /* ===== Content Pages Styling ===== */
@@ -238,7 +267,7 @@ article.container .content a:hover {
 /* ===== Section Headers - True Edge-to-Edge Typography ===== */
 .section-header {
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
     position: relative;
     width: 100%;
     margin-left: 0;
@@ -262,7 +291,7 @@ article.container .content a:hover {
     color: var(--bma-white);
     line-height: 1.1;
     letter-spacing: -0.03em;
-    text-transform: uppercase;
+    text-transform: none;
     position: relative;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     white-space: normal;
@@ -351,11 +380,11 @@ article.container .content a:hover {
 }
 
 .section-header p {
-    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-size: 1rem;
     color: rgba(255, 255, 255, 0.8);
     max-width: 700px;
     margin: 0 auto;
-    line-height: 1.6;
+    line-height: 1.7;
     font-weight: 500;
 }
 
@@ -898,6 +927,22 @@ nav {
     align-items: center;
 }
 
+.hero::after,
+.how-it-works::after,
+.live-tournaments::after,
+.beta-benefits::after,
+.final-cta::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.22) 50%, transparent 100%);
+    opacity: 0.6;
+    pointer-events: none;
+}
+
 /* Rotating Background Container - Shared by Hero & Live Tournaments */
 .hero-bg {
     position: absolute;
@@ -1061,10 +1106,10 @@ nav {
 }
 
 .hero-lead {
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: rgba(255, 255, 255, 0.95);
     margin-bottom: 1.5rem;
-    line-height: 1.5;
+    line-height: 1.7;
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
 }
 
@@ -1080,19 +1125,7 @@ nav {
 }
 
 .offer-badge {
-    display: inline-block;
-    background: rgba(0, 0, 0, 0.35);
-    color: var(--bma-yellow-bright);
-    padding: 0.2rem 0.65rem;
-    border-radius: 6px;
-    font-size: 0.65rem;
-    font-weight: 900;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    border: 1px solid rgba(255, 237, 78, 0.55);
-    box-shadow:
-        inset 0 0 0 1px rgba(0, 0, 0, 0.4),
-        0 6px 16px rgba(0, 0, 0, 0.35);
+    display: inline-flex;
     margin-bottom: 0.75rem;
 }
 
@@ -1492,16 +1525,19 @@ nav {
 
 /* ===== Buttons - Clean PrizePicks Style ===== */
 .btn {
-    display: inline-block;
-    padding: 0.65rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1.6rem;
     font-weight: 700;
     font-size: 0.9rem;
-    border-radius: 50px;
+    border-radius: 999px;
     transition: all 0.2s ease;
     cursor: pointer;
     border: none;
     text-transform: none;
     letter-spacing: 0;
+    min-height: 44px;
 }
 
 .btn-large {
@@ -1512,10 +1548,13 @@ nav {
 .btn-primary {
     background: var(--bma-green);
     color: var(--bma-white);
+    box-shadow: 0 10px 24px rgba(0, 230, 118, 0.25);
 }
 
 .btn-primary:hover {
     background: var(--bma-green-bright);
+    transform: translateY(-1px);
+    box-shadow: 0 14px 30px rgba(0, 230, 118, 0.35);
 }
 
 .btn-secondary {
@@ -1524,6 +1563,7 @@ nav {
     border: 2px solid rgba(255, 255, 255, 0.3);
     position: relative;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
 }
 
 .btn-secondary::before {
@@ -1548,7 +1588,8 @@ nav {
     background: rgba(255, 255, 255, 0.1);
     border-color: transparent;
     color: var(--bma-yellow-bright);
-    box-shadow: 0 0 30px rgba(0, 230, 118, 0.3);
+    box-shadow: 0 14px 30px rgba(0, 230, 118, 0.3);
+    transform: translateY(-1px);
 }
 
 /* ===== Product Showcase Header (Animated) ===== */
@@ -1776,6 +1817,8 @@ nav {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .tournament-type-card::before {
@@ -1817,7 +1860,7 @@ nav {
 }
 
 .tournament-type-icon svg {
-    filter: brightness(0) saturate(100%) invert(79%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(98%) contrast(119%) drop-shadow(0 0 8px rgba(0, 230, 118, 0.6));
+    filter: brightness(0) saturate(100%) invert(79%) sepia(79%) saturate(2000%) hue-rotate(86deg) brightness(98%) contrast(115%);
     transition: all 0.3s ease;
 }
 
@@ -1870,11 +1913,11 @@ nav {
 }
 
 .bet-type-label {
-    font-size: 1.6rem;
-    font-weight: 800;
+    font-size: 1.25rem;
+    font-weight: 700;
     color: var(--bma-white);
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    text-transform: none;
     flex: 1;
     text-align: center;
     white-space: nowrap;
@@ -2355,6 +2398,8 @@ nav {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .tournament-item::before {
@@ -2477,7 +2522,7 @@ nav {
 
 .tournament-info p {
     color: rgba(255, 255, 255, 0.6);
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 .tournament-stats {
@@ -2555,6 +2600,12 @@ nav {
     display: flex;
     gap: 2rem;
     align-items: flex-start;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 1.25rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .benefit-icon {
@@ -2571,12 +2622,13 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
 }
 
 .benefit-icon svg {
     width: 100%;
     height: 100%;
-    filter: brightness(0) saturate(100%) invert(79%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(98%) contrast(119%) drop-shadow(0 0 8px rgba(0, 230, 118, 0.6));
+    filter: brightness(0) saturate(100%) invert(79%) sepia(79%) saturate(2000%) hue-rotate(86deg) brightness(98%) contrast(115%);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -2617,9 +2669,9 @@ nav {
 
 .benefit-text p {
     color: rgba(255, 255, 255, 0.65);
-    font-size: 1.05rem;
+    font-size: 1rem;
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.7;
 }
 
 .benefits-right {
@@ -2820,10 +2872,10 @@ nav {
 }
 
 .cta-content p {
-    font-size: 1.4rem;
+    font-size: 1rem;
     color: rgba(255, 255, 255, 0.85);
     margin: 0 0 2.5rem;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 .cta-content .btn-primary {
@@ -2902,6 +2954,19 @@ footer {
     background: var(--bma-dark-100);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding: 4rem 0 2rem;
+    position: relative;
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.25) 50%, transparent 100%);
+    opacity: 0.6;
+    pointer-events: none;
 }
 
 .footer-top {
@@ -3955,6 +4020,26 @@ footer {
         -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 20px, #000 100%);
         mask-image: linear-gradient(90deg, transparent 0, #000 20px, #000 100%);
     }
+
+    /* Unified mobile spacing and headings */
+    section {
+        padding: 3rem 0 !important;
+    }
+
+    .section-header {
+        margin-bottom: 2.25rem;
+    }
+
+    .section-header h2 {
+        font-size: clamp(2rem, 7vw, 3rem);
+        line-height: 1.05;
+    }
+
+    .section-header p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-top: 0.75rem;
+    }
     
     .marquee-logo {
         height: 22px;
@@ -4078,9 +4163,9 @@ footer {
         width: 100%;
         display: block;
         text-align: center;
-        padding: 1rem; /* Fixed to be symmetric */
-        font-size: 1rem;
-        min-height: 48px;
+        padding: 0.85rem 1.5rem;
+        font-size: 0.95rem;
+        min-height: 44px;
     }
     
     /* Tournament Types Grid - Stack Vertically */
@@ -4157,6 +4242,26 @@ footer {
         -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 100%);
         mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 100%);
         gap: 2.5rem;
+    }
+
+    /* Unified small mobile spacing and headings */
+    section {
+        padding: 2.5rem 0 !important;
+    }
+
+    .section-header {
+        margin-bottom: 2rem;
+    }
+
+    .section-header h2 {
+        font-size: clamp(1.8rem, 8vw, 2.6rem);
+        line-height: 1.05;
+    }
+
+    .section-header p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-top: 0.65rem;
     }
     
     .marquee-tournament {
@@ -5614,6 +5719,7 @@ RESET AND REBUILD APPROACH
     .hero-ctas .btn {
         padding: 0.75rem 1.5rem !important;
         font-size: 0.9rem !important;
+        min-height: 44px;
     }
 
     .how-it-works {
@@ -5646,6 +5752,20 @@ RESET AND REBUILD APPROACH
     .btn {
         font-size: 0.85rem !important;
         padding: 0.65rem 1.25rem !important;
+    }
+
+    .marquee-promo {
+        padding: 0 0.15rem 0 0.35rem !important;
+    }
+
+    .marquee-promo-text {
+        font-size: 0.64rem;
+    }
+
+    .marquee-track {
+        padding: 0 0.35rem;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 100%);
+        mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 100%);
     }
 }
 
