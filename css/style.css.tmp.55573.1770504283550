@@ -326,7 +326,7 @@ article.container .content a:hover {
 /* ===== Section Headers - True Edge-to-Edge Typography ===== */
 .section-header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
     position: relative;
     width: 100%;
     margin-left: 0;
@@ -1688,7 +1688,7 @@ nav {
 
 /* ===== Product Showcase Sports (Dark Background) ===== */
 .product-showcase-sports {
-    padding: 2rem 0 3rem 0;
+    padding: 3rem 0 8rem 0;
     background: var(--bma-dark-200);
 }
 
@@ -1834,7 +1834,7 @@ nav {
 
 /* ===== How It Works - Tournament Mechanics ===== */
 .how-it-works {
-    padding: clamp(2.5rem, 4vw, 4rem) 0;
+    padding: clamp(4rem, 8vw, 8rem) 0;
     background-color: var(--bma-dark-200);
     background-image: url('../images/bet-max-action-gray-background.jpg');
     background-position: center;
@@ -1852,7 +1852,7 @@ nav {
 
 /* ===== How to Compete Section ===== */
 .how-to-compete {
-    padding: clamp(2.5rem, 4vw, 4rem) 0;
+    padding: clamp(4rem, 8vw, 8rem) 0;
     background: var(--bma-dark-200);
     position: relative;
     overflow: visible;
@@ -2008,7 +2008,7 @@ nav {
 .mechanics-intro {
     font-size: 1.1rem;
     color: rgba(255, 255, 255, 0.85);
-    margin: 0 auto 1.5rem;
+    margin: 0 auto 3rem;
     line-height: 1.7;
     max-width: 800px;
     text-align: center;
@@ -2232,8 +2232,8 @@ nav {
 .platform-previews {
     display: flex;
     flex-direction: column;
-    gap: clamp(1.5rem, 3vw, 3rem);
-    margin-top: 2rem;
+    gap: clamp(2rem, 5vw, 6rem);
+    margin-top: 5rem;
     max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
@@ -2428,7 +2428,7 @@ nav {
 
 /* ===== Live Tournaments ===== */
 .live-tournaments {
-    padding: clamp(2.5rem, 4vw, 4rem) 0;
+    padding: clamp(4rem, 8vw, 8rem) 0;
     position: relative;
     overflow: hidden;
     background: var(--bma-dark-200);
@@ -3404,7 +3404,7 @@ nav {
 
 /* ===== Beta Benefits ===== */
 .beta-benefits {
-    padding: clamp(2.5rem, 4vw, 4rem) 0;
+    padding: clamp(4rem, 8vw, 8rem) 0;
     background: var(--bma-dark-200);
 }
 
@@ -3566,7 +3566,7 @@ nav {
 
 /* ===== Final CTA ===== */
 .final-cta {
-    padding: clamp(3rem, 5vw, 5rem) 0;
+    padding: clamp(5rem, 10vw, 10rem) 0;
     background: url('../images/bet-max-action-gray-background.jpg') center/cover no-repeat;
     background-attachment: fixed;
     text-align: center;

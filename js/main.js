@@ -233,8 +233,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             });
 
-            // Duplicate content for seamless loop
-            marqueeTrack.innerHTML = marqueeHTML + marqueeHTML;
+            // Calculate how many times to duplicate based on item count
+            // For smooth scrolling, we need enough content to fill at least 2x the viewport width
+            const minItems = 8; // Minimum items needed for smooth scrolling
+            const actualItems = items.length;
+            let duplications = Math.max(2, Math.ceil(minItems / actualItems));
+
+            // Build the final marquee content with appropriate duplications
+            let finalMarqueeHTML = '';
+            for (let i = 0; i < duplications; i++) {
+                finalMarqueeHTML += marqueeHTML;
+            }
+
+            marqueeTrack.innerHTML = finalMarqueeHTML;
 
         } catch (error) {
             console.error('Failed to load tournaments:', error);
