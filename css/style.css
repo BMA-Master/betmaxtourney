@@ -1032,6 +1032,10 @@ nav {
     z-index: 1;
 }
 
+.live-tournaments .hero-overlay {
+    pointer-events: none;
+}
+
 .hero-overlay::before {
     content: '';
     position: absolute;
@@ -2369,9 +2373,15 @@ nav {
     background-attachment: fixed;
 }
 
-.live-tournaments .container {
+.live-tournaments .container,
+.live-tournaments-inner {
     position: relative;
     z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    padding-left: clamp(1.5rem, 4vw, 4rem);
+    padding-right: clamp(1.5rem, 4vw, 4rem);
 }
 
 .live-tournaments .section-header h2,
@@ -2386,13 +2396,492 @@ nav {
     margin-bottom: 3rem;
 }
 
+/* ===== Tournament Tables (Tabulator) ===== */
+.tournament-table {
+    margin-bottom: 3rem;
+    width: 100%;
+    max-width: 100%;
+}
+
+#starting-soon-table,
+#tournaments-table {
+    width: 100%;
+    display: block;
+}
+
+.live-tournaments .tournament-table,
+.live-tournaments #starting-soon-table {
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+    z-index: 2;
+}
+
+.starting-soon-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+}
+
+.section-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.starting-soon-header h2 {
+    margin: 0;
+}
+
+.section-subline {
+    max-width: 640px;
+    margin: 0 auto;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.starting-soon-cta {
+    margin-top: 0.25rem;
+}
+
+.starting-soon-shell {
+    position: relative;
+    padding: clamp(0.9rem, 2vw, 1.5rem);
+    border-radius: 20px;
+    background: rgba(4, 4, 4, 0.45);
+    border: 1px solid rgba(0, 230, 118, 0.18);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+}
+
+.starting-soon-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.6), rgba(255, 215, 0, 0.45));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.starting-soon-shell::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 0 32px rgba(0, 230, 118, 0.08);
+}
+
+.tournaments-page #tournaments-table {
+    width: 90%;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tournaments-page #tournaments-table.tabulator {
+    width: 100%;
+    max-width: 100%;
+}
+
+#starting-soon-table.tabulator,
+#tournaments-table.tabulator,
+.tabulator {
+    background: rgba(6, 6, 6, 0.75);
+    border: 1px solid rgba(0, 230, 118, 0.28);
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(0, 230, 118, 0.08);
+    width: 100%;
+}
+#starting-soon-table.tabulator .tabulator-header,
+#starting-soon-table.tabulator .tabulator-col {
+    background-color: rgba(6, 6, 6, 0.98);
+}
+
+#starting-soon-table.tabulator .tabulator-col-title {
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.live-tournaments #starting-soon-table.tabulator .tabulator-header,
+.live-tournaments #starting-soon-table.tabulator .tabulator-col {
+    background-color: rgba(6, 6, 6, 0.98);
+}
+
+.live-tournaments #starting-soon-table.tabulator .tabulator-col-title {
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.tabulator::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(255, 215, 0, 0.08);
+}
+
+.tabulator .tabulator-tableholder,
+.tabulator .tabulator-table {
+    background: transparent;
+    width: 100%;
+}
+
+#starting-soon-table.tabulator .tabulator-header,
+#tournaments-table.tabulator .tabulator-header,
+.tabulator .tabulator-header {
+    background:
+        linear-gradient(135deg, rgba(0, 230, 118, 0.2), rgba(255, 215, 0, 0.16)),
+        rgba(4, 4, 4, 0.98);
+    border-bottom: 1px solid rgba(0, 230, 118, 0.35);
+    box-shadow: inset 0 -1px 0 rgba(255, 215, 0, 0.18);
+    position: relative;
+}
+
+.tabulator .tabulator-header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(0, 230, 118, 0.9), rgba(255, 215, 0, 0.9));
+}
+
+.tabulator .tabulator-col {
+    background: transparent;
+    border-right: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.tabulator .tabulator-col:last-child {
+    border-right: none;
+}
+
+.tabulator .tabulator-col .tabulator-col-content {
+    padding: 1rem 1.1rem;
+}
+
+#starting-soon-table.tabulator .tabulator-col-title,
+#tournaments-table.tabulator .tabulator-col-title,
+.tabulator .tabulator-col-title {
+    font-family: var(--font-primary);
+}
+
+.tabulator .tabulator-col-sorter {
+    color: rgba(255, 215, 0, 0.75);
+}
+
+.tabulator .tabulator-col-sorter .tabulator-arrow {
+    border-bottom-color: rgba(255, 215, 0, 0.7);
+    border-top-color: rgba(255, 215, 0, 0.7);
+}
+
+.tabulator .tabulator-col.tabulator-sortable:hover {
+    background: rgba(0, 230, 118, 0.08);
+}
+
+.tabulator .tabulator-col[aria-sort="ascending"],
+.tabulator .tabulator-col[aria-sort="descending"] {
+    background: rgba(0, 230, 118, 0.12);
+}
+
+.tabulator .tabulator-col-title-holder {
+    align-items: center;
+}
+
+#starting-soon-table.tabulator .tabulator-col-title,
+#tournaments-table.tabulator .tabulator-col-title,
+.tabulator .tabulator-col-title {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+#starting-soon-table.tabulator .tabulator-row,
+#tournaments-table.tabulator .tabulator-row,
+.tabulator-row {
+    background: rgba(6, 6, 6, 0.78);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+#starting-soon-table.tabulator .tabulator-row.tabulator-row-even,
+#tournaments-table.tabulator .tabulator-row.tabulator-row-even,
+.tabulator-row.tabulator-row-even {
+    background: rgba(4, 4, 4, 0.75);
+}
+
+#starting-soon-table.tabulator .tabulator-row:hover,
+#tournaments-table.tabulator .tabulator-row:hover,
+.tabulator-row:hover {
+    background: rgba(10, 10, 10, 0.92);
+}
+
+#starting-soon-table.tabulator .tabulator-cell,
+#tournaments-table.tabulator .tabulator-cell,
+.tabulator-cell {
+    padding: 1rem 1.1rem;
+    color: rgba(255, 255, 255, 0.92);
+    border-right: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.tabulator .tabulator-cell {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.tabulator .tabulator-cell a {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.tabulator .tabulator-cell[tabulator-field="title"] {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.98);
+}
+
+.tabulator .tabulator-cell[tabulator-field="sports"] {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.tabulator .tabulator-cell[tabulator-field="matches"] {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tabulator .tabulator-cell[tabulator-field="entry"] {
+    color: var(--bma-green-bright);
+    font-weight: 700;
+}
+
+.tabulator .tabulator-cell[tabulator-field="td"] {
+    color: var(--bma-yellow);
+    font-weight: 700;
+}
+
+.tabulator .tabulator-cell[tabulator-field="link"] .btn {
+    padding: 0.55rem 1.1rem;
+    min-height: 40px;
+}
+
+.tabulator-cell.tabulator-cell-last {
+    text-align: right;
+}
+
+.tabulator .tabulator-placeholder {
+    background: rgba(6, 6, 6, 0.8);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.tabulator .tabulator-tableholder .tabulator-placeholder span {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.tabulator-cell:last-child {
+    border-right: none;
+}
+
+.tabulator-cell a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.tabulator-cell .btn {
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.tab-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+.tab-status.status-live {
+    background: rgba(0, 230, 118, 0.18);
+    border-color: rgba(0, 230, 118, 0.65);
+    color: var(--bma-green-bright);
+}
+
+.tab-status.status-upcoming {
+    background: rgba(255, 215, 0, 0.18);
+    border-color: rgba(255, 215, 0, 0.6);
+    color: var(--bma-yellow);
+}
+
+.tab-status.status-completed {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.22);
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.tabulator .tabulator-footer {
+    background: rgba(6, 6, 6, 0.95);
+    border-top: 1px solid rgba(0, 230, 118, 0.25);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.tabulator .tabulator-footer .tabulator-paginator {
+    padding: 0.75rem 1rem;
+}
+
+.tabulator .tabulator-footer .tabulator-page {
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.82);
+    border-radius: 8px;
+    padding: 0.4rem 0.75rem;
+    font-weight: 600;
+}
+
+.tabulator .tabulator-footer .tabulator-page.active {
+    background: rgba(0, 230, 118, 0.3);
+    border-color: rgba(0, 230, 118, 0.7);
+    color: var(--bma-green-bright);
+}
+
+.tabulator .tabulator-footer .tabulator-page:hover {
+    background: rgba(0, 230, 118, 0.12);
+}
+
+.tabulator .tabulator-footer .tabulator-page-size {
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: rgba(255, 255, 255, 0.85);
+    border-radius: 8px;
+    padding: 0.4rem 0.6rem;
+}
+
+.tabulator-responsive-collapse-toggle {
+    color: var(--bma-green-bright);
+}
+
+.tabulator .tabulator-responsive-collapse {
+    background: rgba(6, 6, 6, 0.95);
+    border-top: 1px solid rgba(0, 230, 118, 0.2);
+}
+
+.tabulator .tabulator-responsive-collapse table {
+    width: 100%;
+}
+
+.tabulator .tabulator-responsive-collapse td {
+    padding: 0.65rem 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+@media (max-width: 768px) {
+    .starting-soon-header {
+        margin-bottom: 2rem;
+        gap: 0.6rem;
+    }
+
+    .section-subline {
+        font-size: 0.95rem;
+    }
+
+    .starting-soon-shell {
+        padding: 0.75rem;
+    }
+
+    .tabulator .tabulator-col .tabulator-col-content {
+        padding: 0.8rem 0.75rem;
+    }
+
+    .tabulator-cell {
+        padding: 0.75rem 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    .tab-status {
+        font-size: 0.65rem;
+        padding: 0.3rem 0.6rem;
+    }
+
+    .tabulator .tabulator-cell[tabulator-field="link"] .btn {
+        padding: 0.45rem 0.9rem;
+        min-height: 36px;
+        font-size: 0.85rem;
+    }
+
+    .tabulator .tabulator-responsive-collapse td {
+        padding: 0.55rem 0.6rem;
+        font-size: 0.85rem;
+    }
+
+    .tabulator .tabulator-footer .tabulator-paginator {
+        padding: 0.6rem 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .starting-soon-header {
+        margin-bottom: 1.6rem;
+    }
+
+    .section-eyebrow {
+        font-size: 0.65rem;
+        letter-spacing: 0.18em;
+    }
+
+    .section-subline {
+        font-size: 0.9rem;
+    }
+
+    .starting-soon-shell {
+        padding: 0.6rem;
+    }
+
+    .tabulator {
+        border-radius: 14px;
+    }
+
+    .tabulator .tabulator-col-title {
+        font-size: 0.65rem;
+    }
+
+    .tabulator-cell {
+        font-size: 0.85rem;
+    }
+
+    .tab-status {
+        letter-spacing: 0.08em;
+    }
+
+    .tabulator .tabulator-cell[tabulator-field="link"] .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
 .tournament-item {
-    background: #1a1a1a;
-    border: 2px solid rgba(46, 139, 87, 0.3);
+    background: rgba(12, 12, 12, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     padding: 2rem;
     display: grid;
-    grid-template-columns: 180px 1fr auto auto;
+    grid-template-columns: 210px 1.2fr auto 180px;
     gap: 2rem;
     align-items: center;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -2408,7 +2897,7 @@ nav {
     inset: 0;
     border-radius: inherit;
     padding: 2px;
-    background: linear-gradient(135deg, var(--bma-green-bright), var(--bma-yellow));
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.45), rgba(255, 215, 0, 0.4));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -2423,6 +2912,80 @@ nav {
 
 .tournament-item:hover::before {
     opacity: 1;
+}
+
+.tournament-card .card-status {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+}
+
+.tournament-card .card-main h3 {
+    margin-bottom: 0.35rem;
+}
+
+.tournament-card .card-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(80px, 1fr));
+    gap: 1rem;
+}
+
+.tournament-card .card-cta {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.tournament-card .card-cta .btn {
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .tournament-card {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "status main"
+            "stats cta";
+    }
+
+    .tournament-card .card-status {
+        grid-area: status;
+    }
+
+    .tournament-card .card-main {
+        grid-area: main;
+    }
+
+    .tournament-card .card-stats {
+        grid-area: stats;
+        grid-template-columns: repeat(3, minmax(70px, 1fr));
+    }
+
+    .tournament-card .card-cta {
+        grid-area: cta;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 768px) {
+    .tournament-card {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "status"
+            "main"
+            "stats"
+            "cta";
+        padding: 1.5rem;
+    }
+
+    .tournament-card .card-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .tournament-card .card-cta {
+        width: 100%;
+    }
 }
 
 .tournament-time {
@@ -2467,35 +3030,41 @@ nav {
 }
 
 .time-badge {
-    background: var(--gradient-accent);
-    color: var(--bma-black);
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(0, 0, 0, 0.35);
+    color: var(--bma-yellow-bright);
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
     font-weight: 800;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(255, 215, 0, 0.35);
 }
 
 .time-badge.urgent {
-    background: linear-gradient(135deg, var(--bma-red) 0%, #a00a28 100%);
+    background: rgba(220, 20, 60, 0.2);
     color: var(--bma-white);
+    border-color: rgba(220, 20, 60, 0.55);
 }
 
 .time-badge.completed {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+    background: rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .time-badge.live {
-    background: linear-gradient(135deg, #FF1744 0%, #C62828 100%) !important;
+    background: rgba(255, 23, 68, 0.2) !important;
     color: var(--bma-white) !important;
-    animation: live-glow 1.5s ease-in-out infinite !important;
+    border-color: rgba(255, 23, 68, 0.5) !important;
+    animation: none !important;
 }
 
 .time-detail {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.65);
 }
 
 .tournament-info {
@@ -2527,7 +3096,7 @@ nav {
 
 .tournament-stats {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .stat-item {
@@ -2536,16 +3105,16 @@ nav {
 
 .stat-item strong {
     display: block;
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: var(--bma-green);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--bma-green-bright);
     margin-bottom: 0.25rem;
 }
 
 .stat-item span {
     display: block;
     font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.95);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .view-all-cta {
@@ -5907,8 +6476,19 @@ This MUST be at the END of the file to override everything
     display: inline-flex !important;
     flex-direction: row !important;
     gap: 0.4rem;
-    align-items: center;
+    align-items: stretch;
     flex-wrap: nowrap;
+    line-height: 1;
+    height: 24px;
+}
+
+.time-badge-dual .time-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 24px !important;
+    box-sizing: border-box !important;
+    vertical-align: middle !important;
 }
 
 /* UPCOMING State - Countdown Badge with MASSIVE GLOW */
@@ -5942,14 +6522,23 @@ span.time-badge.locked,
 .time-badge.locked {
     background: linear-gradient(135deg, rgba(100, 100, 100, 0.4) 0%, rgba(80, 80, 80, 0.3) 100%) !important;
     color: rgba(255, 255, 255, 0.85) !important;
-    padding: 0.35rem 0.7rem !important;
+    padding: 0 0.7rem !important;
     border-radius: 14px !important;
     font-size: 0.65rem !important;
     font-weight: 700 !important;
     letter-spacing: 1px !important;
     border: 1px solid rgba(255, 255, 255, 0.25) !important;
     text-transform: uppercase !important;
-    display: inline-block !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    line-height: 1 !important;
+    height: 24px !important;
+    align-self: center !important;
+    position: relative !important;
+    top: 0 !important;
+    box-sizing: border-box !important;
     box-shadow: none !important;
     animation: none !important;
 }
@@ -5959,19 +6548,26 @@ span.time-badge.live,
 .time-badge.live {
     background: linear-gradient(135deg, #FF1744 0%, #C62828 100%) !important;
     color: var(--bma-white) !important;
-    padding: 0.35rem 0.7rem !important;
+    padding: 0 0.7rem !important;
     border-radius: 14px !important;
     font-size: 0.65rem !important;
     font-weight: 800 !important;
     letter-spacing: 1px !important;
     display: inline-flex !important;
     align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
     gap: 0.35rem !important;
     text-transform: uppercase !important;
     animation: live-glow 1.5s ease-in-out infinite !important;
     will-change: box-shadow !important;
     transform: translateZ(0) !important;
     border: 1px solid rgba(255, 23, 68, 0.6) !important;
+    height: 24px !important;
+    align-self: center !important;
+    position: relative !important;
+    top: 0 !important;
+    box-sizing: border-box !important;
 }
 
 /* Live Recording Dot - RED SOLID */
@@ -5980,7 +6576,11 @@ span.time-badge.live,
     height: 8px;
     background: #FF0000;
     border-radius: 50%;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    align-self: center;
     animation: pulse-red 1s ease-in-out infinite;
     will-change: transform, opacity;
     transform: translateZ(0);

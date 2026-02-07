@@ -169,6 +169,26 @@
     margin-bottom: 3rem;
 }
 
+.tournaments-page .tournament-table {
+    margin-top: 2rem;
+}
+
+.tournaments-page .tabulator {
+    border-color: rgba(0, 230, 118, 0.32);
+}
+
+.tournaments-page .tabulator .tabulator-header {
+    background:
+        linear-gradient(135deg, rgba(0, 230, 118, 0.2), rgba(255, 215, 0, 0.16)),
+        rgba(6, 6, 6, 0.98);
+}
+
+@media (max-width: 768px) {
+    .tournaments-page .tournament-table {
+        margin-top: 1.5rem;
+    }
+}
+
 .tournaments-header .section-logo {
     height: 60px;
     margin-bottom: 1.5rem;

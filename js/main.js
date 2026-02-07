@@ -242,8 +242,337 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Load marquee on page load
+    // ===== Shared Tournament Data =====
+    async function fetchTournamentData() {
+        const response = await fetch('https://machfive-bmacdev-rest.onrender.com/rss/tournaments.xml');
+        const xmlText = await response.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+        const items = xmlDoc.querySelectorAll('item');
+
+        const tournaments = [];
+        items.forEach((item) => {
+            const title = item.querySelector('title')?.textContent || 'Tournament';
+            const description = item.querySelector('description')?.textContent || '';
+            const link = item.querySelector('link')?.textContent || '#';
+            const pubDate = item.querySelector('pubDate')?.textContent || '';
+            const guid = item.querySelector('guid')?.textContent || '';
+            const status = parseStatus(item);
+
+            const sportMatch = description.match(/Sports?:\s*([^\n|]+)/i);
+            const startTimeMatch = description.match(/Start(?:\s+Time)?:\s*([^\n|]+)/i);
+            const endTimeMatch = description.match(/End(?:\s+Time)?:\s*([^\n|]+)/i);
+            const prizePoolMatch = description.match(/Prize Pool:\s*\$?([0-9,]+)/i);
+            const matchesMatch = description.match(/(\d+)\s+matches/i);
+
+            const prizePool = prizePoolMatch ? parseInt(prizePoolMatch[1].replace(/,/g, ''), 10) : 0;
+            const matchCount = matchesMatch ? parseInt(matchesMatch[1], 10) : 0;
+
+            let sports = [];
+            if (sportMatch) {
+                sports = sportMatch[1].split(',').map(s => {
+                    const sportCode = s.trim().toLowerCase();
+                    return mapSportToIcon(sportCode);
+                }).filter(s => s);
+            }
+            if (sports.length === 0) {
+                sports = inferSportsFromTitle(title);
+            }
+
+            const startTimeStr = startTimeMatch ? startTimeMatch[1].trim() : '';
+            const endDate = endTimeMatch ? new Date(endTimeMatch[1]) : null;
+            let startDate = null;
+            if (startTimeStr) {
+                startDate = new Date(startTimeStr);
+                if (isNaN(startDate.getTime())) {
+                    const altDateStr = startTimeStr.replace(/UTC/i, 'GMT');
+                    startDate = new Date(altDateStr);
+                    if (isNaN(startDate.getTime())) {
+                        startDate = null;
+                    }
+                }
+            }
+
+            if (status === 'completed' && endDate && !isRecentlyCompleted(status, endDate)) {
+                return;
+            }
+
+            tournaments.push({
+                title,
+                description,
+                link,
+                pubDate,
+                guid,
+                prizePool,
+                startDate,
+                matchCount,
+                sport: sports[0] || '',
+                sports,
+                status
+            });
+        });
+
+        tournaments.sort((a, b) => {
+            if (!a.startDate) return 1;
+            if (!b.startDate) return -1;
+            return a.startDate - b.startDate;
+        });
+
+        return tournaments;
+    }
+
+    function buildTabulatorRows(tournaments) {
+        return tournaments.map(t => {
+            const timeInfo = getTimeUntil(t.startDate);
+            const statusGroup = normalizeStatus(t.status, timeInfo);
+            let statusLabel = timeInfo.badge || 'UPCOMING';
+            if (statusGroup === 'completed') statusLabel = 'COMPLETED';
+            if (statusGroup === 'live') statusLabel = 'LOCKED • LIVE';
+
+            return {
+                status: statusLabel,
+                time: t.startDate ? formatDateTime(t.startDate) : 'TBD',
+                startTs: t.startDate ? t.startDate.getTime() : Number.MAX_SAFE_INTEGER,
+                title: t.title,
+                sports: (t.sports || []).join(', '),
+                sportsRaw: t.sports || [],
+                sportFilter: normalizeSportFilter(t.sport || ''),
+                sportsFilter: (t.sports || []).map(s => normalizeSportFilter(s)).filter(s => s),
+                matches: t.matchCount || 0,
+                entry: 'FREE',
+                td: t.prizePool ? t.prizePool.toLocaleString() : '—',
+                link: t.link || '#',
+                rawStatus: t.status,
+                statusGroup
+            };
+        });
+    }
+
+    function initStartingSoonTable(rows) {
+        const target = document.getElementById('starting-soon-table');
+        if (!target || typeof Tabulator === 'undefined') return;
+
+        const data = rows.filter(row => row.statusGroup !== 'completed').slice(0, 3);
+        new Tabulator(target, {
+            data,
+            layout: "fitColumns",
+            height: "auto",
+            responsiveLayout: "collapse",
+            columns: [
+                {title: "Status", field: "status", headerSort: false, formatter: statusFormatter},
+                {title: "Start", field: "startTs", headerSort: true, sorter: "number", formatter: timeFormatter},
+                {title: "Tournament", field: "title", headerSort: true},
+                {title: "Sports", field: "sports", headerSort: false},
+                {title: "Matches", field: "matches", hozAlign: "center"},
+                {title: "Entry", field: "entry", hozAlign: "center"},
+                {title: "TD$", field: "td", hozAlign: "center"},
+                {title: "", field: "link", headerSort: false, formatter: ctaFormatter}
+            ]
+        });
+    }
+
+    function initTournamentsTable(rows) {
+        const target = document.getElementById('tournaments-table');
+        if (!target || typeof Tabulator === 'undefined') return;
+
+        const sizeSelect = document.getElementById('items-per-page');
+        const pageSize = sizeSelect ? parseInt(sizeSelect.value, 10) || 10 : 10;
+
+        const table = new Tabulator(target, {
+            data: rows,
+            layout: "fitColumns",
+            responsiveLayout: "collapse",
+            pagination: "local",
+            paginationSize: pageSize,
+            paginationSizeSelector: [10, 25, 50],
+            columns: [
+                {title: "Status", field: "status", headerSort: false, formatter: statusFormatter},
+                {title: "Start", field: "startTs", headerSort: true, sorter: "number", formatter: timeFormatter},
+                {title: "Tournament", field: "title", headerSort: true},
+                {title: "Sports", field: "sports", headerSort: false},
+                {title: "Matches", field: "matches", hozAlign: "center"},
+                {title: "Entry", field: "entry", hozAlign: "center"},
+                {title: "TD$", field: "td", hozAlign: "center"},
+                {title: "", field: "link", headerSort: false, formatter: ctaFormatter}
+            ]
+        });
+
+        initTournamentsFilters(table, rows);
+    }
+
+    function statusFormatter(cell) {
+        const value = cell.getValue();
+        const status = cell.getRow().getData().statusGroup || cell.getRow().getData().rawStatus;
+        let statusClass = 'status-upcoming';
+        if (status === 'completed') statusClass = 'status-completed';
+        if (status === 'live' || status === 'locked') statusClass = 'status-live';
+        return `<span class="tab-status ${statusClass}">${value}</span>`;
+    }
+
+    function ctaFormatter(cell) {
+        const link = cell.getValue();
+        return `<a class="btn btn-primary btn-small" href="${link}">Enter Free</a>`;
+    }
+
+    function timeFormatter(cell) {
+        const data = cell.getRow().getData();
+        return data.time || 'TBD';
+    }
+
+    function normalizeStatus(status, timeInfo) {
+        if (status === 'completed') return 'completed';
+        if (status === 'live' || status === 'locked') return 'live';
+        if (timeInfo && timeInfo.isLocked) return 'live';
+        return 'upcoming';
+    }
+
+    function normalizeSportFilter(sport) {
+        if (!sport) return '';
+        const value = sport.toUpperCase();
+        if (value === 'EPL' || value === 'UEFA' || value === 'MLS' || value === 'SOCCER') {
+            return 'SOCCER';
+        }
+        return value;
+    }
+
+    function inferSportsFromTitle(title) {
+        const titleLower = (title || '').toLowerCase();
+        if (titleLower.includes('hoop') || titleLower.includes('basketball') || titleLower.includes('nba')) return ['NBA'];
+        if (titleLower.includes('football') || titleLower.includes('nfl')) return ['NFL'];
+        if (titleLower.includes('baseball') || titleLower.includes('mlb')) return ['MLB'];
+        if (titleLower.includes('hockey') || titleLower.includes('nhl')) return ['NHL'];
+        if (titleLower.includes('soccer') || titleLower.includes('epl') || titleLower.includes('uefa')) return ['SOCCER'];
+        if (titleLower.includes('college') || titleLower.includes('ncaa')) return ['NCAAF'];
+        if (titleLower.includes('boxing') || titleLower.includes('boxer')) return ['BOXING'];
+        if (titleLower.includes('mma') || titleLower.includes('ufc') || titleLower.includes('mixed martial')) return ['MMA'];
+        return [];
+    }
+
+    function initTournamentsFilters(table, rows) {
+        const tournamentsPage = document.querySelector('.tournaments-page');
+        if (!tournamentsPage || !table) return;
+
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const sportPills = document.querySelectorAll('.sport-pill');
+        const sortSelect = document.getElementById('sort-select');
+        const sizeSelect = document.getElementById('items-per-page');
+        const emptyState = document.getElementById('empty-state');
+        const tableEl = document.getElementById('tournaments-table');
+
+        ['pagination-controls', 'pagination-controls-top'].forEach(id => {
+            const container = document.getElementById(id);
+            if (container) {
+                container.style.display = 'none';
+            }
+        });
+
+        const counts = {
+            all: rows.length,
+            live: rows.filter(r => r.statusGroup === 'live').length,
+            upcoming: rows.filter(r => r.statusGroup === 'upcoming').length,
+            completed: rows.filter(r => r.statusGroup === 'completed').length
+        };
+        const countAll = document.getElementById('count-all');
+        const countLive = document.getElementById('count-live');
+        const countUpcoming = document.getElementById('count-upcoming');
+        const countCompleted = document.getElementById('count-completed');
+        if (countAll) countAll.textContent = counts.all;
+        if (countLive) countLive.textContent = counts.live;
+        if (countUpcoming) countUpcoming.textContent = counts.upcoming;
+        if (countCompleted) countCompleted.textContent = counts.completed;
+
+        let currentStatus = 'all';
+        let currentSport = 'all';
+
+        function applyFilters() {
+            table.setFilter((data) => {
+                const statusMatch = currentStatus === 'all' || data.statusGroup === currentStatus;
+                const sportMatch = currentSport === 'all' || data.sportFilter === currentSport || (data.sportsFilter || []).includes(currentSport);
+                return statusMatch && sportMatch;
+            });
+        }
+
+        function updateEmptyState() {
+            if (!emptyState || !tableEl) return;
+            const visible = table.getDataCount("active");
+            if (visible === 0) {
+                emptyState.style.display = 'flex';
+                tableEl.style.display = 'none';
+            } else {
+                emptyState.style.display = 'none';
+                tableEl.style.display = 'block';
+            }
+        }
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                filterTabs.forEach(t => {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-selected', 'false');
+                });
+                this.classList.add('active');
+                this.setAttribute('aria-selected', 'true');
+                currentStatus = this.dataset.filter;
+                applyFilters();
+                updateEmptyState();
+            });
+        });
+
+        sportPills.forEach(pill => {
+            pill.addEventListener('click', function() {
+                sportPills.forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+                currentSport = this.dataset.sport;
+                applyFilters();
+                updateEmptyState();
+            });
+        });
+
+        if (sortSelect) {
+            sortSelect.addEventListener('change', function() {
+                switch (this.value) {
+                    case 'time-desc':
+                        table.setSort([{column: 'startTs', dir: 'desc'}]);
+                        break;
+                    case 'participants-desc':
+                        table.setSort([{column: 'matches', dir: 'desc'}]);
+                        break;
+                    case 'sport':
+                        table.setSort([{column: 'sports', dir: 'asc'}]);
+                        break;
+                    case 'time-asc':
+                    default:
+                        table.setSort([{column: 'startTs', dir: 'asc'}]);
+                        break;
+                }
+            });
+        }
+
+        if (sizeSelect) {
+            sizeSelect.addEventListener('change', function() {
+                const size = parseInt(this.value, 10) || 10;
+                table.setPageSize(size);
+            });
+        }
+
+        table.on("dataFiltered", updateEmptyState);
+        updateEmptyState();
+    }
+
+    async function initTournamentTables() {
+        try {
+            const tournaments = await fetchTournamentData();
+            const rows = buildTabulatorRows(tournaments);
+            initStartingSoonTable(rows);
+            initTournamentsTable(rows);
+        } catch (error) {
+            console.error('Tabulator init failed:', error);
+        }
+    }
+
+    // Load marquee and tables on page load
     loadTournamentMarquee();
+    initTournamentTables();
 
     // Refresh marquee every 60 seconds
     setInterval(loadTournamentMarquee, 60000);
@@ -676,8 +1005,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const buttonClass = timeUntil.isLocked ? 'btn btn-secondary' : 'btn btn-primary';
 
                 return `
-                    <div class="tournament-item ${stateClass}" ${t.startDate ? `data-start-time="${t.startDate.toISOString()}"` : ''}>
-                        <div class="tournament-time">
+                    <div class="tournament-item tournament-card ${stateClass}" ${t.startDate ? `data-start-time="${t.startDate.toISOString()}"` : ''}>
+                        <div class="card-status">
                             ${timeUntil.isLocked ? `
                                 <span class="time-badge-dual">
                                     <span class="time-badge locked">LOCKED</span>
@@ -688,11 +1017,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             `}
                             <div class="time-detail">${formatDateTime(t.startDate)}</div>
                         </div>
-                        <div class="tournament-info">
+                        <div class="card-main">
                             <div class="tournament-sport-icons">${sportIconsHTML}</div>
                             <h3>${t.title}</h3>
                         </div>
-                        <div class="tournament-stats">
+                        <div class="card-stats">
                             <div class="stat-item">
                                 <strong>${matchCount}</strong>
                                 <span>Matches</span>
@@ -706,7 +1035,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <span>TD$</span>
                             </div>
                         </div>
-                        <div class="tournament-action">
+                        <div class="card-cta">
                             <a href="${t.link}" class="${buttonClass}">${timeUntil.isLocked ? 'View Results' : 'Enter Free'}</a>
                         </div>
                     </div>
@@ -888,7 +1217,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Initialize live tournament loading
-    loadLiveTournaments();
+    // loadLiveTournaments();
 
     // Update countdowns every 30 seconds for live tournaments
     setInterval(() => {
@@ -968,11 +1297,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================
     // Tournaments Page - Full Listing with Filters
     // ============================================
-    const tournamentsPage = document.querySelector('.tournaments-page');
-
-    if (tournamentsPage) {
-        loadAllTournaments();
-    }
 
     async function loadAllTournaments() {
         const grid = document.getElementById('tournament-grid');
@@ -1212,8 +1536,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const buttonClass = timeInfo.isLocked ? 'btn btn-secondary' : 'btn btn-primary';
 
                 return `
-                    <div class="tournament-item ${stateClass}" data-status="${t.status}" data-sport="${t.sport}">
-                        <div class="tournament-time">
+                    <div class="tournament-item tournament-card ${stateClass}" data-status="${t.status}" data-sport="${t.sport}">
+                        <div class="card-status">
                             ${timeInfo.isLocked && t.status !== 'completed' ? `
                                 <span class="time-badge-dual">
                                     <span class="time-badge locked">LOCKED</span>
@@ -1224,11 +1548,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             `}
                             <div class="time-detail">${formatDateTime(t.startDate)}</div>
                         </div>
-                        <div class="tournament-info">
+                        <div class="card-main">
                             <div class="tournament-sport-icons">${sportIconsHTML}</div>
                             <h3>${t.title}</h3>
                         </div>
-                        <div class="tournament-stats">
+                        <div class="card-stats">
                             <div class="stat-item">
                                 <strong>${t.matchCount || 0}</strong>
                                 <span>Matches</span>
@@ -1242,7 +1566,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <span>TD$</span>
                             </div>
                         </div>
-                        <div class="tournament-action">
+                        <div class="card-cta">
                             <a href="${t.link}" class="${buttonClass}">
                                 ${timeInfo.isLocked ? 'View Results' : 'Enter Free'}
                             </a>
