@@ -518,7 +518,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function ctaFormatter(cell) {
         const link = cell.getValue();
-        return `<a class="btn btn-primary btn-small" href="${link}">Enter Free</a>`;
+        const rowData = cell.getRow().getData();
+
+        // Get statusGroup from row data - it should be set during initialization
+        let statusGroup = rowData.statusGroup;
+
+        // If statusGroup is not set, derive it from rawStatus
+        if (!statusGroup) {
+            const status = (rowData.rawStatus || '').toLowerCase();
+            if (status === 'completed') {
+                statusGroup = 'completed';
+            } else if (status === 'live' || status === 'locked') {
+                statusGroup = 'live';
+            } else {
+                statusGroup = 'upcoming';
+            }
+        }
+
+        // Determine button text and style based on status
+        const isUpcoming = statusGroup === 'upcoming';
+        const buttonText = isUpcoming ? 'Enter Free' : 'View Results';
+        const buttonClass = isUpcoming ? 'btn btn-primary btn-small' : 'btn btn-secondary btn-small';
+
+        return `<a class="${buttonClass}" href="${link}">${buttonText}</a>`;
     }
 
     function timeFormatter(cell) {
