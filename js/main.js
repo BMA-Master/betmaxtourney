@@ -406,12 +406,11 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             columns: [
                 {title: "Rank", field: "statusRank", visible: false, headerSort: false, sorter: "number", sorterParams: {alignEmptyValues: "bottom"}},
-                {title: "Status", field: "status", headerSort: true, formatter: statusFormatter, sorter: statusSorter, minWidth: 100},
-                {title: "Start", field: "startTs", headerSort: true, sorter: "number", formatter: timeFormatter, hozAlign: "left", minWidth: 140},
-                {title: "Tournament", field: "title", headerSort: true, minWidth: 200, formatter: titleFormatter},
+                {title: "Status", field: "status", headerSort: true, formatter: statusFormatter, sorter: statusSorter, minWidth: 150},
+                {title: "Tournament", field: "title", headerSort: true, minWidth: 250, formatter: titleFormatter},
                 {title: "Sports", field: "sports", headerSort: true, minWidth: 120, formatter: sportsFormatter},
                 {title: "Matches", field: "matches", headerSort: true, hozAlign: "right", minWidth: 80},
-                {title: "TD$", field: "td", headerSort: true, hozAlign: "right", minWidth: 80},
+                {title: "Tournament Dollars (TD$)", field: "td", headerSort: true, hozAlign: "right", minWidth: 150},
                 {title: "", field: "link", headerSort: false, formatter: ctaFormatter, hozAlign: "right", minWidth: 120}
             ]
         });
@@ -466,12 +465,11 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             columns: [
                 {title: "Rank", field: "statusRank", visible: false, headerSort: false, sorter: "number", sorterParams: {alignEmptyValues: "bottom"}},
-                {title: "Status", field: "status", headerSort: true, formatter: statusFormatter, sorter: statusSorter, minWidth: 100},
-                {title: "Start", field: "startTs", headerSort: true, sorter: "number", formatter: timeFormatter, hozAlign: "left", minWidth: 140},
-                {title: "Tournament", field: "title", headerSort: true, minWidth: 200, formatter: titleFormatter},
+                {title: "Status", field: "status", headerSort: true, formatter: statusFormatter, sorter: statusSorter, minWidth: 150},
+                {title: "Tournament", field: "title", headerSort: true, minWidth: 250, formatter: titleFormatter},
                 {title: "Sports", field: "sports", headerSort: true, minWidth: 120, formatter: sportsFormatter},
                 {title: "Matches", field: "matches", headerSort: true, hozAlign: "right", minWidth: 80},
-                {title: "TD$", field: "td", headerSort: true, hozAlign: "right", minWidth: 80},
+                {title: "Tournament Dollars (TD$)", field: "td", headerSort: true, hozAlign: "right", minWidth: 150},
                 {title: "", field: "link", headerSort: false, formatter: ctaFormatter, hozAlign: "right", minWidth: 120}
             ]
         });
@@ -492,9 +490,47 @@ document.addEventListener('DOMContentLoaded', function() {
         const value = cell.getValue();
         const status = normalized.statusGroup || rowData.statusGroup || rowData.rawStatus;
         let statusClass = 'status-upcoming';
-        if (status === 'completed') statusClass = 'status-completed';
-        if (status === 'live' || status === 'locked') statusClass = 'status-live';
-        return `<span class="tab-status ${statusClass}">${value}</span>`;
+        let displayContent = value;
+
+        if (status === 'completed') {
+            statusClass = 'status-completed';
+        } else if (status === 'live' || status === 'locked') {
+            statusClass = 'status-live';
+        } else if (status === 'upcoming' && rowData.startTs) {
+            // For upcoming tournaments, add countdown
+            const now = Date.now();
+            const timeRemaining = rowData.startTs - now;
+
+            if (timeRemaining > 0) {
+                const countdown = getCountdownString(timeRemaining);
+                displayContent = `UPCOMING • ${countdown}`;
+                statusClass = 'status-upcoming with-countdown';
+
+                // Store timestamp for live updates
+                if (!cell.getElement().dataset.startTime) {
+                    cell.getElement().dataset.startTime = rowData.startTs;
+                }
+            }
+        }
+
+        return `<span class="tab-status ${statusClass}">${displayContent}</span>`;
+    }
+
+    function getCountdownString(milliseconds) {
+        const seconds = Math.floor(milliseconds / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+
+        if (days > 0) {
+            return `${days}d ${hours % 24}h`;
+        } else if (hours > 0) {
+            return `${hours}h ${minutes % 60}m`;
+        } else if (minutes > 0) {
+            return `${minutes}m`;
+        } else {
+            return 'Soon';
+        }
     }
 
     function statusSorter(a, b, aRow, bRow) {
@@ -2282,4 +2318,31 @@ if (document.querySelector('.how-to-play-content')) {
 }
 
 // Removed JavaScript hack - CSS solution implemented at end of style.css
+
+// Update countdown timers every 30 seconds
+function updateAllCountdowns() {
+    // Update all status cells with countdowns
+    document.querySelectorAll('.tab-status.with-countdown').forEach(element => {
+        const cell = element.closest('.tabulator-cell');
+        if (cell && cell.dataset.startTime) {
+            const startTime = parseInt(cell.dataset.startTime);
+            const now = Date.now();
+            const timeRemaining = startTime - now;
+
+            if (timeRemaining > 0) {
+                const countdown = getCountdownString(timeRemaining);
+                element.textContent = `UPCOMING • ${countdown}`;
+            } else {
+                // Tournament has started, update to LIVE
+                element.innerHTML = 'LOCKED • LIVE';
+                element.className = 'tab-status status-live';
+            }
+        }
+    });
+}
+
+// Start countdown updates - every 30 seconds
+if (typeof getCountdownString === 'function') {
+    setInterval(updateAllCountdowns, 30000);
+}
 
