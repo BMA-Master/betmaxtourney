@@ -409,7 +409,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {title: "Status", field: "status", headerSort: true, formatter: statusFormatter, sorter: statusSorter, minWidth: 100},
                 {title: "Start", field: "startTs", headerSort: true, sorter: "number", formatter: timeFormatter, hozAlign: "left", minWidth: 140},
                 {title: "Tournament", field: "title", headerSort: true, minWidth: 200, formatter: titleFormatter},
-                {title: "Sports", field: "sports", headerSort: true, minWidth: 120, formatter: sportsFormatter},
+                {title: "Sports", field: "sports", headerSort: true, minWidth: 100},
                 {title: "Matches", field: "matches", headerSort: true, hozAlign: "right", minWidth: 80},
                 {title: "TD$", field: "td", headerSort: true, hozAlign: "right", minWidth: 80},
                 {title: "", field: "link", headerSort: false, formatter: ctaFormatter, hozAlign: "right", minWidth: 120}
@@ -469,7 +469,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {title: "Status", field: "status", headerSort: true, formatter: statusFormatter, sorter: statusSorter, minWidth: 100},
                 {title: "Start", field: "startTs", headerSort: true, sorter: "number", formatter: timeFormatter, hozAlign: "left", minWidth: 140},
                 {title: "Tournament", field: "title", headerSort: true, minWidth: 200, formatter: titleFormatter},
-                {title: "Sports", field: "sports", headerSort: true, minWidth: 120, formatter: sportsFormatter},
+                {title: "Sports", field: "sports", headerSort: true, minWidth: 100},
                 {title: "Matches", field: "matches", headerSort: true, hozAlign: "right", minWidth: 80},
                 {title: "TD$", field: "td", headerSort: true, hozAlign: "right", minWidth: 80},
                 {title: "", field: "link", headerSort: false, formatter: ctaFormatter, hozAlign: "right", minWidth: 120}
@@ -543,29 +543,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function timeFormatter(cell) {
         const data = cell.getRow().getData();
         return data.time || 'TBD';
-    }
-
-    function sportsFormatter(cell) {
-        const rowData = cell.getRow().getData();
-        const sportsArray = rowData.sportsRaw || [];
-
-        if (sportsArray.length === 0) {
-            return '';
-        }
-
-        // Create HTML with icon and text for each sport
-        const sportsHTML = sportsArray.map(sport => {
-            // Map sport codes to display names if needed
-            const displayName = sport;
-            const iconClass = sport === 'SOCCER' ? 'EPL' : sport; // Use EPL icon for soccer
-
-            return `<span class="sport-with-icon">
-                <span class="sport-icon-small ${iconClass}"></span>
-                <span class="sport-name">${displayName}</span>
-            </span>`;
-        }).join(' ');
-
-        return sportsHTML;
     }
 
     function titleFormatter(cell) {

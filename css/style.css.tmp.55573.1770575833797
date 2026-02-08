@@ -2841,28 +2841,23 @@ nav {
 .sport-with-icon {
     display: inline-flex;
     align-items: center;
-    margin-right: 0.75rem;
-    white-space: nowrap;
+    margin-right: 0.5rem;
 }
 
 .sport-with-icon .sport-icon-small {
     display: inline-block;
-    width: 20px !important;
-    height: 20px !important;
-    margin-right: 0.4rem;
-    /* Green glow filter to match rest of site */
-    filter: brightness(0) saturate(100%) invert(79%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(98%) contrast(119%) !important;
+    width: 16px;
+    height: 16px;
+    margin-right: 0.35rem;
+    filter: brightness(0) invert(1) opacity(0.7);
     vertical-align: middle;
-    opacity: 0.9;
 }
 
 .sport-with-icon .sport-name {
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.75px;
+    letter-spacing: 0.5px;
     vertical-align: middle;
-    color: rgba(255, 255, 255, 0.85);
 }
 
 .tabulator .tabulator-cell {
