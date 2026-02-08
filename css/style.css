@@ -2847,13 +2847,28 @@ nav {
 
 .sport-with-icon .sport-icon-small {
     display: inline-block;
-    width: 20px !important;
-    height: 20px !important;
-    margin-right: 0.4rem;
+    width: 36px !important;
+    height: 36px !important;
+    margin-right: 0.5rem;
+    padding: 6px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.03);
+    background-size: 24px 24px !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
     /* Green glow filter to match rest of site */
-    filter: brightness(0) saturate(100%) invert(79%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(98%) contrast(119%) !important;
+    filter: brightness(0) saturate(100%) invert(79%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(98%) contrast(119%) drop-shadow(0 0 4px rgba(0, 230, 118, 0.5)) !important;
     vertical-align: middle;
-    opacity: 0.9;
+    transition: all 0.2s ease;
+}
+
+.tabulator-row:hover .sport-with-icon .sport-icon-small {
+    background-color: rgba(46, 139, 87, 0.1);
+    border-color: rgba(0, 230, 118, 0.2);
+    transform: scale(1.05);
+    filter: brightness(0) saturate(100%) invert(79%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(98%) contrast(119%) drop-shadow(0 0 8px rgba(0, 230, 118, 0.8)) !important;
 }
 
 .sport-with-icon .sport-name {
