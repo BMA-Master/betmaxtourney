@@ -1487,7 +1487,7 @@ document.addEventListener('DOMContentLoaded', function() {
         container.innerHTML = `
             <div class="tournament-item">
                 <div class="tournament-time">
-                    <div class="time-badge">STARTS IN 2H 15M</div>
+                    <div class="time-badge">LOCKS IN 2H 15M</div>
                     <div class="time-detail">Sun 1:00 PM ET</div>
                 </div>
                 <div class="tournament-info">
@@ -1511,7 +1511,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="tournament-item">
                 <div class="tournament-time">
-                    <div class="time-badge">STARTS IN 5H 45M</div>
+                    <div class="time-badge">LOCKS IN 5H 45M</div>
                     <div class="time-detail">Sun 7:00 PM ET</div>
                 </div>
                 <div class="tournament-info">
@@ -1535,7 +1535,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="tournament-item">
                 <div class="tournament-time">
-                    <div class="time-badge">STARTS TOMORROW</div>
+                    <div class="time-badge">LOCKS TOMORROW</div>
                     <div class="time-detail">Mon 1:00 PM ET</div>
                 </div>
                 <div class="tournament-info">
@@ -1631,7 +1631,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     const countdownSpan = item.querySelector('.marquee-countdown');
                     if (countdownSpan) {
-                        countdownSpan.textContent = `Starts in ${hours}h ${minutes}m`;
+                        countdownSpan.textContent = `Locks in ${hours}h ${minutes}m`;
                     }
                 }
             }
