@@ -1610,13 +1610,13 @@ nav {
 .btn-primary {
     background: var(--bma-green);
     color: var(--bma-white);
-    box-shadow: 0 10px 24px rgba(0, 230, 118, 0.25);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Clean shadow, no color bleed */
 }
 
 .btn-primary:hover {
     background: var(--bma-green-bright);
     transform: translateY(-1px);
-    box-shadow: 0 14px 30px rgba(0, 230, 118, 0.35);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Slightly larger shadow on hover, still no green glow */
 }
 
 .btn-secondary {
