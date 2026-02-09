@@ -1693,7 +1693,9 @@ nav {
 /* ===== Product Showcase Sports (Dark Background) ===== */
 .product-showcase-sports {
     padding: 2rem 0 3rem 0;
-    background: var(--bma-dark-100);
+    background:
+        linear-gradient(135deg, rgba(46, 139, 87, 0.15), rgba(255, 215, 0, 0.08)),
+        rgba(10, 10, 10, 0.85);
     position: relative;
 }
 
@@ -2474,8 +2476,9 @@ nav {
     padding: clamp(2.5rem, 4vw, 4rem) 0;
     position: relative;
     overflow: hidden;
-    background: var(--bma-dark-200);
-    background-attachment: fixed;
+    background:
+        linear-gradient(135deg, rgba(46, 139, 87, 0.15), rgba(255, 215, 0, 0.08)),
+        rgba(10, 10, 10, 0.85);
 }
 
 .live-tournaments .container,
