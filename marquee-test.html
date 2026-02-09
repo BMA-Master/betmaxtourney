@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marquee Styles Test - Bet Max Tourney</title>
+    <style>
+        :root {
+            --bma-green: #2F794D;
+            --bma-green-bright: #00E676;
+            --bma-yellow: #FFD700;
+            --bma-yellow-bright: #FFED4E;
+            --bma-red: #DC143C;
+            --bma-black: #000000;
+            --bma-white: #fafafa;
+            --bma-dark-100: #0a0a0a;
+            --bma-dark-200: #141414;
+            --bma-dark-300: #1a1a1a;
+            --gradient-accent: linear-gradient(135deg, var(--bma-yellow) 0%, #FFA500 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #fafafa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--bma-green-bright);
+        }
+
+        .marquee-section {
+            margin-bottom: 4rem;
+        }
+
+        .marquee-section h2 {
+            color: var(--bma-yellow);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            height: 100px;
+            display: flex;
+            align-items: center;
+        }
+
+        .marquee-track {
+            display: flex;
+            animation: scroll 20s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .marquee-track span {
+            padding: 0 2rem;
+            font-size: 3rem;
+            font-weight: 900;
+            display: inline-block;
+        }
+
+        /* 1. ESPN Ticker Style */
+        .espn-ticker {
+            background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%);
+            border-top: 3px solid var(--bma-red);
+            border-bottom: 1px solid #333;
+        }
+
+        .espn-ticker .marquee-track span {
+            font-family: 'Arial Black', sans-serif;
+            text-transform: uppercase;
+            font-size: 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .espn-ticker .marquee-track span:nth-child(odd) {
+            color: white;
+        }
+
+        .espn-ticker .marquee-track span:nth-child(4n+1) {
+            color: var(--bma-yellow);
+        }
+
+        .espn-ticker .separator {
+            color: var(--bma-red) !important;
+            font-size: 1.5rem;
+        }
+
+        /* 2. Stadium LED Board */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap');
+
+        .stadium-led {
+            background: #000;
+            border: 4px solid #222;
+            box-shadow: inset 0 0 20px rgba(0, 230, 118, 0.2);
+        }
+
+        .stadium-led .marquee-track span {
+            font-family: 'Orbitron', monospace;
+            text-transform: uppercase;
+            color: var(--bma-green-bright);
+            text-shadow:
+                0 0 10px var(--bma-green-bright),
+                0 0 20px var(--bma-green-bright),
+                0 0 30px var(--bma-green-bright);
+            letter-spacing: 0.1em;
+        }
+
+        .stadium-led .separator {
+            color: var(--bma-yellow) !important;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* 3. Nike/Adidas Ad Style */
+        .nike-style {
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+        }
+
+        .nike-style .marquee-track {
+            animation: scroll-rotate 20s linear infinite;
+        }
+
+        @keyframes scroll-rotate {
+            0% {
+                transform: translateX(0) perspective(500px) rotateY(0deg);
+            }
+            100% {
+                transform: translateX(-50%) perspective(500px) rotateY(-5deg);
+            }
+        }
+
+        .nike-style .marquee-track span {
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--bma-white) 0%, var(--bma-green-bright) 50%, var(--bma-white) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 4rem;
+        }
+
+        /* 4. Championship Belt */
+        .championship-belt {
+            background:
+                linear-gradient(180deg, #FFD700 0%, #B8860B 50%, #FFD700 100%),
+                linear-gradient(90deg, #000 0%, #1a1a1a 50%, #000 100%);
+            background-blend-mode: overlay;
+            border-top: 2px solid #FFA500;
+            border-bottom: 2px solid #FFA500;
+            position: relative;
+        }
+
+        .championship-belt::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 100px,
+                rgba(255, 255, 255, 0.1) 100px,
+                rgba(255, 255, 255, 0.1) 101px
+            );
+        }
+
+        .championship-belt .marquee-track span {
+            font-family: 'Impact', sans-serif;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            text-shadow:
+                2px 2px 0 #FFD700,
+                3px 3px 0 #B8860B,
+                4px 4px 4px rgba(0,0,0,0.3);
+            font-size: 3.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* 5. Racing Flags */
+        .racing-flags {
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    #000 0px,
+                    #000 20px,
+                    #fff 20px,
+                    #fff 40px
+                ),
+                linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.8) 20%, rgba(0,0,0,0.8) 80%, transparent 100%);
+            background-blend-mode: multiply;
+            position: relative;
+        }
+
+        .racing-flags .marquee-track {
+            animation: scroll-fast 10s linear infinite;
+        }
+
+        @keyframes scroll-fast {
+            0% {
+                transform: translateX(0);
+                filter: blur(0);
+            }
+            50% {
+                filter: blur(1px);
+            }
+            100% {
+                transform: translateX(-50%);
+                filter: blur(0);
+            }
+        }
+
+        .racing-flags .marquee-track span {
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            color: var(--bma-red);
+            text-shadow:
+                2px 2px 0 white,
+                -2px -2px 0 white,
+                2px -2px 0 white,
+                -2px 2px 0 white;
+            font-size: 3.5rem;
+        }
+
+        /* 6. Neon Sports Bar */
+        .neon-bar {
+            background: #0a0a0a;
+            border: 2px solid var(--bma-green-bright);
+            box-shadow:
+                0 0 20px var(--bma-green-bright),
+                inset 0 0 20px rgba(0, 230, 118, 0.2);
+        }
+
+        .neon-bar .marquee-track span {
+            font-weight: 900;
+            text-transform: uppercase;
+            animation: neon-flicker 2s infinite alternate;
+        }
+
+        .neon-bar .marquee-track span:nth-child(4n+1) {
+            color: var(--bma-green-bright);
+            text-shadow:
+                0 0 10px var(--bma-green-bright),
+                0 0 20px var(--bma-green-bright),
+                0 0 40px var(--bma-green-bright),
+                0 0 80px var(--bma-green-bright);
+        }
+
+        .neon-bar .marquee-track span:nth-child(4n+3) {
+            color: var(--bma-yellow);
+            text-shadow:
+                0 0 10px var(--bma-yellow),
+                0 0 20px var(--bma-yellow),
+                0 0 40px var(--bma-yellow),
+                0 0 80px var(--bma-yellow);
+        }
+
+        .neon-bar .separator {
+            color: var(--bma-red) !important;
+            text-shadow:
+                0 0 10px var(--bma-red),
+                0 0 20px var(--bma-red),
+                0 0 40px var(--bma-red);
+        }
+
+        @keyframes neon-flicker {
+            0%, 100% {
+                opacity: 1;
+            }
+            33% {
+                opacity: 0.9;
+            }
+            66% {
+                opacity: 0.95;
+            }
+        }
+
+        /* 7. Varsity Letters */
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+        .varsity-letters {
+            background: linear-gradient(180deg, #1a1a1a 0%, #2F794D 100%);
+            border: 4px solid var(--bma-white);
+            position: relative;
+        }
+
+        .varsity-letters::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid var(--bma-yellow);
+        }
+
+        .varsity-letters .marquee-track span {
+            font-family: 'Bebas Neue', sans-serif;
+            text-transform: uppercase;
+            color: var(--bma-white);
+            text-shadow:
+                3px 3px 0 var(--bma-green),
+                4px 4px 0 #000;
+            font-size: 4rem;
+            letter-spacing: 0.1em;
+            padding: 0 3rem;
+        }
+
+        .varsity-letters .marquee-track span:nth-child(4n+1),
+        .varsity-letters .marquee-track span:nth-child(4n+3) {
+            color: var(--bma-yellow);
+            text-shadow:
+                3px 3px 0 var(--bma-green),
+                4px 4px 0 #000;
+        }
+
+        /* Pause on hover for all */
+        .marquee-container:hover .marquee-track {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body>
+    <h1>Marquee Styles Test</h1>
+
+    <!-- 1. ESPN Ticker Style -->
+    <div class="marquee-section">
+        <h2>1. ESPN Ticker Style</h2>
+        <div class="marquee-container espn-ticker">
+            <div class="marquee-track">
+                <span>FREE TOURNAMENTS</span>
+                <span class="separator">•</span>
+                <span>REAL-TIME RANKINGS</span>
+                <span class="separator">•</span>
+                <span>PURE COMPETITION</span>
+                <span class="separator">•</span>
+                <span>FREE TOURNAMENTS</span>
+                <span class="separator">•</span>
+                <span>REAL-TIME RANKINGS</span>
+                <span class="separator">•</span>
+                <span>PURE COMPETITION</span>
+                <span class="separator">•</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Stadium LED Board -->
+    <div class="marquee-section">
+        <h2>2. Stadium LED Board</h2>
+        <div class="marquee-container stadium-led">
+            <div class="marquee-track">
+                <span>FREE TOURNAMENTS</span>
+                <span class="separator">◆</span>
+                <span>REAL-TIME RANKINGS</span>
+                <span class="separator">◆</span>
+                <span>PURE COMPETITION</span>
+                <span class="separator">◆</span>
+                <span>FREE TOURNAMENTS</span>
+                <span class="separator">◆</span>
+                <span>REAL-TIME RANKINGS</span>
+                <span class="separator">◆</span>
+                <span>PURE COMPETITION</span>
+                <span class="separator">◆</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Nike/Adidas Ad Style -->
+    <div class="marquee-section">
+        <h2>3. Nike/Adidas Ad Style</h2>
+        <div class="marquee-container nike-style">
+            <div class="marquee-track">
+                <span>FREE TOURNAMENTS</span>
+                <span>/</span>
+                <span>REAL-TIME RANKINGS</span>
+                <span>/</span>
+                <span>PURE COMPETITION</span>
+                <span>/</span>
+                <span>FREE TOURNAMENTS</span>
+                <span>/</span>
+                <span>REAL-TIME RANKINGS</span>
+                <span>/</span>
+                <span>PURE COMPETITION</span>
+                <span>/</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Championship Belt -->
+    <div class="marquee-section">
+        <h2>4. Championship Belt</h2>
+        <div class="marquee-container championship-belt">
+            <div class="marquee-track">
+                <span>FREE TOURNAMENTS</span>
+                <span>★</span>
+                <span>REAL-TIME RANKINGS</span>
+                <span>★</span>
+                <span>PURE COMPETITION</span>
+                <span>★</span>
+                <span>FREE TOURNAMENTS</span>
+                <span>★</span>
+                <span>REAL-TIME RANKINGS</span>
+                <span>★</span>
+                <span>PURE COMPETITION</span>
+                <span>★</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Racing Flags -->
+    <div class="marquee-section">
+        <h2>5. Racing Flags</h2>
+        <div class="marquee-container racing-flags">
+            <div class="marquee-track">
+                <span>FREE TOURNAMENTS</span>
+                <span>🏁</span>
+                <span>REAL-TIME RANKINGS</span>
+                <span>🏁</span>
+                <span>PURE COMPETITION</span>
+                <span>🏁</span>
+                <span>FREE TOURNAMENTS</span>
+                <span>🏁</span>
+                <span>REAL-TIME RANKINGS</span>
+                <span>🏁</span>
+                <span>PURE COMPETITION</span>
+                <span>🏁</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Neon Sports Bar -->
+    <div class="marquee-section">
+        <h2>6. Neon Sports Bar</h2>
+        <div class="marquee-container neon-bar">
+            <div class="marquee-track">
+                <span>FREE TOURNAMENTS</span>
+                <span class="separator">⚡</span>
+                <span>REAL-TIME RANKINGS</span>
+                <span class="separator">⚡</span>
+                <span>PURE COMPETITION</span>
+                <span class="separator">⚡</span>
+                <span>FREE TOURNAMENTS</span>
+                <span class="separator">⚡</span>
+                <span>REAL-TIME RANKINGS</span>
+                <span class="separator">⚡</span>
+                <span>PURE COMPETITION</span>
+                <span class="separator">⚡</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. Varsity Letters -->
+    <div class="marquee-section">
+        <h2>7. Varsity Letters</h2>
+        <div class="marquee-container varsity-letters">
+            <div class="marquee-track">
+                <span>FREE TOURNAMENTS</span>
+                <span>|</span>
+                <span>REAL-TIME RANKINGS</span>
+                <span>|</span>
+                <span>PURE COMPETITION</span>
+                <span>|</span>
+                <span>FREE TOURNAMENTS</span>
+                <span>|</span>
+                <span>REAL-TIME RANKINGS</span>
+                <span>|</span>
+                <span>PURE COMPETITION</span>
+                <span>|</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

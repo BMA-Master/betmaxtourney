@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marquee Styles V3 - On Brand</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bma-green: #2F794D;
+            --bma-green-bright: #00E676;
+            --bma-yellow: #FFD700;
+            --bma-yellow-bright: #FFED4E;
+            --bma-red: #DC143C;
+            --bma-black: #000000;
+            --bma-white: #fafafa;
+            --bma-dark-100: #0a0a0a;
+            --bma-dark-200: #141414;
+            --bma-dark-300: #1a1a1a;
+            --gradient-primary: linear-gradient(135deg, var(--bma-green) 0%, var(--bma-green-bright) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--bma-yellow) 0%, #FFA500 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #060606;
+            color: #fafafa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--bma-green-bright);
+            text-shadow: 0 4px 20px rgba(0, 230, 118, 0.4);
+        }
+
+        .marquee-section {
+            margin-bottom: 6rem;
+        }
+
+        .marquee-section h2 {
+            color: var(--bma-yellow);
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.8;
+        }
+
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marquee-track {
+            display: flex;
+            animation: scroll 25s linear infinite;
+            white-space: nowrap;
+            will-change: transform;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .marquee-container:hover .marquee-track {
+            animation-play-state: paused;
+        }
+
+        /* 1. BMA Hero Marquee - The flagship style matching hero section */
+        .bma-hero {
+            background: linear-gradient(135deg,
+                rgba(46, 139, 87, 0.15),
+                rgba(255, 215, 0, 0.08)),
+                rgba(10, 10, 10, 0.85);
+            padding: 3rem 0;
+            position: relative;
+            border-top: 1px solid rgba(0, 230, 118, 0.3);
+            border-bottom: 1px solid rgba(0, 230, 118, 0.3);
+        }
+
+        .bma-hero .marquee-track {
+            animation-duration: 30s;
+        }
+
+        .bma-hero .marquee-track span {
+            font-weight: 900;
+            font-size: 5rem;
+            text-transform: uppercase;
+            padding: 0 4rem;
+            letter-spacing: -0.02em;
+        }
+
+        .bma-hero .item:nth-child(4n+1) {
+            color: var(--bma-green-bright);
+            text-shadow: 0 0 40px rgba(0, 230, 118, 0.6);
+        }
+
+        .bma-hero .item:nth-child(4n+3) {
+            color: var(--bma-yellow);
+            text-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+        }
+
+        .bma-hero .item:nth-child(4n+5) {
+            color: var(--bma-white);
+            opacity: 0.95;
+        }
+
+        .bma-hero .separator {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 2rem;
+            padding: 0 2rem;
+        }
+
+        /* 2. Glassmorphic Float - Matches the navigation pill style */
+        .glass-float {
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow:
+                0 4px 32px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 80px;
+            padding: 2rem 0;
+            margin: 0 2rem;
+        }
+
+        .glass-float .marquee-track span {
+            font-weight: 700;
+            font-size: 2.5rem;
+            padding: 0 3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .glass-float .item {
+            background: linear-gradient(135deg,
+                var(--bma-green-bright) 0%,
+                var(--bma-yellow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        .glass-float .separator {
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 1.5rem;
+        }
+
+        /* 3. Tournament Badge Style - Like the LIVE/UPCOMING badges */
+        .tournament-badge {
+            background: rgba(10, 10, 10, 0.95);
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        .tournament-badge .marquee-track {
+            animation-duration: 20s;
+            align-items: center;
+        }
+
+        .tournament-badge .marquee-track .item {
+            display: inline-flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            margin: 0 2rem;
+            border-radius: 12px;
+            font-weight: 900;
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 2px solid;
+        }
+
+        .tournament-badge .item:nth-child(4n+1) {
+            background: linear-gradient(135deg,
+                rgba(220, 20, 60, 0.85) 0%,
+                rgba(255, 23, 68, 0.85) 100%);
+            border-color: rgba(220, 20, 60, 0.8);
+            color: white;
+            box-shadow: 0 2px 8px rgba(220, 20, 60, 0.3);
+        }
+
+        .tournament-badge .item:nth-child(4n+3) {
+            background: linear-gradient(135deg,
+                rgba(255, 215, 0, 0.25) 0%,
+                rgba(255, 237, 78, 0.2) 100%);
+            border-color: rgba(255, 215, 0, 0.7);
+            color: var(--bma-yellow-bright);
+        }
+
+        .tournament-badge .item:nth-child(4n+5) {
+            background: linear-gradient(135deg,
+                rgba(0, 230, 118, 0.2) 0%,
+                rgba(0, 230, 118, 0.15) 100%);
+            border-color: rgba(0, 230, 118, 0.5);
+            color: var(--bma-green-bright);
+        }
+
+        .tournament-badge .separator {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        /* 4. Gradient Border Glow - Matches benefit cards hover */
+        .gradient-border {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            padding: 3rem 0;
+            position: relative;
+        }
+
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg,
+                var(--bma-green-bright),
+                var(--bma-yellow),
+                var(--bma-green-bright));
+            padding: 2px;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            animation: gradient-shift 3s linear infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .gradient-border .marquee-track span {
+            font-weight: 800;
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            padding: 0 4rem;
+        }
+
+        .gradient-border .item {
+            color: var(--bma-white);
+            transition: all 0.3s ease;
+        }
+
+        .gradient-border .item:hover {
+            color: var(--bma-green-bright);
+            text-shadow: 0 0 30px rgba(0, 230, 118, 0.8);
+        }
+
+        .gradient-border .separator {
+            color: var(--bma-yellow);
+            font-size: 2rem;
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+        }
+
+        /* 5. Leaderboard Ticker - ESPN style but on-brand */
+        .leaderboard-ticker {
+            background: linear-gradient(180deg, #0a0a0a 0%, #000000 100%);
+            position: relative;
+            padding: 1.25rem 0;
+            border-top: 3px solid var(--bma-green-bright);
+            border-bottom: 1px solid rgba(0, 230, 118, 0.2);
+        }
+
+        .leaderboard-ticker::before {
+            content: 'LIVE';
+            position: absolute;
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg,
+                rgba(220, 20, 60, 0.85) 0%,
+                rgba(255, 23, 68, 0.85) 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            padding-left: 1.75rem;
+            font-weight: 900;
+            font-size: 0.875rem;
+            letter-spacing: 0.1em;
+            z-index: 10;
+            border-radius: 4px;
+        }
+
+        .leaderboard-ticker::after {
+            content: '';
+            position: absolute;
+            left: 2.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            z-index: 11;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .leaderboard-ticker .marquee-track {
+            padding-left: 10rem;
+            animation-duration: 35s;
+        }
+
+        .leaderboard-ticker .marquee-track span {
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            padding: 0 2.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .leaderboard-ticker .item {
+            color: var(--bma-white);
+        }
+
+        .leaderboard-ticker .separator {
+            color: var(--bma-green-bright);
+            font-size: 1rem;
+        }
+
+        /* 6. Neon Tournament - Vegas style but with BMA colors */
+        .neon-tournament {
+            background: #000;
+            padding: 3rem 0;
+            position: relative;
+            box-shadow:
+                inset 0 0 60px rgba(0, 230, 118, 0.1),
+                inset 0 0 120px rgba(255, 215, 0, 0.05);
+        }
+
+        .neon-tournament .marquee-track {
+            animation-duration: 18s;
+        }
+
+        .neon-tournament .marquee-track span {
+            font-weight: 900;
+            font-size: 4.5rem;
+            text-transform: uppercase;
+            padding: 0 5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .neon-tournament .item:nth-child(4n+1) {
+            color: var(--bma-green-bright);
+            text-shadow:
+                0 0 10px var(--bma-green-bright),
+                0 0 20px var(--bma-green-bright),
+                0 0 40px var(--bma-green-bright),
+                0 0 80px var(--bma-green);
+            animation: green-glow 3s ease-in-out infinite;
+        }
+
+        .neon-tournament .item:nth-child(4n+3) {
+            color: var(--bma-yellow);
+            text-shadow:
+                0 0 10px var(--bma-yellow),
+                0 0 20px var(--bma-yellow),
+                0 0 40px var(--bma-yellow),
+                0 0 80px rgba(255, 165, 0, 0.5);
+            animation: yellow-glow 3s ease-in-out infinite;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes green-glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3) contrast(1.2); }
+        }
+
+        @keyframes yellow-glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3) contrast(1.2); }
+        }
+
+        .neon-tournament .separator {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 2.5rem;
+            animation: fade-pulse 2s infinite;
+        }
+
+        @keyframes fade-pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        /* 7. Champion's Belt - Gold with BMA accents */
+        .champions-belt {
+            background:
+                linear-gradient(135deg,
+                    rgba(255, 215, 0, 0.08) 0%,
+                    rgba(46, 139, 87, 0.15) 100%),
+                linear-gradient(180deg, #0a0a0a 0%, #141414 50%, #0a0a0a 100%);
+            padding: 3rem 0;
+            position: relative;
+            border-top: 2px solid var(--bma-yellow);
+            border-bottom: 2px solid var(--bma-yellow);
+        }
+
+        .champions-belt::before,
+        .champions-belt::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient-accent);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--bma-black);
+        }
+
+        .champions-belt::before {
+            content: '1';
+            left: 2rem;
+        }
+
+        .champions-belt::after {
+            content: '1';
+            right: 2rem;
+        }
+
+        .champions-belt .marquee-track {
+            animation-duration: 28s;
+        }
+
+        .champions-belt .marquee-track span {
+            font-weight: 900;
+            font-size: 4rem;
+            text-transform: uppercase;
+            padding: 0 5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .champions-belt .item {
+            background: linear-gradient(135deg,
+                var(--bma-yellow) 0%,
+                var(--bma-yellow-bright) 25%,
+                var(--bma-yellow) 50%,
+                #B8860B 75%,
+                var(--bma-yellow) 100%);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: gold-shimmer 3s linear infinite;
+        }
+
+        @keyframes gold-shimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .champions-belt .separator {
+            color: var(--bma-green-bright);
+            font-size: 2.5rem;
+            filter: drop-shadow(0 0 8px rgba(0, 230, 118, 0.6));
+        }
+    </style>
+</head>
+<body>
+    <h1>BET MAX TOURNEY MARQUEES</h1>
+
+    <!-- 1. BMA Hero Marquee -->
+    <div class="marquee-section">
+        <h2>1. Hero Section Style</h2>
+        <div class="marquee-container bma-hero">
+            <div class="marquee-track">
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">•</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">•</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">•</span>
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">•</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">•</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">•</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Glassmorphic Float -->
+    <div class="marquee-section">
+        <h2>2. Glassmorphic Navigation Style</h2>
+        <div class="marquee-container glass-float">
+            <div class="marquee-track">
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">•</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">•</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">•</span>
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">•</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">•</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">•</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Tournament Badge Style -->
+    <div class="marquee-section">
+        <h2>3. Tournament Badge Style</h2>
+        <div class="marquee-container tournament-badge">
+            <div class="marquee-track">
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">•</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">•</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">•</span>
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">•</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">•</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">•</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Gradient Border Glow -->
+    <div class="marquee-section">
+        <h2>4. Gradient Border Animation</h2>
+        <div class="marquee-container gradient-border">
+            <div class="marquee-track">
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">⚡</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">⚡</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">⚡</span>
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">⚡</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">⚡</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">⚡</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Leaderboard Ticker -->
+    <div class="marquee-section">
+        <h2>5. Leaderboard Ticker</h2>
+        <div class="marquee-container leaderboard-ticker">
+            <div class="marquee-track">
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">▸</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">▸</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">▸</span>
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">▸</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">▸</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">▸</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Neon Tournament -->
+    <div class="marquee-section">
+        <h2>6. Neon Tournament Glow</h2>
+        <div class="marquee-container neon-tournament">
+            <div class="marquee-track">
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">◆</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">◆</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">◆</span>
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">◆</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">◆</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">◆</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. Champion's Belt -->
+    <div class="marquee-section">
+        <h2>7. Champion's Belt</h2>
+        <div class="marquee-container champions-belt">
+            <div class="marquee-track">
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">★</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">★</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">★</span>
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">★</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">★</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">★</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -27,6 +27,27 @@ function mapSportToIcon(sportCode) {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Bet Max Tourney loaded');
 
+    // ===== FanDuel Style Tab Navigation =====
+    const tabButtons = document.querySelectorAll('.fd-tab-btn');
+    const tabPanels = document.querySelectorAll('.fd-tab-panel');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+
+            // Remove active class from all buttons and panels
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabPanels.forEach(panel => panel.classList.remove('active'));
+
+            // Add active class to clicked button and corresponding panel
+            this.classList.add('active');
+            const targetPanel = document.getElementById(targetTab);
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+            }
+        });
+    });
+
     // ===== Animate Headlines on Scroll =====
     const observerOptions = {
         threshold: 0.2,

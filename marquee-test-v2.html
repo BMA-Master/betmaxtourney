@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marquee Styles V2 - Bet Max Tourney</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bma-green: #2F794D;
+            --bma-green-bright: #00E676;
+            --bma-yellow: #FFD700;
+            --bma-yellow-bright: #FFED4E;
+            --bma-red: #DC143C;
+            --bma-black: #000000;
+            --bma-white: #fafafa;
+            --bma-dark-100: #0a0a0a;
+            --bma-dark-200: #141414;
+            --bma-dark-300: #1a1a1a;
+            --gradient-accent: linear-gradient(135deg, var(--bma-yellow) 0%, #FFA500 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #060606;
+            color: #fafafa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--bma-green-bright) 0%, var(--bma-yellow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 20px rgba(0, 230, 118, 0.3);
+        }
+
+        .marquee-section {
+            margin-bottom: 6rem;
+        }
+
+        .marquee-section h2 {
+            color: var(--bma-yellow);
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.8;
+        }
+
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 1. ESPN Broadcast Ticker - Premium Edition */
+        .espn-premium {
+            background: linear-gradient(180deg, #0a0a0a 0%, #000000 100%);
+            position: relative;
+            padding: 1.5rem 0;
+            border-top: 4px solid transparent;
+            border-image: linear-gradient(90deg, var(--bma-red), var(--bma-yellow), var(--bma-red)) 1;
+        }
+
+        .espn-premium::before {
+            content: 'LIVE';
+            position: absolute;
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--bma-red);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-weight: 900;
+            font-size: 0.875rem;
+            letter-spacing: 0.1em;
+            z-index: 10;
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(220, 20, 60, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(220, 20, 60, 0); }
+        }
+
+        .espn-premium .marquee-track {
+            display: flex;
+            animation: scroll 30s linear infinite;
+            padding-left: 8rem;
+        }
+
+        .espn-premium .marquee-track span {
+            font-weight: 700;
+            font-size: 1.75rem;
+            text-transform: uppercase;
+            padding: 0 3rem;
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+
+        .espn-premium .item {
+            color: white;
+            position: relative;
+        }
+
+        .espn-premium .item::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--bma-yellow), transparent);
+            animation: slide-underline 3s infinite;
+        }
+
+        @keyframes slide-underline {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .espn-premium .separator {
+            color: #666;
+            font-size: 1rem;
+            padding: 0 1.5rem;
+        }
+
+        /* 2. Matrix Stadium Display - Refined */
+        .stadium-matrix {
+            background: #000;
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stadium-matrix::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 230, 118, 0.03) 2px,
+                    rgba(0, 230, 118, 0.03) 4px
+                );
+            pointer-events: none;
+            animation: scan-lines 8s linear infinite;
+        }
+
+        @keyframes scan-lines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        .stadium-matrix .marquee-track {
+            display: flex;
+            animation: scroll 25s linear infinite;
+            filter: contrast(1.2) brightness(1.1);
+        }
+
+        .stadium-matrix .marquee-track span {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            padding: 0 4rem;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .stadium-matrix .item {
+            background: linear-gradient(180deg,
+                var(--bma-green-bright) 0%,
+                var(--bma-green) 50%,
+                var(--bma-green-bright) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow:
+                0 0 30px var(--bma-green-bright),
+                0 0 60px var(--bma-green),
+                0 0 90px var(--bma-green);
+            animation: led-flicker 3s ease-in-out infinite;
+        }
+
+        @keyframes led-flicker {
+            0%, 100% {
+                filter: brightness(1);
+                transform: scale(1);
+            }
+            50% {
+                filter: brightness(1.2);
+                transform: scale(1.02);
+            }
+        }
+
+        .stadium-matrix .separator {
+            color: var(--bma-yellow);
+            font-size: 2.5rem;
+            animation: rotate-slow 4s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes rotate-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 3. Nike Kinetic Typography - Enhanced */
+        .nike-kinetic {
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 50%, #000 100%);
+            padding: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nike-kinetic::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            animation: sweep 3s infinite;
+        }
+
+        @keyframes sweep {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .nike-kinetic .marquee-track {
+            display: flex;
+            animation: scroll-perspective 20s linear infinite;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        @keyframes scroll-perspective {
+            0% {
+                transform: translateX(0) rotateY(0deg);
+            }
+            100% {
+                transform: translateX(-50%) rotateY(-2deg);
+            }
+        }
+
+        .nike-kinetic .marquee-track span {
+            font-weight: 900;
+            font-size: 5rem;
+            font-style: italic;
+            text-transform: uppercase;
+            padding: 0 5rem;
+            white-space: nowrap;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .nike-kinetic .item {
+            background: linear-gradient(135deg,
+                var(--bma-white) 0%,
+                var(--bma-green-bright) 25%,
+                var(--bma-yellow) 50%,
+                var(--bma-green-bright) 75%,
+                var(--bma-white) 100%
+            );
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 3s ease infinite;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .nike-kinetic .separator {
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.2);
+            font-weight: 300;
+            padding: 0 2rem;
+        }
+
+        /* 4. Championship Premium - Luxe */
+        .championship-luxe {
+            background:
+                radial-gradient(ellipse at center,
+                    rgba(255, 215, 0, 0.1) 0%,
+                    transparent 70%),
+                linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            padding: 3rem 0;
+            position: relative;
+            border-top: 3px solid transparent;
+            border-bottom: 3px solid transparent;
+            border-image: linear-gradient(90deg,
+                transparent,
+                var(--bma-yellow),
+                var(--bma-yellow-bright),
+                var(--bma-yellow),
+                transparent
+            ) 1;
+        }
+
+        .championship-luxe::before,
+        .championship-luxe::after {
+            content: '👑';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            filter: sepia(1) saturate(2) hue-rotate(45deg);
+            z-index: 10;
+        }
+
+        .championship-luxe::before {
+            left: 2rem;
+        }
+
+        .championship-luxe::after {
+            right: 2rem;
+        }
+
+        .championship-luxe .marquee-track {
+            display: flex;
+            animation: scroll 35s linear infinite;
+        }
+
+        .championship-luxe .marquee-track span {
+            font-family: 'Russo One', sans-serif;
+            font-weight: 700;
+            font-size: 4rem;
+            text-transform: uppercase;
+            padding: 0 5rem;
+            white-space: nowrap;
+            letter-spacing: 0.05em;
+        }
+
+        .championship-luxe .item {
+            background: linear-gradient(135deg,
+                #FFD700 0%,
+                #FFED4E 25%,
+                #FFD700 50%,
+                #B8860B 75%,
+                #FFD700 100%
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.3),
+                0 4px 8px rgba(184, 134, 11, 0.2);
+            position: relative;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% {
+                filter: brightness(1) contrast(1);
+            }
+            50% {
+                filter: brightness(1.3) contrast(1.1);
+            }
+        }
+
+        .championship-luxe .item::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 3px;
+            z-index: -1;
+            background: linear-gradient(135deg, #B8860B, #8B6914);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.5;
+        }
+
+        .championship-luxe .separator {
+            color: rgba(255, 215, 0, 0.4);
+            font-size: 2rem;
+            padding: 0 2rem;
+            animation: pulse-gold 2s infinite;
+        }
+
+        @keyframes pulse-gold {
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        /* 5. Formula 1 Speed */
+        .f1-speed {
+            background:
+                linear-gradient(90deg,
+                    transparent 0%,
+                    rgba(220, 20, 60, 0.1) 50%,
+                    transparent 100%),
+                #0a0a0a;
+            padding: 2.5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .f1-speed::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 50px,
+                rgba(255, 255, 255, 0.03) 50px,
+                rgba(255, 255, 255, 0.03) 51px
+            );
+            animation: speed-lines 1s linear infinite;
+        }
+
+        @keyframes speed-lines {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(51px); }
+        }
+
+        .f1-speed .marquee-track {
+            display: flex;
+            animation: scroll-ultra-fast 8s linear infinite;
+        }
+
+        @keyframes scroll-ultra-fast {
+            0% {
+                transform: translateX(0) scaleY(1);
+                filter: blur(0);
+            }
+            50% {
+                transform: translateX(-25%) scaleY(0.95);
+                filter: blur(0.5px);
+            }
+            100% {
+                transform: translateX(-50%) scaleY(1);
+                filter: blur(0);
+            }
+        }
+
+        .f1-speed .marquee-track span {
+            font-weight: 900;
+            font-size: 4.5rem;
+            font-style: italic;
+            text-transform: uppercase;
+            padding: 0 6rem;
+            white-space: nowrap;
+            transform: skewX(-10deg);
+        }
+
+        .f1-speed .item {
+            background: linear-gradient(90deg,
+                var(--bma-red) 0%,
+                var(--bma-white) 50%,
+                var(--bma-red) 100%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: speed-gradient 2s linear infinite;
+            filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, 0.5));
+        }
+
+        @keyframes speed-gradient {
+            0% { background-position: 0% 50%; }
+            100% { background-position: -200% 50%; }
+        }
+
+        .f1-speed .separator {
+            color: var(--bma-yellow);
+            font-size: 3rem;
+            padding: 0 3rem;
+            transform: skewX(-10deg) scale(1.5, 1);
+        }
+
+        /* 6. Vegas Neon Deluxe */
+        .vegas-deluxe {
+            background: radial-gradient(ellipse at center,
+                rgba(0, 230, 118, 0.05) 0%,
+                transparent 50%),
+                #000;
+            padding: 3rem 0;
+            position: relative;
+            border: 3px solid transparent;
+            border-image: linear-gradient(90deg,
+                var(--bma-green-bright),
+                var(--bma-yellow),
+                var(--bma-red),
+                var(--bma-yellow),
+                var(--bma-green-bright)
+            ) 1;
+            animation: border-dance 3s linear infinite;
+        }
+
+        @keyframes border-dance {
+            0%, 100% { border-image-slice: 1; }
+            50% { border-image-slice: 10; }
+        }
+
+        .vegas-deluxe .marquee-track {
+            display: flex;
+            animation: scroll 20s linear infinite;
+        }
+
+        .vegas-deluxe .marquee-track span {
+            font-weight: 900;
+            font-size: 4.5rem;
+            text-transform: uppercase;
+            padding: 0 5rem;
+            white-space: nowrap;
+            letter-spacing: 0.1em;
+        }
+
+        .vegas-deluxe .item:nth-child(4n+1) {
+            color: var(--bma-green-bright);
+            text-shadow:
+                0 0 10px currentColor,
+                0 0 20px currentColor,
+                0 0 40px currentColor,
+                0 0 80px currentColor,
+                0 0 120px currentColor;
+            animation: neon-pulse-green 2s ease-in-out infinite;
+        }
+
+        .vegas-deluxe .item:nth-child(4n+3) {
+            color: var(--bma-yellow);
+            text-shadow:
+                0 0 10px currentColor,
+                0 0 20px currentColor,
+                0 0 40px currentColor,
+                0 0 80px currentColor,
+                0 0 120px currentColor;
+            animation: neon-pulse-yellow 2s ease-in-out infinite;
+            animation-delay: 1s;
+        }
+
+        @keyframes neon-pulse-green {
+            0%, 100% {
+                text-shadow:
+                    0 0 10px currentColor,
+                    0 0 20px currentColor,
+                    0 0 40px currentColor,
+                    0 0 80px currentColor;
+            }
+            50% {
+                text-shadow:
+                    0 0 20px currentColor,
+                    0 0 40px currentColor,
+                    0 0 60px currentColor,
+                    0 0 100px currentColor,
+                    0 0 140px currentColor;
+            }
+        }
+
+        @keyframes neon-pulse-yellow {
+            0%, 100% {
+                text-shadow:
+                    0 0 10px currentColor,
+                    0 0 20px currentColor,
+                    0 0 40px currentColor,
+                    0 0 80px currentColor;
+            }
+            50% {
+                text-shadow:
+                    0 0 20px currentColor,
+                    0 0 40px currentColor,
+                    0 0 60px currentColor,
+                    0 0 100px currentColor,
+                    0 0 140px currentColor;
+            }
+        }
+
+        .vegas-deluxe .separator {
+            color: var(--bma-red);
+            font-size: 3rem;
+            text-shadow:
+                0 0 10px currentColor,
+                0 0 20px currentColor,
+                0 0 40px currentColor;
+            animation: flash 0.5s infinite;
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* 7. Elite Varsity */
+        .elite-varsity {
+            background: linear-gradient(180deg,
+                #0a0a0a 0%,
+                var(--bma-green) 50%,
+                #0a0a0a 100%);
+            padding: 3.5rem 0;
+            position: relative;
+            box-shadow:
+                inset 0 10px 20px rgba(0, 0, 0, 0.5),
+                inset 0 -10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .elite-varsity::before,
+        .elite-varsity::after {
+            content: '';
+            position: absolute;
+            top: 1rem;
+            bottom: 1rem;
+            width: 4px;
+            background: var(--bma-yellow);
+            box-shadow:
+                0 0 10px var(--bma-yellow),
+                0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .elite-varsity::before {
+            left: 1rem;
+        }
+
+        .elite-varsity::after {
+            right: 1rem;
+        }
+
+        .elite-varsity .marquee-track {
+            display: flex;
+            animation: scroll 25s linear infinite;
+        }
+
+        .elite-varsity .marquee-track span {
+            font-family: 'Bebas Neue', sans-serif;
+            font-weight: 400;
+            font-size: 5.5rem;
+            text-transform: uppercase;
+            padding: 0 6rem;
+            white-space: nowrap;
+            letter-spacing: 0.15em;
+            position: relative;
+        }
+
+        .elite-varsity .item {
+            color: var(--bma-white);
+            text-shadow:
+                3px 3px 0 var(--bma-yellow),
+                6px 6px 0 var(--bma-green),
+                9px 9px 0 #000,
+                9px 9px 20px rgba(0, 0, 0, 0.5);
+            animation: varsity-pop 3s ease-in-out infinite;
+        }
+
+        @keyframes varsity-pop {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.05) rotate(-1deg); }
+        }
+
+        .elite-varsity .separator {
+            color: var(--bma-yellow);
+            font-size: 4rem;
+            text-shadow:
+                2px 2px 0 var(--bma-green),
+                4px 4px 0 #000;
+            padding: 0 3rem;
+        }
+
+        /* Base animation */
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .marquee-track {
+            white-space: nowrap;
+            will-change: transform;
+        }
+
+        /* Pause on hover */
+        .marquee-container:hover .marquee-track {
+            animation-play-state: paused;
+        }
+
+        /* Duplicate content for seamless loop */
+        .marquee-track span[data-text] {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <h1>MARQUEE STYLES V2</h1>
+
+    <!-- 1. ESPN Broadcast Premium -->
+    <div class="marquee-section">
+        <h2>ESPN Broadcast Premium</h2>
+        <div class="marquee-container espn-premium">
+            <div class="marquee-track">
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">•</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">•</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">•</span>
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">•</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">•</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">•</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Stadium Matrix Display -->
+    <div class="marquee-section">
+        <h2>Stadium Matrix Display</h2>
+        <div class="marquee-container stadium-matrix">
+            <div class="marquee-track">
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">◆</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">◆</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">◆</span>
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">◆</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">◆</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">◆</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Nike Kinetic Typography -->
+    <div class="marquee-section">
+        <h2>Nike Kinetic Typography</h2>
+        <div class="marquee-container nike-kinetic">
+            <div class="marquee-track">
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">/</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">/</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">/</span>
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">/</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">/</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">/</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Championship Luxe -->
+    <div class="marquee-section">
+        <h2>Championship Luxe</h2>
+        <div class="marquee-container championship-luxe">
+            <div class="marquee-track">
+                <span class="item" data-text="FREE TOURNAMENTS">FREE TOURNAMENTS</span>
+                <span class="separator">★</span>
+                <span class="item" data-text="REAL-TIME RANKINGS">REAL-TIME RANKINGS</span>
+                <span class="separator">★</span>
+                <span class="item" data-text="PURE COMPETITION">PURE COMPETITION</span>
+                <span class="separator">★</span>
+                <span class="item" data-text="FREE TOURNAMENTS">FREE TOURNAMENTS</span>
+                <span class="separator">★</span>
+                <span class="item" data-text="REAL-TIME RANKINGS">REAL-TIME RANKINGS</span>
+                <span class="separator">★</span>
+                <span class="item" data-text="PURE COMPETITION">PURE COMPETITION</span>
+                <span class="separator">★</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Formula 1 Speed -->
+    <div class="marquee-section">
+        <h2>Formula 1 Speed</h2>
+        <div class="marquee-container f1-speed">
+            <div class="marquee-track">
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">⚡</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">⚡</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">⚡</span>
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">⚡</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">⚡</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">⚡</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Vegas Neon Deluxe -->
+    <div class="marquee-section">
+        <h2>Vegas Neon Deluxe</h2>
+        <div class="marquee-container vegas-deluxe">
+            <div class="marquee-track">
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">♦</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">♦</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">♦</span>
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">♦</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">♦</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">♦</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. Elite Varsity -->
+    <div class="marquee-section">
+        <h2>Elite Varsity</h2>
+        <div class="marquee-container elite-varsity">
+            <div class="marquee-track">
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">|</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">|</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">|</span>
+                <span class="item">FREE TOURNAMENTS</span>
+                <span class="separator">|</span>
+                <span class="item">REAL-TIME RANKINGS</span>
+                <span class="separator">|</span>
+                <span class="item">PURE COMPETITION</span>
+                <span class="separator">|</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
