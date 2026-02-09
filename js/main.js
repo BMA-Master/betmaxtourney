@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Determine status display based on both RSS status and actual time
                 let statusClass = 'marquee-status-live';
-                let statusText = '● LIVE';
+                let statusText = 'LIVE';
                 let actualStatus = status;
 
                 // Only override status if tournament marked as upcoming but has started
@@ -195,13 +195,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (actualStatus === 'locked' || actualStatus === 'live') {
                     // LOCKED or LIVE means active/live
                     statusClass = 'marquee-status-live';
-                    statusText = '● LIVE';
+                    statusText = 'LIVE';
                 } else if (actualStatus === 'upcoming') {
                     statusClass = 'marquee-status-upcoming';
-                    statusText = '◉ UPCOMING';
+                    statusText = 'UPCOMING';
                 } else if (actualStatus === 'completed') {
                     statusClass = 'marquee-status-completed';
-                    statusText = '✓ COMPLETED';
+                    statusText = 'COMPLETED';
                 }
 
                 // Generate sport icons HTML (icon + label for each sport)
