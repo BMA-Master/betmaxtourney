@@ -417,8 +417,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Wait for table to be built before initializing toolbar
         table.on("tableBuilt", function(){
-            // Pass full data for filtering, but table only shows limited data
-            initStartingSoonToolbar(table, data.slice(0, 15));
+            initStartingSoonToolbar(table, data);
         });
     }
 
