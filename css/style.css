@@ -1693,7 +1693,8 @@ nav {
 /* ===== Product Showcase Sports (Dark Background) ===== */
 .product-showcase-sports {
     padding: 2rem 0 3rem 0;
-    background: var(--bma-dark-200);
+    background: var(--bma-dark-100);
+    position: relative;
 }
 
 @keyframes gradientShift {
@@ -1857,7 +1858,31 @@ nav {
 /* ===== How to Compete Section ===== */
 .how-to-compete {
     padding: clamp(2.5rem, 4vw, 4rem) 0;
-    background: var(--bma-dark-200);
+    background:
+        /* Noise texture overlay to prevent banding */
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.008) 2px,
+            rgba(255, 255, 255, 0.008) 4px
+        ),
+        /* Subtle gradient overlay to smooth transitions */
+        linear-gradient(
+            180deg,
+            rgba(20, 20, 20, 0.4) 0%,
+            rgba(20, 20, 20, 0.2) 50%,
+            rgba(20, 20, 20, 0.4) 100%
+        ),
+        /* Base background image if it exists */
+        url('../images/bet-max-action-gray-background.jpg') center/cover no-repeat fixed,
+        /* Fallback gradient */
+        linear-gradient(
+            180deg,
+            #141414 0%,
+            #1a1a1a 50%,
+            #141414 100%
+        );
     position: relative;
     overflow: visible;
 }
@@ -3700,23 +3725,16 @@ nav {
 /* ===== Final CTA ===== */
 .final-cta {
     padding: clamp(3rem, 5vw, 5rem) 0;
-    background: url('../images/bet-max-action-gray-background.jpg') center/cover no-repeat;
-    background-attachment: fixed;
+    background: #000;
     text-align: center;
     position: relative;
     overflow: hidden;
 }
 
-.final-cta::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1;
+/* Ensure content is above the animated background */
+.final-cta .container {
+    position: relative;
+    z-index: 3;
 }
 
 .final-cta-grid {
@@ -4015,6 +4033,21 @@ footer::before {
     text-decoration: underline;
 }
 
+/* Copyright text responsive line breaks */
+.footer-copyright {
+    margin: 0;
+}
+
+.copyright-line {
+    display: inline;
+    white-space: nowrap;
+}
+
+/* Add spacing between spans on desktop */
+.copyright-line:not(:last-child)::after {
+    content: " ";
+}
+
 /* ===== Responsive Tablet (768px - 968px) ===== */
 @media (max-width: 968px) {
     /* Layout adjustments */
@@ -4131,6 +4164,16 @@ footer::before {
 
 /* ===== Responsive Mobile (<768px) ===== */
 @media (max-width: 768px) {
+    /* Copyright text on separate lines for mobile */
+    .copyright-line {
+        display: block;
+        margin: 0.25rem 0;
+    }
+
+    .copyright-line:not(:last-child)::after {
+        content: "";
+    }
+
     /* Sport grid responsive */
     .sport-grid {
         grid-template-columns: repeat(3, 1fr);
