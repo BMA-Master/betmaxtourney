@@ -940,13 +940,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Close menu
                 mobileMenu.classList.remove('active');
                 overlay.classList.remove('active');
+                menuToggle.classList.remove('active');
                 menuToggle.setAttribute('aria-expanded', 'false');
+                body.classList.remove('menu-open');
                 body.style.overflow = '';
             } else {
                 // Open menu
                 mobileMenu.classList.add('active');
                 overlay.classList.add('active');
+                menuToggle.classList.add('active');
                 menuToggle.setAttribute('aria-expanded', 'true');
+                body.classList.add('menu-open');
                 body.style.overflow = 'hidden';
             }
         });
