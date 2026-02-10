@@ -1,0 +1,62 @@
+/* Override Tabulator's mobile-specific styles */
+
+/* Use a consistent gray across all viewports */
+:root {
+    --table-row-bg: rgba(40, 40, 40, 0.85); /* Consistent medium-dark gray */
+}
+
+/* Apply to ALL viewports - both desktop and mobile */
+.tabulator-row {
+    background-color: var(--table-row-bg) !important;
+}
+
+/* Desktop - cells can be transparent since row has background */
+@media (min-width: 769px) {
+    .tabulator-cell {
+        background-color: transparent !important;
+    }
+}
+
+/* Mobile - cells need explicit background to prevent scrolling issues */
+@media (max-width: 768px) {
+    .tabulator-cell,
+    .tabulator-row .tabulator-cell,
+    #starting-soon-table .tabulator-cell,
+    #tournaments-table .tabulator-cell {
+        background-color: var(--table-row-bg) !important;
+    }
+}
+
+/* Consistent status indicators across all viewports */
+.tabulator-row.row-live {
+    box-shadow: inset 4px 0 0 rgba(0, 230, 118, 0.8) !important;
+}
+
+.tabulator-row.row-upcoming {
+    box-shadow: inset 4px 0 0 rgba(255, 215, 0, 0.8) !important;
+}
+
+.tabulator-row.row-completed {
+    box-shadow: inset 4px 0 0 rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Debug: Add colored borders to see structure */
+.debug-mode .tabulator {
+    border: 3px solid red !important;
+}
+
+.debug-mode .tabulator-tableholder {
+    border: 3px solid blue !important;
+}
+
+.debug-mode .tabulator-table {
+    border: 3px solid green !important;
+}
+
+.debug-mode .tabulator-row {
+    border: 2px solid yellow !important;
+}
+
+.debug-mode .tabulator-cell {
+    border: 1px solid orange !important;
+}

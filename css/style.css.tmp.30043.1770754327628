@@ -7045,6 +7045,9 @@ RESET AND REBUILD APPROACH
         min-height: 44px;
     }
 
+    .how-it-works {
+        background-attachment: scroll;
+    }
 
     .live-tournaments {
         background-attachment: scroll;

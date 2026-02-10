@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabulator Debug</title>
+    <style>
+        /* Let's debug what backgrounds are being applied */
+        * {
+            background-clip: padding-box !important;
+        }
+
+        /* Debug styles to see what's happening */
+        .debug-container {
+            padding: 20px;
+            max-width: 100%;
+            overflow: auto;
+        }
+
+        /* Log all backgrounds */
+        .tabulator {
+            border: 2px solid red !important;
+        }
+
+        .tabulator-tableholder {
+            border: 2px solid blue !important;
+        }
+
+        .tabulator-table {
+            border: 2px solid green !important;
+        }
+
+        .tabulator-row {
+            border: 1px solid yellow !important;
+        }
+
+        .tabulator-cell {
+            border: 1px solid orange !important;
+        }
+
+        /* Show computed styles */
+        #style-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: white;
+            color: black;
+            padding: 10px;
+            border: 2px solid black;
+            z-index: 9999;
+            max-width: 300px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div id="style-info">
+        Click on any table element to see its computed background
+    </div>
+
+    <div class="debug-container">
+        <h2>Debug: Checking table backgrounds on mobile</h2>
+        <p>This page helps identify what's causing the background color change on mobile viewports.</p>
+
+        <iframe
+            src="/betmaxtourney/"
+            style="width: 375px; height: 667px; border: 2px solid #333;"
+            id="mobile-frame">
+        </iframe>
+
+        <iframe
+            src="/betmaxtourney/"
+            style="width: 1200px; height: 667px; border: 2px solid #333; margin-top: 20px;"
+            id="desktop-frame">
+        </iframe>
+    </div>
+
+    <script>
+        // Log clicked element's computed styles
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('tabulator-cell') ||
+                e.target.classList.contains('tabulator-row') ||
+                e.target.classList.contains('tabulator-table') ||
+                e.target.classList.contains('tabulator-tableholder') ||
+                e.target.classList.contains('tabulator')) {
+
+                const computed = window.getComputedStyle(e.target);
+                const info = document.getElementById('style-info');
+
+                info.innerHTML = `
+                    <strong>Element:</strong> ${e.target.className}<br>
+                    <strong>Background:</strong> ${computed.background}<br>
+                    <strong>Background-color:</strong> ${computed.backgroundColor}<br>
+                    <strong>Opacity:</strong> ${computed.opacity}<br>
+                    <strong>Parent BG:</strong> ${e.target.parentElement ? window.getComputedStyle(e.target.parentElement).backgroundColor : 'none'}
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
