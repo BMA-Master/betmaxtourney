@@ -480,6 +480,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const data = sortRowsByStatusAndStart(normalizedRows);
         // Limit to first 15 rows for homepage
         const limitedData = data.slice(0, 15);
+        const isMobile = window.innerWidth <= 768;
+        const rowHeight = isMobile ? 84 : 56;
         // Remove responsiveLayout temporarily to fix the error
         const table = new Tabulator(target, {
             data: limitedData,
@@ -495,7 +497,7 @@ document.addEventListener('DOMContentLoaded', function() {
             //     {column: "statusRank", dir: "asc"},
             //     {column: "startTs", dir: "asc"}
             // ],
-            rowHeight: 56,
+            rowHeight,
             rowFormatter: rowAccentFormatter,
             columnDefaults: {
                 minWidth: 80,  // Reduced from 120
@@ -547,6 +549,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Sort the data before passing to Tabulator
         const data = sortRowsByStatusAndStart(normalizedRows);
+        const isMobile = window.innerWidth <= 768;
+        const rowHeight = isMobile ? 84 : 56;
 
         const table = new Tabulator(target, {
             data,
@@ -558,7 +562,7 @@ document.addEventListener('DOMContentLoaded', function() {
             paginationSize: pageSize,
             paginationSizeSelector: [20, 40, 60, 100],
             // No initialSort - we pre-sort the data
-            rowHeight: 56,
+            rowHeight,
             rowFormatter: rowAccentFormatter,
             columnDefaults: {
                 minWidth: 80,
