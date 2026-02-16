@@ -580,9 +580,11 @@ article.container .content a:hover {
     mask-repeat: no-repeat;
 }
 
-/* Pause animation on hover */
-.marquee-track:hover {
-    animation-play-state: paused;
+/* Pause animation on hover - only on devices with hover (avoids sticky pause on touch) */
+@media (hover: hover) {
+    .marquee-track:hover {
+        animation-play-state: paused;
+    }
 }
 
 @keyframes marqueeScroll {
@@ -7791,6 +7793,10 @@ section {
         min-width: fit-content;
         flex: 1 1 auto;
         animation-duration: 25s;
+        will-change: transform;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        animation-play-state: running;
     }
 
     /* Tournament Types - Stack vertically on mobile */

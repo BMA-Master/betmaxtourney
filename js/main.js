@@ -35,19 +35,53 @@ document.addEventListener('DOMContentLoaded', function() {
     updateMobileClass();
     window.addEventListener('resize', updateMobileClass);
 
-    // ===== Tabulator background fix (mobile tap/resize reverts) =====
+    // ===== Tabulator background fix (mobile tap/scroll/gesture gray flash) =====
     let tabulatorBgDebounce;
-    function debouncedForceTabulatorBackgrounds() {
-        clearTimeout(tabulatorBgDebounce);
-        tabulatorBgDebounce = setTimeout(function() {
-            const bg = '#0a0a0a';
-            document.querySelectorAll('.tabulator-tableholder, .tabulator-table, .tabulator-row, .tabulator-cell').forEach(el => {
-                el.style.backgroundColor = bg;
-            });
-        }, 100);
+    let tabulatorBgRaf;
+    const TABULATOR_BG_INLINE = '#0a0a0a';
+    function forceTabulatorBackgroundsInline() {
+        const selectors = '.tabulator, .tabulator-tableholder, .tabulator-table, .tabulator-row, .tabulator-cell, .tabulator-header, .tabulator-col, .tabulator-placeholder';
+        document.querySelectorAll(selectors).forEach(el => {
+            el.style.backgroundColor = TABULATOR_BG_INLINE;
+        });
     }
-    window.addEventListener('resize', debouncedForceTabulatorBackgrounds);
-    document.addEventListener('touchstart', debouncedForceTabulatorBackgrounds, { passive: true });
+    function debouncedForceTabulatorBackgrounds(delay) {
+        clearTimeout(tabulatorBgDebounce);
+        tabulatorBgDebounce = setTimeout(forceTabulatorBackgroundsInline, delay || 50);
+    }
+    function rafForceTabulatorBackgrounds() {
+        cancelAnimationFrame(tabulatorBgRaf);
+        tabulatorBgRaf = requestAnimationFrame(forceTabulatorBackgroundsInline);
+    }
+    window.addEventListener('resize', function() { debouncedForceTabulatorBackgrounds(100); });
+    document.addEventListener('touchstart', rafForceTabulatorBackgrounds, { passive: true });
+    document.addEventListener('touchmove', rafForceTabulatorBackgrounds, { passive: true });
+    document.addEventListener('touchend', rafForceTabulatorBackgrounds, { passive: true });
+    document.addEventListener('scroll', rafForceTabulatorBackgrounds, { passive: true });
+
+    function observeTabulatorForBackgroundFix(element) {
+        if (!element) return;
+        if (window.MutationObserver) {
+            const obs = new MutationObserver(forceTabulatorBackgroundsInline);
+            obs.observe(element, { childList: true, subtree: true });
+        }
+        const tableholder = element.querySelector('.tabulator-tableholder');
+        if (tableholder) {
+            tableholder.addEventListener('scroll', rafForceTabulatorBackgrounds, { passive: true });
+        }
+    }
+
+    // ===== Marquee mobile fix - force animation to run (iOS often defers until interaction) =====
+    function kickMarqueeAnimation() {
+        const track = document.getElementById('marquee-track');
+        if (!track) return;
+        track.style.animation = 'none';
+        track.offsetHeight;
+        track.style.animation = '';
+    }
+    document.addEventListener('touchstart', kickMarqueeAnimation, { once: true, passive: true });
+    document.addEventListener('click', kickMarqueeAnimation, { once: true });
+    setTimeout(kickMarqueeAnimation, 100);
 
     // ===== FanDuel Style Tab Navigation =====
     const tabButtons = document.querySelectorAll('.fd-tab-btn');
@@ -132,6 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (items.length === 0) {
                 marqueeTrack.innerHTML = '<div class="marquee-item"><span class="marquee-item-title">No live tournaments</span></div>';
+                if (typeof kickMarqueeAnimation === 'function') kickMarqueeAnimation();
                 return;
             }
 
@@ -289,10 +324,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             marqueeTrack.innerHTML = finalMarqueeHTML;
+            if (typeof kickMarqueeAnimation === 'function') kickMarqueeAnimation();
 
         } catch (error) {
             console.error('Failed to load tournaments:', error);
             marqueeTrack.innerHTML = '<div class="marquee-item"><span class="marquee-item-title">Unable to load tournaments</span></div>';
+            if (typeof kickMarqueeAnimation === 'function') kickMarqueeAnimation();
         }
     }
 
@@ -480,6 +517,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Pass full data for filtering, but table only shows limited data
             initStartingSoonToolbar(table, data.slice(0, 15));
             forceTabulatorBackgrounds();
+            if (typeof observeTabulatorForBackgroundFix === 'function') observeTabulatorForBackgroundFix(target);
         });
         table.on("renderComplete", forceTabulatorBackgrounds);
     }
@@ -541,6 +579,7 @@ document.addEventListener('DOMContentLoaded', function() {
         table.on("tableBuilt", function(){
             initTournamentsFilters(table, rows);
             forceTabulatorBackgrounds();
+            if (typeof observeTabulatorForBackgroundFix === 'function') observeTabulatorForBackgroundFix(target);
         });
         table.on("renderComplete", forceTabulatorBackgrounds);
     }
