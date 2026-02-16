@@ -35,6 +35,20 @@ document.addEventListener('DOMContentLoaded', function() {
     updateMobileClass();
     window.addEventListener('resize', updateMobileClass);
 
+    // ===== Tabulator background fix (mobile tap/resize reverts) =====
+    let tabulatorBgDebounce;
+    function debouncedForceTabulatorBackgrounds() {
+        clearTimeout(tabulatorBgDebounce);
+        tabulatorBgDebounce = setTimeout(function() {
+            const bg = '#0a0a0a';
+            document.querySelectorAll('.tabulator-tableholder, .tabulator-table, .tabulator-row, .tabulator-cell').forEach(el => {
+                el.style.backgroundColor = bg;
+            });
+        }, 100);
+    }
+    window.addEventListener('resize', debouncedForceTabulatorBackgrounds);
+    document.addEventListener('touchstart', debouncedForceTabulatorBackgrounds, { passive: true });
+
     // ===== FanDuel Style Tab Navigation =====
     const tabButtons = document.querySelectorAll('.fd-tab-btn');
     const tabPanels = document.querySelectorAll('.fd-tab-panel');
@@ -387,6 +401,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    const TABULATOR_BG = '#0a0a0a';
+
+    function forceTabulatorBackgrounds() {
+        document.querySelectorAll('.tabulator-tableholder, .tabulator-table').forEach(el => {
+            el.style.backgroundColor = TABULATOR_BG;
+        });
+        document.querySelectorAll('.tabulator-row').forEach(el => {
+            el.style.backgroundColor = TABULATOR_BG;
+        });
+        document.querySelectorAll('.tabulator-cell').forEach(el => {
+            el.style.backgroundColor = TABULATOR_BG;
+        });
+        document.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
+            el.style.backgroundColor = TABULATOR_BG;
+        });
+    }
+
     function initStartingSoonTable(rows) {
         const target = document.getElementById('starting-soon-table');
         if (!target || typeof Tabulator === 'undefined') {
@@ -448,7 +479,9 @@ document.addEventListener('DOMContentLoaded', function() {
         table.on("tableBuilt", function(){
             // Pass full data for filtering, but table only shows limited data
             initStartingSoonToolbar(table, data.slice(0, 15));
+            forceTabulatorBackgrounds();
         });
+        table.on("renderComplete", forceTabulatorBackgrounds);
     }
 
     function initTournamentsTable(rows) {
@@ -507,7 +540,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Wait for table to be built before initializing filters
         table.on("tableBuilt", function(){
             initTournamentsFilters(table, rows);
+            forceTabulatorBackgrounds();
         });
+        table.on("renderComplete", forceTabulatorBackgrounds);
     }
 
     function statusFormatter(cell) {
