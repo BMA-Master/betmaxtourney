@@ -5,6 +5,18 @@
     --table-row-bg: #0a0a0a;
 }
 
+/* Override Tabulator default #888 gray - prevents flash when table enters/leaves viewport on scroll */
+.tabulator,
+#starting-soon-table.tabulator,
+#tournaments-table.tabulator,
+.starting-soon-shell .tabulator,
+.live-tournaments .tabulator,
+.tabulator .tabulator-tableholder,
+.tabulator .tabulator-table {
+    background-color: #0a0a0a !important;
+    background-image: none !important;
+}
+
 /* Apply to ALL viewports - both desktop and mobile */
 .tabulator-row {
     background-color: var(--table-row-bg) !important;

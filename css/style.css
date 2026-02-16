@@ -2177,7 +2177,9 @@ body.mobile .hero-right {
 /* ===== How to Compete Section ===== */
 .how-to-compete {
     padding: clamp(2.5rem, 4vw, 4rem) 0;
-    background: #101010;
+    background:
+        linear-gradient(135deg, rgba(46, 139, 87, 0.15), rgba(255, 215, 0, 0.08)),
+        rgba(10, 10, 10, 0.85);
     position: relative;
     overflow: visible;
 }
@@ -7788,7 +7790,7 @@ section {
     .marquee-track {
         min-width: fit-content;
         flex: 1 1 auto;
-        animation-duration: 60s;
+        animation-duration: 25s;
     }
 
     /* Tournament Types - Stack vertically on mobile */
@@ -7944,8 +7946,8 @@ p, .description, .lead {
 /* 6. PERFORMANCE OPTIMIZATIONS FOR MOBILE */
 
 @media (max-width: 768px) {
-    /* Reduce animations on mobile */
-    * {
+    /* Reduce animations on mobile (exclude marquee - it needs its own duration) */
+    *:not(.marquee-track) {
         animation-duration: 0.3s !important;
     }
 
