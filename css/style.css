@@ -7763,18 +7763,26 @@ section {
 
 /* 4. COMPONENT-SPECIFIC MOBILE FIXES */
 
-/* Tournament Marquee */
+/* Tournament Marquee - restore horizontal flex layout on mobile */
 @media (max-width: 768px) {
     .tournament-marquee {
-        height: auto !important;
+        height: 48px !important;
+        min-height: 48px !important;
         position: relative !important;
-        padding: 1rem !important;
-        font-size: 0.875rem !important;
+        padding: 0 !important;
+        overflow: hidden;
     }
 
     .marquee-content {
-        animation: none !important;
-        display: block !important;
+        display: flex !important;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .marquee-track {
+        min-width: fit-content;
+        flex: 1 1 auto;
+        animation-duration: 60s;
     }
 
     /* Tournament Types - Stack vertically on mobile */
