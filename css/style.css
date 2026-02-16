@@ -29,6 +29,10 @@
     /* Typography */
     --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    /* Hero top offset - marquee (48px) + nav floats over hero */
+    --hero-marquee-height: 48px;
+    --hero-header-height: 110px;
 }
 
 /* ===== Reset & Base ===== */
@@ -981,14 +985,16 @@ nav {
     min-height: 650px;
     max-height: 850px;
     padding: 0;
-    padding-top: 120px;
+    padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 0.75rem);
     margin-top: -120px;
+    padding-bottom: clamp(3rem, 8vw, 6rem);
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     background: #000;
     display: flex;
     align-items: center;
 }
+
 
 .hero::after,
 .how-it-works::after,
@@ -1014,6 +1020,7 @@ nav {
     right: 0;
     bottom: 0;
     z-index: 0;
+    overflow: hidden;
 }
 
 /* Rotating Background Images with Ken Burns Effect */
@@ -1075,6 +1082,7 @@ nav {
     left: 0;
     right: 0;
     bottom: 0;
+    overflow: hidden;
     background:
         repeating-linear-gradient(
             90deg,
@@ -1123,6 +1131,8 @@ nav {
     height: 100%;
     display: flex;
     align-items: center;
+    padding-left: clamp(1rem, 4vw, 2rem);
+    padding-right: clamp(1rem, 4vw, 2rem);
 }
 
 .hero-content {
@@ -1156,7 +1166,7 @@ nav {
 }
 
 .hero h1 {
-    font-size: 4.5rem;
+    font-size: clamp(1.75rem, 5vw + 1rem, 4.5rem);
     font-weight: 900;
     line-height: 0.95;
     margin-bottom: 1.5rem;
@@ -1166,14 +1176,14 @@ nav {
 }
 
 .hero h1 .tm {
-    font-size: 1.5rem;
+    font-size: 0.35em;
     font-weight: 400;
     margin-left: 0.25rem;
     opacity: 0.7;
 }
 
 .hero-lead {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 1.2vw + 0.5rem, 1.1rem);
     color: rgba(255, 255, 255, 0.95);
     margin-bottom: 1.5rem;
     line-height: 1.7;
@@ -1227,6 +1237,14 @@ nav {
 
 .hero-ctas {
     margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.hero-ctas .btn {
+    min-height: 44px;
+    min-width: 44px;
 }
 
 .cta-meta {
@@ -1275,12 +1293,19 @@ nav {
     position: relative;
     display: flex;
     justify-content: center;
+    overflow: visible;
+}
+
+/* Hide device stack when JS adds .mobile class (no media query) */
+body.mobile .hero-right {
+    display: none;
 }
 
 .hero .device-stack {
     max-width: 560px;
     width: 100%;
     margin: 0 auto;
+    position: relative;
 }
 
 .hero .laptop-mockup {
@@ -1291,7 +1316,7 @@ nav {
     position: absolute;
     bottom: -50px;
     right: -50px;
-    width: 220px; /* Increased from 180px */
+    width: 220px;
     z-index: 3;
 }
 
@@ -1777,7 +1802,7 @@ nav {
     color: var(--bma-green-bright);
     margin-bottom: 1.5rem;
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(0, 230, 118, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     position: relative;
 }
 
@@ -1788,7 +1813,7 @@ nav {
     left: 0;
     width: 60px;
     height: 2px;
-    background: var(--gradient-primary);
+    background: rgba(255, 255, 255, 0.8);
 }
 
 .sport-grid {
@@ -1892,7 +1917,9 @@ nav {
 /* ===== How It Works - Tournament Mechanics ===== */
 .how-it-works {
     padding: clamp(2.5rem, 4vw, 4rem) 0;
-    background: #101010;
+    background:
+        linear-gradient(135deg, rgba(46, 139, 87, 0.15), rgba(255, 215, 0, 0.08)),
+        rgba(10, 10, 10, 0.85);
     position: relative;
     overflow: visible;
 }
@@ -2120,30 +2147,8 @@ nav {
 .how-to-compete {
     padding: clamp(2.5rem, 4vw, 4rem) 0;
     background:
-        /* Noise texture overlay to prevent banding */
-        repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 2px,
-            rgba(255, 255, 255, 0.008) 2px,
-            rgba(255, 255, 255, 0.008) 4px
-        ),
-        /* Subtle gradient overlay to smooth transitions */
-        linear-gradient(
-            180deg,
-            rgba(20, 20, 20, 0.4) 0%,
-            rgba(20, 20, 20, 0.2) 50%,
-            rgba(20, 20, 20, 0.4) 100%
-        ),
-        /* Base background image if it exists */
-        url('../images/bet-max-action-gray-background.jpg') center/cover no-repeat fixed,
-        /* Fallback gradient */
-        linear-gradient(
-            180deg,
-            #141414 0%,
-            #1a1a1a 50%,
-            #141414 100%
-        );
+        linear-gradient(135deg, rgba(46, 139, 87, 0.15), rgba(255, 215, 0, 0.08)),
+        rgba(10, 10, 10, 0.85);
     position: relative;
     overflow: visible;
 }
@@ -2735,9 +2740,7 @@ nav {
     padding: clamp(2.5rem, 4vw, 4rem) 0;
     position: relative;
     overflow: hidden;
-    background:
-        linear-gradient(135deg, rgba(46, 139, 87, 0.15), rgba(255, 215, 0, 0.08)),
-        rgba(10, 10, 10, 0.85);
+    background: #101010;
 }
 
 .live-tournaments .container,
@@ -4379,21 +4382,38 @@ footer::before {
     }
 
     .hero-right {
-        margin-top: 3rem;
+        margin-top: 0;
+        justify-content: center;
     }
 
+    .hero-content {
+        gap: 3rem;
+    }
+
+    .hero h1 {
+        font-size: clamp(2.75rem, 12vw, 4.5rem) !important;
+        width: 100%;
+        padding: 0 0.5rem;
+    }
+
+    .hero-ctas {
+        margin-bottom: 0;
+    }
+
+    /* Devices stay overlayed - scale down only, never stack */
     .hero .device-stack {
         max-width: 100%;
-        align-items: center;
     }
 
     .hero .laptop-mockup {
-        max-width: 100%;
+        max-width: min(400px, 55vw);
     }
 
     .hero .phone-mockup {
-        position: static;
-        margin: 1.5rem auto 0;
+        position: absolute !important;
+        width: min(180px, 35vw);
+        bottom: 0;
+        right: 0;
     }
 
     .tournament-item {
@@ -4457,6 +4477,14 @@ footer::before {
     .final-cta {
         padding: 5rem 0;
     }
+
+    /* Hero stacked - auto height, consistent padding */
+    .hero {
+        min-height: auto;
+        height: auto;
+        padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 2rem);
+        padding-bottom: clamp(3rem, 6vw, 5rem);
+    }
 }
 
 /* ===== Responsive Mobile (<768px) ===== */
@@ -4477,10 +4505,7 @@ footer::before {
         gap: 1rem;
     }
 
-    /* Typography scaling */
-    .hero h1 {
-        font-size: 2.5rem;
-    }
+    /* Typography scaling - hero h1 uses clamp() in base */
 
     .section-header h2 {
         font-size: clamp(2.5rem, 6vw, 4rem);
@@ -4672,10 +4697,7 @@ footer::before {
         font-size: 0.95rem;
     }
 
-    /* Further reduce typography */
-    .hero h1 {
-        font-size: 2rem;
-    }
+    /* Hero typography uses clamp() in base */
 
     .section-header h2 {
         font-size: clamp(2rem, 7vw, 3.5rem);
@@ -5370,51 +5392,49 @@ footer::before {
     }
     
     
-    /* CRITICAL: Hero Section Mobile Layout */
+    /* CRITICAL: Hero Section Mobile Layout - nav floats over hero */
     .hero {
-        min-height: 500px;
+        min-height: auto;
         height: auto;
-        padding: calc(48px + 60px + 2.5rem) 0 4rem;
+        padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 2rem);
+        padding-bottom: clamp(3.5rem, 8vw, 5rem);
     }
     
     .hero-content {
         grid-template-columns: 1fr;
-        gap: 4rem;
+        gap: 3rem;
     }
     
     .hero h1 {
-        font-size: 2.25rem !important;
         line-height: 1.1;
-    }
-    
-    .hero-lead {
-        font-size: 1.05rem;
+        font-size: clamp(3rem, 18vw, 5rem) !important;
+        width: 100%;
+        max-width: 100%;
+        padding: 0 0.5rem;
     }
     
     .hero-left {
         text-align: center;
     }
     
-    .hero-right {
-        display: flex;
-        order: 2;
-        margin-top: 4rem;
+    .hero-ctas {
+        margin-bottom: 0;
     }
-
+    
     .hero-left {
         order: 1;
     }
 
-    .hero .device-stack {
-        flex-direction: column;
-        align-items: center;
-        margin-top: 1rem;
-        width: 100%;
+    /* Device stack hidden on mobile */
+    .hero .laptop-mockup {
+        max-width: min(320px, 50vw);
     }
 
     .hero .phone-mockup {
-        position: static;
-        margin: 1.5rem auto 0;
+        position: absolute !important;
+        width: min(150px, 30vw);
+        bottom: 0;
+        right: 0;
     }
     
     /* CRITICAL: Tournament Card Grid Collapse */
@@ -5625,17 +5645,12 @@ footer::before {
     
     /* CRITICAL: Hero Further Scaling */
     .hero {
-        min-height: 450px;
-        padding: calc(48px + 60px + 2rem) 0 3rem;
+        min-height: auto;
+        padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 1.5rem);
+        padding-bottom: clamp(2rem, 5vw, 3rem);
     }
     
-    .hero h1 {
-        font-size: 1.85rem !important;
-    }
-    
-    .hero-lead {
-        font-size: 0.95rem;
-    }
+    /* Hero h1 and lead use clamp() in base */
     
     .beta-badge {
         font-size: 0.7rem;
@@ -5692,9 +5707,20 @@ footer::before {
         display: none;
     }
     
-    /* Phone Mockups */
+    /* Phone Mockups - global (How to Compete, etc.) */
     .phone-mockup {
         max-width: 180px;
+    }
+    
+    /* Hero devices - scale down, stay overlayed */
+    .hero .laptop-mockup {
+        max-width: min(280px, 55vw);
+    }
+    .hero .phone-mockup {
+        position: absolute !important;
+        width: min(130px, 28vw);
+        bottom: 0;
+        right: 0;
     }
     
     /* Benefits Mobile */
@@ -6221,6 +6247,11 @@ footer::before {
     .final-cta {
         padding: 2rem 0 !important;
     }
+
+    /* Hero top padding for marquee + header at 380px */
+    .hero {
+        padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 1rem) !important;
+    }
     
     /* CRITICAL FIX #5: Hero Offer Box Tightest */
     .hero-offer {
@@ -6325,9 +6356,20 @@ footer::before {
         font-size: 0.75rem !important;
     }
     
-    /* MEDIUM PRIORITY #18: Hide Device Stack Entirely */
-    .device-stack {
-        display: none !important;
+    /* Hero h1 - largest on smallest viewport */
+    .hero h1 {
+        font-size: clamp(3rem, 22vw, 4.5rem) !important;
+    }
+
+    /* Hero devices - smallest viewport, stay overlayed */
+    .hero .laptop-mockup {
+        max-width: min(240px, 60vw);
+    }
+    .hero .phone-mockup {
+        position: absolute !important;
+        width: min(110px, 25vw);
+        bottom: 0;
+        right: 0;
     }
 }
 
@@ -6340,6 +6382,16 @@ footer::before {
     
     .hero h1 {
         font-size: 1.75rem !important;
+    }
+    
+    .hero .laptop-mockup {
+        max-width: 200px;
+    }
+    .hero .phone-mockup {
+        position: absolute !important;
+        width: 120px;
+        bottom: 0;
+        right: 0;
     }
     
     .tournament-marquee {
@@ -6720,8 +6772,8 @@ RESET AND REBUILD APPROACH
 
 /* Tablet breakpoint improvements */
 @media (max-width: 768px) {
-    /* Fix phone module overlapping issues */
-    .phone-mockup {
+    /* Fix phone module overlapping issues - exclude hero device stack */
+    .phone-mockup:not(.hero-device-phone) {
         position: relative !important;
         z-index: 1;
         max-width: 200px;
@@ -6925,8 +6977,8 @@ RESET AND REBUILD APPROACH
 
 /* Mobile breakpoint enhancements */
 @media (max-width: 480px) {
-    /* Phone modules need more aggressive positioning fixes */
-    .phone-mockup,
+    /* Phone modules need more aggressive positioning fixes - exclude hero device stack */
+    .phone-mockup:not(.hero-device-phone),
     .hero-phone-mockup {
         position: relative !important;
         z-index: 1 !important;
@@ -7480,7 +7532,7 @@ body {
 
 /* Heading scales with proper mobile sizing */
 h1, .hero h1 {
-    font-size: clamp(2rem, 5vw + 1rem, 4.5rem) !important; /* 32-72px */
+    font-size: clamp(1.75rem, 5vw + 1rem, 4.5rem) !important; /* 28-72px */
     line-height: 1.1;
     letter-spacing: -0.02em;
     word-wrap: break-word;
@@ -7522,7 +7574,7 @@ section {
 }
 
 .hero {
-    padding-top: clamp(4rem, 10vw, 8rem);
+    padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + clamp(0.75rem, 2vw, 2rem));
     padding-bottom: clamp(3rem, 8vw, 6rem);
 }
 
@@ -7542,18 +7594,29 @@ section {
 
     /* Hero section */
     .hero {
-        padding-top: 5rem;
+        padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 1.5rem);
         padding-bottom: 2rem;
     }
 
     .hero h1 {
         margin-bottom: 1rem;
+        font-size: clamp(3.25rem, 20vw, 5rem) !important;
+        width: 100%;
+        padding: 0 0.5rem;
     }
 
     .hero h1 .tm {
         display: block;
         margin-top: 0.5rem;
         font-size: 1rem !important;
+    }
+
+    .hero-ctas {
+        margin-bottom: 0;
+    }
+
+    .hero-content {
+        gap: 3rem;
     }
 
     /* Buttons and CTAs */
@@ -7567,7 +7630,14 @@ section {
     .hero-ctas {
         flex-direction: column;
         gap: 0.75rem;
+        max-width: 280px;
+        margin-left: auto;
+        margin-right: auto;
         width: 100%;
+    }
+
+    .hero-ctas .btn {
+        min-height: 44px;
     }
 
     /* Cards stack vertically */
@@ -8027,3 +8097,4 @@ body.menu-open::before {
         padding: 0.75rem 1rem !important;
     }
 }
+

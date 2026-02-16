@@ -27,6 +27,14 @@ function mapSportToIcon(sportCode) {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Bet Max Tourney loaded');
 
+    // ===== Mobile Detection (no media queries) =====
+    const MOBILE_BREAKPOINT = 768;
+    function updateMobileClass() {
+        document.body.classList.toggle('mobile', window.innerWidth <= MOBILE_BREAKPOINT);
+    }
+    updateMobileClass();
+    window.addEventListener('resize', updateMobileClass);
+
     // ===== FanDuel Style Tab Navigation =====
     const tabButtons = document.querySelectorAll('.fd-tab-btn');
     const tabPanels = document.querySelectorAll('.fd-tab-panel');
