@@ -1,8 +1,8 @@
 /* Override Tabulator's mobile-specific styles */
 
-/* Use a consistent gray across all viewports */
+/* Use a solid background to prevent gradient bleed-through on horizontal scroll */
 :root {
-    --table-row-bg: rgba(40, 40, 40, 0.85); /* Consistent medium-dark gray */
+    --table-row-bg: #0a0a0a;
 }
 
 /* Apply to ALL viewports - both desktop and mobile */

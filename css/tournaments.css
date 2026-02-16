@@ -176,7 +176,7 @@
 /* Force tournaments table to have exact same header style as homepage */
 .tournaments-page #tournaments-table.tabulator .tabulator-header,
 .tournaments-page #tournaments-table.tabulator .tabulator-col {
-    background-color: rgba(6, 6, 6, 0.98) !important;
+    background-color: #0a0a0a !important;
 }
 
 /* The rest of the dark theme styles are inherited from style.css
