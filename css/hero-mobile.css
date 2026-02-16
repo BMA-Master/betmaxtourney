@@ -1,0 +1,27 @@
+/* Hero mobile overrides - loads last to override conflicts */
+@media (max-width: 768px) {
+    /* Reduce gap between nav and hero text (nav is shorter on mobile) */
+    section.hero {
+        padding-top: calc(var(--hero-marquee-height) + 44px + 0.25rem) !important;
+    }
+    section.hero .hero-content .hero-left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    section.hero .hero-content .hero-left .hero-ctas {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        width: 100%;
+        max-width: 280px;
+    }
+
+    section.hero .hero-content .hero-left .hero-ctas .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

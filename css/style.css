@@ -886,16 +886,7 @@ nav {
     white-space: nowrap;
 }
 
-.menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: var(--bma-white);
-    font-size: 1.5rem;
-    cursor: pointer;
-    min-width: 44px;
-    min-height: 44px;
-}
+/* Removed duplicate menu-toggle styles */
 
 /* Mobile Menu Drawer */
 .mobile-menu {
@@ -1912,6 +1903,46 @@ body.mobile .hero-right {
     margin: 0.25rem 0 0 0;
     font-weight: 500;
     letter-spacing: 0.5px;
+}
+
+/* Product Showcase - How It Works / Formats / Bet Types cards */
+.sport-grid-steps {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.showcard-number {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 0.75rem;
+    background: var(--gradient-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--bma-black);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+    transition: all 0.4s ease;
+}
+
+.sport-card:hover .showcard-number {
+    transform: translateY(-4px) scale(1.1);
+    box-shadow: 0 8px 30px rgba(255, 215, 0, 0.5);
+}
+
+.showcard-desc {
+    font-size: 0.8rem;
+    color: rgba(0, 230, 118, 0.7);
+    margin: 0.5rem 0 0 0;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+}
+
+.sport-card.showcard-format .showcard-desc,
+.sport-card.showcard-step .showcard-desc {
+    margin-top: 0.35rem;
 }
 
 /* ===== How It Works - Tournament Mechanics ===== */
@@ -4036,9 +4067,10 @@ body.mobile .hero-right {
 
 .final-cta-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: clamp(2.5rem, 6vw, 8rem);
     align-items: center;
+    justify-items: center;
 }
 
 .final-cta-left {
@@ -4051,6 +4083,8 @@ body.mobile .hero-right {
     position: relative;
     z-index: 2;
     padding: clamp(1.5rem, 3vw, 3rem);
+    text-align: center;
+    max-width: 600px;
 }
 
 .device-stack {
@@ -4458,9 +4492,11 @@ footer::before {
         display: none;
     }
 
+    /* Removed - hamburger should only show on mobile, not tablet
     .menu-toggle {
         display: block;
     }
+    */
 
     .logo {
         flex: 1;
@@ -4482,7 +4518,7 @@ footer::before {
     .hero {
         min-height: auto;
         height: auto;
-        padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 2rem);
+        padding-top: calc(var(--hero-marquee-height) + 44px + 0.25rem);
         padding-bottom: clamp(3rem, 6vw, 5rem);
     }
 }
@@ -4613,7 +4649,7 @@ footer::before {
 
     .hero {
         margin-top: 0;
-        padding-top: calc(48px + 60px + 2.5rem);
+        padding-top: calc(48px + 44px + 0.25rem);
     }
 
     .cta-trust {
@@ -5396,7 +5432,7 @@ footer::before {
     .hero {
         min-height: auto;
         height: auto;
-        padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 2rem);
+        padding-top: calc(var(--hero-marquee-height) + 44px + 0.25rem);
         padding-bottom: clamp(3.5rem, 8vw, 5rem);
     }
     
@@ -5640,13 +5676,13 @@ footer::before {
     .menu-toggle {
         min-width: 44px;
         min-height: 44px;
-        font-size: 1.25rem;
+        /* font-size: 1.25rem; -- Removed to prevent text display */
     }
     
     /* CRITICAL: Hero Further Scaling */
     .hero {
         min-height: auto;
-        padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 1.5rem);
+        padding-top: calc(var(--hero-marquee-height) + 44px + 0.25rem);
         padding-bottom: clamp(2rem, 5vw, 3rem);
     }
     
@@ -6248,9 +6284,9 @@ footer::before {
         padding: 2rem 0 !important;
     }
 
-    /* Hero top padding for marquee + header at 380px */
+    /* Hero top padding for marquee + header at 380px - tighter on mobile */
     .hero {
-        padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 1rem) !important;
+        padding-top: calc(var(--hero-marquee-height) + 44px + 0.25rem) !important;
     }
     
     /* CRITICAL FIX #5: Hero Offer Box Tightest */
@@ -7069,7 +7105,7 @@ RESET AND REBUILD APPROACH
     }
 
     .hero {
-        padding: calc(48px + 60px + 2rem) 0 3rem !important;
+        padding: calc(48px + 44px + 0.25rem) 0 3rem !important;
     }
 
     .value-props {
@@ -7594,7 +7630,7 @@ section {
 
     /* Hero section */
     .hero {
-        padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 1.5rem);
+        padding-top: calc(var(--hero-marquee-height) + 44px + 0.25rem);
         padding-bottom: 2rem;
     }
 
@@ -7930,7 +7966,12 @@ p, .description, .lead {
 /* 8. FULL WIDTH MOBILE LAYOUTS */
 
 @media (max-width: 640px) {
-    /* Remove side margins on mobile */
+    /* Prevent horizontal scroll on mobile */
+    body {
+        overflow-x: hidden !important;
+    }
+
+    /* Remove side margins on mobile
     .hero,
     section {
         margin-left: -1rem;
@@ -7938,8 +7979,9 @@ p, .description, .lead {
         padding-left: 1rem;
         padding-right: 1rem;
     }
+    */
 
-    /* Full width cards */
+    /* Full width cards - commented out as it causes overflow
     .tournament-card,
     .value-card,
     .card {
@@ -7948,50 +7990,40 @@ p, .description, .lead {
         margin-right: -1rem;
         width: calc(100% + 2rem);
     }
+    */
 }
 
 /* 9. MOBILE NAVIGATION IMPROVEMENTS */
 
-/* Hamburger menu button */
+/* Hamburger menu button - hidden by default, shown on mobile */
 .menu-toggle {
-    display: none;
+    display: none; /* Hidden by default */
     background: transparent;
     border: none;
-    padding: 0.5rem;
+    padding: 8px;
     cursor: pointer;
     z-index: 1001;
-}
-
-.hamburger {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    width: 28px;
-    height: 24px;
     position: relative;
+    width: 44px;
+    height: 44px;
 }
 
-.hamburger span {
+/* SVG Hamburger and Close Icons */
+.hamburger-icon,
+.close-icon {
     display: block;
-    width: 100%;
-    height: 3px;
-    background: var(--bma-green-bright);
-    border-radius: 2px;
-    transition: all 0.3s ease;
-    transform-origin: center;
+    width: 24px;
+    height: 24px;
+    color: #00E676; /* Sets currentColor for SVG fill */
 }
 
-/* Animated hamburger to X */
-.menu-toggle.active .hamburger span:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
+/* Toggle icons on menu active state */
+.menu-toggle.active .hamburger-icon {
+    display: none !important;
 }
 
-.menu-toggle.active .hamburger span:nth-child(2) {
-    opacity: 0;
-}
-
-.menu-toggle.active .hamburger span:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
+.menu-toggle.active .close-icon {
+    display: block !important;
 }
 
 /* Mobile menu styles */
@@ -8074,7 +8106,19 @@ body.menu-open::before {
     to { opacity: 1; }
 }
 
-/* Show hamburger menu on mobile */
+/* DESKTOP: Force hide hamburger and show nav */
+@media (min-width: 769px) {
+    .menu-toggle {
+        display: none !important; /* Never show on desktop */
+    }
+
+    .nav-links,
+    .nav-auth {
+        display: flex !important; /* Always show nav on desktop */
+    }
+}
+
+/* MOBILE: Show hamburger menu on mobile only */
 @media (max-width: 768px) {
     .menu-toggle {
         display: block;
@@ -8083,6 +8127,11 @@ body.menu-open::before {
     .nav-links,
     .nav-auth {
         display: none;
+    }
+
+    /* Tighter gap between nav and hero text on mobile */
+    .hero {
+        padding-top: calc(var(--hero-marquee-height) + 44px + 0.25rem) !important;
     }
 
     /* Adjust logo size on mobile */
@@ -8095,6 +8144,60 @@ body.menu-open::before {
     nav {
         justify-content: space-between;
         padding: 0.75rem 1rem !important;
+    }
+
+    /* Center hero content and buttons on mobile */
+    .hero-content {
+        justify-items: center;
+    }
+
+    .hero-left {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .hero-ctas {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        width: 100%;
+    }
+
+    .hero-ctas .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Fix mockups that are positioned off-screen causing horizontal scroll */
+    .hero .phone-mockup,
+    .hero .laptop-mockup,
+    .final-cta .phone-mockup {
+        display: none; /* Hide mockups on mobile to prevent overflow */
+    }
+
+    /* Alternative: reposition them if you want to keep them visible
+    .hero .phone-mockup,
+    .final-cta .phone-mockup {
+        position: relative;
+        right: 0;
+        bottom: 0;
+        margin: 0 auto;
+    }
+    */
+
+    /* Ensure no horizontal overflow */
+    body {
+        overflow-x: hidden;
+    }
+
+    .container,
+    section {
+        overflow-x: hidden;
     }
 }
 
