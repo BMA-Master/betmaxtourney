@@ -16,7 +16,14 @@ html {
     margin-top: -120px;
     margin-bottom: 3rem;
     overflow: hidden;
-    background: url('../images/bet-max-action-gray-background.jpg') center/cover no-repeat;
+    background: url('../images/How to Play.jpg') center/cover no-repeat;
+}
+
+.how-to-play-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
 }
 
 .how-to-play-hero .container {
