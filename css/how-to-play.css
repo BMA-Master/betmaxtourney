@@ -512,6 +512,13 @@ html {
     margin-bottom: 1.5rem;
 }
 
+.td-visual img {
+    max-width: 280px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
 .td-content ul {
     list-style: none;
     padding: 0;
