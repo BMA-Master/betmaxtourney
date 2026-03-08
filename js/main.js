@@ -8,6 +8,7 @@ function mapSportToIcon(sportCode) {
     const sportMap = {
         'americanfootball_nfl': 'NFL',
         'basketball_nba': 'NBA',
+        'basketball_ncaab': 'NCAAB',
         'baseball_mlb': 'MLB',
         'icehockey_nhl': 'NHL',
         'mma_mixed_martial_arts': 'MMA',
