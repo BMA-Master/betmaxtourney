@@ -483,35 +483,25 @@ document.addEventListener('DOMContentLoaded', function() {
         const limitedData = data.slice(0, 15);
         const isMobile = window.innerWidth <= 768;
         const rowHeight = isMobile ? 84 : 56;
-        // Remove responsiveLayout temporarily to fix the error
         const table = new Tabulator(target, {
             data: limitedData,
-            layout: "fitColumns",
+            layout: "fitDataStretch",
             sortMode: "local",
             height: "auto",
-            // responsiveLayout: "collapse",  // Temporarily disabled
-            // responsiveLayoutCollapseStartOpen: false,
-            // responsiveLayoutCollapseFormatter: collapseFormatter,
-            pagination: false, // Disable pagination for homepage
-            // Let's try without initialSort to see if that's the issue
-            // initialSort: [
-            //     {column: "statusRank", dir: "asc"},
-            //     {column: "startTs", dir: "asc"}
-            // ],
+            pagination: false,
             rowHeight,
             rowFormatter: rowAccentFormatter,
             columnDefaults: {
-                minWidth: 80,  // Reduced from 120
                 vertAlign: "middle"
             },
             columns: [
                 {title: "Rank", field: "statusRank", visible: false, headerSort: false, sorter: "number", sorterParams: {alignEmptyValues: "bottom"}},
-                {title: "Status", field: "status", headerSort: true, formatter: statusFormatter, sorter: statusSorter, minWidth: 150},
-                {title: "Tournament", field: "title", headerSort: true, minWidth: 250, formatter: titleFormatter},
-                {title: "Sports", field: "sports", headerSort: true, minWidth: 120, formatter: sportsFormatter},
-                {title: "Matches", field: "matches", headerSort: true, hozAlign: "right", minWidth: 80},
-                {title: "Tournament Dollars (TD$)", field: "td", headerSort: true, hozAlign: "right", minWidth: 150},
-                {title: "", field: "link", headerSort: false, formatter: ctaFormatter, hozAlign: "right", minWidth: 120}
+                {title: "Status", field: "status", headerSort: true, formatter: statusFormatter, sorter: statusSorter},
+                {title: "Tournament", field: "title", headerSort: true, formatter: titleFormatter},
+                {title: "Sports", field: "sports", headerSort: true, formatter: sportsFormatter},
+                {title: "Matches", field: "matches", headerSort: true, hozAlign: "right"},
+                {title: "Tournament Dollars (TD$)", field: "td", headerSort: true, hozAlign: "right"},
+                {title: "", field: "link", headerSort: false, formatter: ctaFormatter, widthGrow: 1}
             ]
         });
 
@@ -555,28 +545,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const table = new Tabulator(target, {
             data,
-            layout: "fitColumns",
+            layout: "fitDataStretch",
             sortMode: "local",
             height: "auto",
-            // responsiveLayout disabled to avoid errors
             pagination: "local",
             paginationSize: pageSize,
             paginationSizeSelector: [20, 40, 60, 100],
-            // No initialSort - we pre-sort the data
             rowHeight,
             rowFormatter: rowAccentFormatter,
             columnDefaults: {
-                minWidth: 80,
                 vertAlign: "middle"
             },
             columns: [
                 {title: "Rank", field: "statusRank", visible: false, headerSort: false, sorter: "number", sorterParams: {alignEmptyValues: "bottom"}},
-                {title: "Status", field: "status", headerSort: true, formatter: statusFormatter, sorter: statusSorter, minWidth: 150},
-                {title: "Tournament", field: "title", headerSort: true, minWidth: 250, formatter: titleFormatter},
-                {title: "Sports", field: "sports", headerSort: true, minWidth: 120, formatter: sportsFormatter},
-                {title: "Matches", field: "matches", headerSort: true, hozAlign: "right", minWidth: 80},
-                {title: "Tournament Dollars (TD$)", field: "td", headerSort: true, hozAlign: "right", minWidth: 150},
-                {title: "", field: "link", headerSort: false, formatter: ctaFormatter, hozAlign: "right", minWidth: 120}
+                {title: "Status", field: "status", headerSort: true, formatter: statusFormatter, sorter: statusSorter},
+                {title: "Tournament", field: "title", headerSort: true, formatter: titleFormatter},
+                {title: "Sports", field: "sports", headerSort: true, formatter: sportsFormatter},
+                {title: "Matches", field: "matches", headerSort: true, hozAlign: "right"},
+                {title: "Tournament Dollars (TD$)", field: "td", headerSort: true, hozAlign: "right"},
+                {title: "", field: "link", headerSort: false, formatter: ctaFormatter, widthGrow: 1}
             ]
         });
 
@@ -682,7 +669,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const buttonText = isUpcoming ? 'Enter Free' : 'View Results';
         const buttonClass = isUpcoming ? 'btn btn-primary btn-small' : 'btn btn-secondary btn-small';
 
-        return `<a class="${buttonClass}" href="${link}">${buttonText}</a>`;
+        return `<a class="${buttonClass}" href="${link}">${buttonText} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>`;
     }
 
     function timeFormatter(cell) {

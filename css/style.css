@@ -3320,37 +3320,105 @@ body.mobile .hero-right {
     font-weight: 700;
     border-radius: 4px;
     transition: all 0.3s ease;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
 }
 
-/* Enter Free button - gradient green */
+/* Enter Free button - gradient green, fades from transparent to green */
 .tabulator .btn.btn-primary.btn-small {
-    background: linear-gradient(135deg,
-        var(--bma-green) 0%,
-        rgba(0, 230, 118, 0.9) 100%);
+    background: linear-gradient(to right,
+        rgba(47, 121, 77, 0.0) 0%,
+        rgba(47, 121, 77, 0.15) 40%,
+        var(--bma-green) 100%);
     color: white;
-    border: 1px solid rgba(0, 230, 118, 0.3);
+    border: none;
+    border-right: 3px solid var(--bma-green-bright);
 }
 
 .tabulator .btn.btn-primary.btn-small:hover {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 20px rgba(0, 230, 118, 0.35);
+    background: linear-gradient(to right,
+        rgba(47, 121, 77, 0.05) 0%,
+        rgba(47, 121, 77, 0.25) 40%,
+        rgba(0, 230, 118, 0.9) 100%);
+    box-shadow: 0 4px 16px rgba(0, 230, 118, 0.25);
 }
 
-/* View Results button - glassmorphic */
+/* View Results button - subtle fade */
 .tabulator .btn.btn-secondary.btn-small {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.9);
+    background: linear-gradient(to right,
+        rgba(255, 255, 255, 0.0) 0%,
+        rgba(255, 255, 255, 0.03) 40%,
+        rgba(255, 255, 255, 0.08) 100%);
+    border: none;
+    border-right: 3px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .tabulator .btn.btn-secondary.btn-small:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.25);
-    transform: translateY(-2px);
+    background: linear-gradient(to right,
+        rgba(255, 255, 255, 0.0) 0%,
+        rgba(255, 255, 255, 0.05) 40%,
+        rgba(255, 255, 255, 0.12) 100%);
+    border-right-color: rgba(255, 255, 255, 0.3);
 }
 
 .tabulator-cell.tabulator-cell-last {
     text-align: right;
+}
+
+/* Table skeleton loading state */
+.table-skeleton {
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bma-dark-100);
+}
+
+.skeleton-header {
+    height: 42px;
+    padding: 0 1rem;
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.skeleton-row {
+    height: 56px;
+    padding: 0 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.skeleton-pulse {
+    height: 14px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    margin-top: 14px;
+    width: 60%;
+    animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-header .skeleton-pulse {
+    width: 40%;
+    margin-top: 13px;
+}
+
+.skeleton-row:nth-child(odd) .skeleton-pulse { width: 70%; }
+.skeleton-row:nth-child(even) .skeleton-pulse { width: 50%; }
+
+@keyframes skeletonPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+
+/* Fade-in when table loads */
+.tabulator {
+    animation: tableFadeIn 0.3s ease-out;
+}
+
+@keyframes tableFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .tabulator .tabulator-placeholder {
@@ -3386,6 +3454,7 @@ body.mobile .hero-right {
     font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 0.12em;
+    white-space: nowrap;
     text-transform: uppercase;
     border: 1px solid transparent;
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
@@ -3647,7 +3716,6 @@ body.mobile .hero-right {
     }
 
     .tabulator .tabulator-cell[tabulator-field="link"] .btn {
-        width: 100%;
         justify-content: center;
     }
 }
@@ -5279,6 +5347,7 @@ footer::before {
 .btn-small {
     padding: 0.6rem 1.2rem;
     font-size: 0.9rem;
+    white-space: nowrap;
 }
 
 /* Empty State */
@@ -7709,26 +7778,16 @@ section {
         letter-spacing: 1px !important;
     }
 
-    /* Tables - make scrollable */
+    /* Tables - horizontal scroll */
     .tabulator-table-holder {
         overflow-x: auto !important;
         -webkit-overflow-scrolling: touch;
-    }
-
-    .tabulator {
-        min-width: 600px; /* Force horizontal scroll */
     }
 
     /* Table cells smaller */
     .tabulator-cell {
         padding: 0.75rem 0.5rem !important;
         font-size: 0.875rem !important;
-    }
-
-    /* Hide less important columns on mobile */
-    .tabulator-col[tabulator-field="td"],
-    .tabulator-col[tabulator-field="matches"] {
-        display: none !important;
     }
 }
 
@@ -7913,12 +7972,6 @@ section {
 
 /* Very small devices */
 @media (max-width: 480px) {
-    /* Hide less important info */
-    .tabulator-col[tabulator-field="td"],
-    .tabulator-col[tabulator-field="matches"] {
-        display: none !important;
-    }
-
     /* Even larger touch targets */
     .tabulator-cell {
         padding: 1rem 0.6rem !important;
