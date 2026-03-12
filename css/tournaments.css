@@ -611,8 +611,9 @@
 }
 
 .empty-icon {
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(0, 230, 118, 0.35);
     margin-bottom: 1.5rem;
+    filter: drop-shadow(0 0 12px rgba(0, 230, 118, 0.2));
 }
 
 .tournaments-empty h3 {
