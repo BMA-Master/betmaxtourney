@@ -900,8 +900,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const sportPills = document.querySelectorAll('.sport-pill');
         const sortSelect = document.getElementById('sort-select');
         const sizeSelect = document.getElementById('items-per-page');
+        const searchInput = document.getElementById('tournament-search');
         const emptyState = document.getElementById('empty-state');
         const tableEl = document.getElementById('tournaments-table');
+        const summaryCount = document.getElementById('summary-count');
+        const summaryDesc = document.getElementById('summary-desc');
 
         ['pagination-controls', 'pagination-controls-top'].forEach(id => {
             const container = document.getElementById(id);
@@ -927,19 +930,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let currentStatus = 'all';
         let currentSport = 'all';
+        let currentQuery = '';
 
         function doFilter() {
             table.setFilter((data) => {
                 const statusMatch = currentStatus === 'all' || data.statusGroup === currentStatus;
                 const sportMatch = currentSport === 'all' || data.sportFilter === currentSport || (data.sportsFilter || []).includes(currentSport);
-                return statusMatch && sportMatch;
+                if (!statusMatch || !sportMatch) return false;
+                if (currentQuery) {
+                    const q = currentQuery.toLowerCase();
+                    const name = (data.name || '').toLowerCase();
+                    const sports = (data.sports || '').toLowerCase();
+                    return name.includes(q) || sports.includes(q);
+                }
+                return true;
             });
+        }
+
+        function updateFilterSummary() {
+            const count = table.getDataCount("active");
+            if (summaryCount) summaryCount.textContent = count;
+            if (summaryDesc) {
+                const parts = [];
+                if (currentStatus !== 'all') parts.push(currentStatus);
+                if (currentSport !== 'all') parts.push(currentSport);
+                if (currentQuery) parts.push('matching "' + currentQuery + '"');
+                summaryDesc.textContent = parts.length > 0
+                    ? parts.join(' ') + ' tournament' + (count !== 1 ? 's' : '')
+                    : 'tournament' + (count !== 1 ? 's' : '');
+            }
         }
 
         function applyFilters() {
             animateTableChange(table, () => {
                 doFilter();
                 updateEmptyState();
+                updateFilterSummary();
             });
         }
 
@@ -976,6 +1002,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 applyFilters();
             });
         });
+
+        if (searchInput) {
+            let searchTimeout;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    currentQuery = this.value.trim();
+                    doFilter();
+                    updateEmptyState();
+                    updateFilterSummary();
+                }, 200);
+            });
+        }
 
         if (sortSelect) {
             sortSelect.addEventListener('change', function() {
@@ -1025,8 +1064,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        table.on("dataFiltered", updateEmptyState);
+        table.on("dataFiltered", () => {
+            updateEmptyState();
+            updateFilterSummary();
+        });
         updateEmptyState();
+        updateFilterSummary();
     }
 
     async function initTournamentTables() {
