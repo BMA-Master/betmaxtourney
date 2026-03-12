@@ -3421,6 +3421,26 @@ body.mobile .hero-right {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Smooth filter transitions */
+.tabulator.table-transitioning .tabulator-tableholder {
+    transition: height 0.25s ease-out;
+    overflow: hidden;
+}
+
+.tabulator.table-transitioning .tabulator-table {
+    opacity: 0;
+    transform: translateY(4px);
+}
+
+.tabulator .tabulator-table {
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+.tabulator.table-reveal .tabulator-table {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .tabulator .tabulator-placeholder {
     background: #0a0a0a;
     color: rgba(255, 255, 255, 0.8);

@@ -776,6 +776,37 @@ document.addEventListener('DOMContentLoaded', function() {
         return { statusGroup: group, statusRank: Number(rank), statusLabel: label };
     }
 
+    // Smooth transition wrapper for filter/sort changes
+    function animateTableChange(table, changeFn) {
+        const el = table.element;
+        const holder = el.querySelector('.tabulator-tableholder');
+        if (!holder) { changeFn(); return; }
+
+        // Capture current height
+        const startHeight = holder.offsetHeight;
+        holder.style.height = startHeight + 'px';
+        el.classList.add('table-transitioning');
+        el.classList.remove('table-reveal');
+
+        // Apply the actual change
+        changeFn();
+
+        // Measure new height after change
+        requestAnimationFrame(() => {
+            const innerTable = holder.querySelector('.tabulator-table');
+            const endHeight = innerTable ? innerTable.offsetHeight : holder.scrollHeight;
+            holder.style.height = endHeight + 'px';
+
+            // After height transition, reveal rows and clean up
+            setTimeout(() => {
+                el.classList.remove('table-transitioning');
+                el.classList.add('table-reveal');
+                holder.style.height = '';
+                setTimeout(() => el.classList.remove('table-reveal'), 200);
+            }, 250);
+        });
+    }
+
     function initStartingSoonToolbar(table, data) {
         const searchInput = document.getElementById('starting-soon-search');
         const filterButtons = document.querySelectorAll('.starting-soon-toolbar .toolbar-pill');
@@ -784,35 +815,31 @@ document.addEventListener('DOMContentLoaded', function() {
         let currentStatus = 'all';
         let currentQuery = '';
 
-        function applyFilters() {
+        function doFilter() {
             table.setFilter((row) => {
                 const normalized = normalizeTournamentStatus({
                     rawStatus: row.rawStatus,
                     startTs: row.startTs,
                     timeInfo: null
                 });
-
-                // Status filter
                 const matchesStatus = currentStatus === 'all' || normalized.statusGroup === currentStatus;
-
-                // Search filter
                 const query = currentQuery.toLowerCase();
                 const matchesQuery = !query ||
                     (row.title || '').toLowerCase().includes(query) ||
                     (row.sports || '').toLowerCase().includes(query);
-
                 return matchesStatus && matchesQuery;
             });
-
-            // Don't call setSort here - the initialSort already handles sorting
-            // The sort order will be maintained automatically
         }
 
-        // Set up search input
+        function applyFilters() {
+            animateTableChange(table, doFilter);
+        }
+
+        // Set up search input (no animation for typing — just filter directly)
         if (searchInput) {
             searchInput.addEventListener('input', (event) => {
                 currentQuery = event.target.value || '';
-                applyFilters();
+                doFilter();
             });
         }
 
@@ -820,7 +847,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (filterButtons.length > 0) {
             filterButtons.forEach((button) => {
                 button.addEventListener('click', () => {
-                    // Update active state
                     filterButtons.forEach((btn) => {
                         btn.classList.remove('active');
                         btn.setAttribute('aria-selected', 'false');
@@ -828,7 +854,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     button.classList.add('active');
                     button.setAttribute('aria-selected', 'true');
 
-                    // Update filter
                     currentStatus = button.dataset.status || 'all';
                     applyFilters();
                 });
@@ -903,11 +928,18 @@ document.addEventListener('DOMContentLoaded', function() {
         let currentStatus = 'all';
         let currentSport = 'all';
 
-        function applyFilters() {
+        function doFilter() {
             table.setFilter((data) => {
                 const statusMatch = currentStatus === 'all' || data.statusGroup === currentStatus;
                 const sportMatch = currentSport === 'all' || data.sportFilter === currentSport || (data.sportsFilter || []).includes(currentSport);
                 return statusMatch && sportMatch;
+            });
+        }
+
+        function applyFilters() {
+            animateTableChange(table, () => {
+                doFilter();
+                updateEmptyState();
             });
         }
 
@@ -933,7 +965,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.setAttribute('aria-selected', 'true');
                 currentStatus = this.dataset.filter;
                 applyFilters();
-                updateEmptyState();
             });
         });
 
@@ -943,47 +974,47 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.classList.add('active');
                 currentSport = this.dataset.sport;
                 applyFilters();
-                updateEmptyState();
             });
         });
 
         if (sortSelect) {
             sortSelect.addEventListener('change', function() {
-                // Always maintain statusRank as primary sort
-                switch (this.value) {
-                    case 'time-desc':
-                        table.setSort([
-                            {column: 'statusRank', dir: 'asc'},
-                            {column: 'startTs', dir: 'desc'}
-                        ]);
-                        break;
-                    case 'participants-desc':
-                        table.setSort([
-                            {column: 'statusRank', dir: 'asc'},
-                            {column: 'matches', dir: 'desc'}
-                        ]);
-                        break;
-                    case 'sport':
-                        table.setSort([
-                            {column: 'statusRank', dir: 'asc'},
-                            {column: 'sports', dir: 'asc'}
-                        ]);
-                        break;
-                    case 'status':
-                        // Default status sort
-                        table.setSort([
-                            {column: 'statusRank', dir: 'asc'},
-                            {column: 'startTs', dir: 'asc'}
-                        ]);
-                        break;
-                    case 'time-asc':
-                    default:
-                        table.setSort([
-                            {column: 'statusRank', dir: 'asc'},
-                            {column: 'startTs', dir: 'asc'}
-                        ]);
-                        break;
-                }
+                const sortFn = () => {
+                    switch (this.value) {
+                        case 'time-desc':
+                            table.setSort([
+                                {column: 'statusRank', dir: 'asc'},
+                                {column: 'startTs', dir: 'desc'}
+                            ]);
+                            break;
+                        case 'participants-desc':
+                            table.setSort([
+                                {column: 'statusRank', dir: 'asc'},
+                                {column: 'matches', dir: 'desc'}
+                            ]);
+                            break;
+                        case 'sport':
+                            table.setSort([
+                                {column: 'statusRank', dir: 'asc'},
+                                {column: 'sports', dir: 'asc'}
+                            ]);
+                            break;
+                        case 'status':
+                            table.setSort([
+                                {column: 'statusRank', dir: 'asc'},
+                                {column: 'startTs', dir: 'asc'}
+                            ]);
+                            break;
+                        case 'time-asc':
+                        default:
+                            table.setSort([
+                                {column: 'statusRank', dir: 'asc'},
+                                {column: 'startTs', dir: 'asc'}
+                            ]);
+                            break;
+                    }
+                };
+                animateTableChange(table, sortFn);
             });
         }
 
