@@ -312,17 +312,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             });
 
-            // Calculate how many times to duplicate based on item count
-            // For smooth scrolling, we need enough content to fill at least 2x the viewport width
-            const minItems = 8; // Minimum items needed for smooth scrolling
-            const actualItems = items.length;
-            let duplications = Math.max(2, Math.ceil(minItems / actualItems));
+            // Count how many items actually passed the filter
+            const filteredCount = (marqueeHTML.match(/class="marquee-item"/g) || []).length;
 
-            // Build the final marquee content with appropriate duplications
-            let finalMarqueeHTML = '';
-            for (let i = 0; i < duplications; i++) {
-                finalMarqueeHTML += marqueeHTML;
-            }
+            // Repeat items within each set so it always looks full (min 6 per set)
+            const repsPerSet = filteredCount > 0 ? Math.max(1, Math.ceil(6 / filteredCount)) : 1;
+            const oneSet = Array(repsPerSet).fill(marqueeHTML).join('');
+
+            // CSS animation is translateX(-50%), so we always need exactly 2 identical sets
+            const finalMarqueeHTML = oneSet + oneSet;
 
             marqueeTrack.innerHTML = finalMarqueeHTML;
             if (typeof kickMarqueeAnimation === 'function') kickMarqueeAnimation();
@@ -2519,4 +2517,26 @@ function updateAllCountdowns() {
 if (typeof getCountdownString === 'function') {
     setInterval(updateAllCountdowns, 30000);
 }
+
+// ============================================================================
+// PAGE TRANSITION - Play Now / App links
+// ============================================================================
+document.addEventListener('DOMContentLoaded', function() {
+    var overlay = document.getElementById('page-transition');
+    if (!overlay) return;
+
+    document.querySelectorAll('a[href*="betmaxtourney.com/app"]').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var url = this.href;
+            var rect = this.getBoundingClientRect();
+            var x = Math.round(rect.left + rect.width / 2);
+            var y = Math.round(rect.top + rect.height / 2);
+            overlay.style.setProperty('--tx', x + 'px');
+            overlay.style.setProperty('--ty', y + 'px');
+            overlay.classList.add('active');
+            setTimeout(function() { window.location.href = url; }, 650);
+        });
+    });
+});
 

@@ -974,18 +974,18 @@ nav {
 
 /* ===== Hero Section - Rotating Background ===== */
 .hero {
-    height: calc(75vh + 120px);
-    min-height: 650px;
-    max-height: 850px;
+    height: calc(50vh + 80px);
+    min-height: 420px;
+    max-height: 580px;
     padding: 0;
     padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 0.75rem);
     margin-top: -120px;
-    padding-bottom: clamp(3rem, 8vw, 6rem);
     position: relative;
-    overflow: visible;
+    overflow-x: clip;
+    overflow-y: visible;
     background: #000;
     display: flex;
-    align-items: center;
+    align-items: stretch;
 }
 
 
@@ -1005,7 +1005,7 @@ nav {
     pointer-events: none;
 }
 
-/* Rotating Background Container - Shared by Hero & Live Tournaments */
+/* Background Container - Shared by Hero & Live Tournaments */
 .hero-bg {
     position: absolute;
     top: -120px;
@@ -1016,7 +1016,13 @@ nav {
     overflow: hidden;
 }
 
-/* Rotating Background Images with Ken Burns Effect */
+/* Static Background Image for Home Hero only */
+#home-hero .hero-bg {
+    background-image: url('../images/BG-Hero.jpg');
+    background-size: 100% 100%;
+}
+
+/* Rotating Background Images with Ken Burns Effect (Live Tournaments section) */
 .hero-bg-image {
     position: absolute;
     top: 0;
@@ -1096,6 +1102,32 @@ nav {
     z-index: 1;
 }
 
+/* Home hero overlay commented out - BG-Hero.jpg handles the visual treatment */
+/* Uncomment to restore gradient overlay on home hero:
+#home-hero .hero-overlay {
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(255,255,255,0.015) 2px,
+            rgba(255,255,255,0.015) 4px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(255,255,255,0.015) 2px,
+            rgba(255,255,255,0.015) 4px
+        ),
+        linear-gradient(135deg, rgba(0, 230, 118, 0.7) 0%, rgba(0, 0, 0, 0.85) 100%),
+        linear-gradient(45deg, rgba(255, 215, 0, 0.15) 0%, rgba(220, 20, 60, 0.1) 100%);
+}
+*/
+#home-hero .hero-overlay {
+    background: none;
+}
+
 .live-tournaments .hero-overlay {
     pointer-events: none;
 }
@@ -1113,30 +1145,96 @@ nav {
     animation: pulseGlow 8s ease-in-out infinite;
 }
 
+/* Home hero pulse glow also commented out - restore alongside overlay if needed */
+/* #home-hero .hero-overlay::before { display: none; } */
+
 @keyframes pulseGlow {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.6; }
 }
 
+/* ===== Page Transition Overlay ===== */
+#page-transition {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+/* Layer 1: dark shutter closes first */
+#page-transition::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #000;
+    clip-path: circle(0% at var(--tx, 50%) var(--ty, 50%));
+    transition: clip-path 0.38s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* Layer 2: green gradient sweeps in right behind */
+#page-transition::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(255,255,255,0.02) 2px,
+            rgba(255,255,255,0.02) 4px
+        ),
+        linear-gradient(135deg, #000 0%, var(--bma-green) 55%, var(--bma-green-bright) 100%);
+    clip-path: circle(0% at var(--tx, 50%) var(--ty, 50%));
+    transition: clip-path 0.45s cubic-bezier(0.76, 0, 0.24, 1) 0.1s;
+}
+
+/* Logo scales in from center once overlay covers screen */
+.transition-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.75);
+    width: 120px;
+    max-width: 30vw;
+    height: auto;
+    opacity: 0;
+    z-index: 1;
+    transition:
+        opacity 0.2s ease 0.38s,
+        transform 0.24s cubic-bezier(0.22, 1, 0.36, 1) 0.38s;
+    filter: drop-shadow(0 0 20px rgba(0, 230, 118, 0.5));
+}
+
+#page-transition.active::before {
+    clip-path: circle(150vmax at var(--tx, 50%) var(--ty, 50%));
+}
+
+#page-transition.active::after {
+    clip-path: circle(150vmax at var(--tx, 50%) var(--ty, 50%));
+}
+
+#page-transition.active .transition-logo {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
 .hero .container {
     position: relative;
     z-index: 2;
-    height: 100%;
     display: flex;
-    align-items: center;
+    flex-direction: row;
+    align-items: stretch;
     padding-left: clamp(1rem, 4vw, 2rem);
     padding-right: clamp(1rem, 4vw, 2rem);
 }
 
-.hero-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: center;
-    width: 100%;
-}
-
 .hero-left {
+    flex: 0 0 44%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: clamp(3rem, 8vw, 6rem);
     text-align: left;
 }
 
@@ -1176,10 +1274,19 @@ nav {
 }
 
 .hero-lead {
-    font-size: clamp(0.9rem, 1.2vw + 0.5rem, 1.1rem);
-    color: rgba(255, 255, 255, 0.95);
-    margin-bottom: 1.5rem;
-    line-height: 1.7;
+    margin-bottom: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1em;
+}
+
+.hero-lead span {
+    display: block;
+    font-size: clamp(1.15rem, 1.8vw + 0.5rem, 1.65rem);
+    font-weight: 400;
+    line-height: 1.25;
+    color: rgba(255, 255, 255, 0.96);
+    letter-spacing: -0.01em;
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
 }
 
@@ -1231,13 +1338,123 @@ nav {
 .hero-ctas {
     margin-bottom: 2rem;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
     gap: 0.75rem;
 }
 
 .hero-ctas .btn {
     min-height: 44px;
     min-width: 44px;
+}
+
+.hero-pill {
+    display: inline-flex;
+    align-items: center;
+    background: #101010;
+    border-radius: 50px;
+    padding: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.hero-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 0.6rem 1.4rem;
+    border-radius: 50px;
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    min-height: 40px;
+}
+
+.hero-pill-cta {
+    background: transparent;
+    color: var(--bma-white);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hero-pill-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50px;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--bma-green-bright), var(--bma-yellow));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.hero-pill-cta:hover::before {
+    opacity: 1;
+}
+
+.hero-pill-cta:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: transparent;
+    color: var(--bma-yellow-bright);
+}
+
+.hero-pill-primary {
+    background: var(--gradient-primary);
+    color: #0a0a0a;
+    box-shadow: 0 0 18px rgba(0, 230, 118, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hero-pill-primary:hover {
+    box-shadow: 0 0 28px rgba(0, 230, 118, 0.65), 0 2px 12px rgba(0, 0, 0, 0.3);
+    color: #0a0a0a;
+}
+
+.hero-pill-secondary {
+    background: transparent;
+    color: var(--bma-yellow);
+}
+
+.hero-pill-secondary:hover {
+    background: rgba(255, 215, 0, 0.1);
+    color: var(--bma-yellow-bright);
+}
+
+.hero-pill-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    display: block;
+}
+
+.hero-pill-cta .hero-pill-icon {
+    color: var(--bma-yellow);
+    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
+}
+
+.hero-pill-primary .hero-pill-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: #0a0a0a;
+    filter: none;
+}
+
+.hero-pill-secondary .hero-pill-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: var(--bma-yellow);
+    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
 }
 
 .cta-meta {
@@ -1280,37 +1497,64 @@ nav {
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
 }
 
-/* Product Preview - Right Side */
 .hero-right {
-    align-self: center;
-    position: relative;
+    flex: 0 0 50%;
     display: flex;
-    justify-content: center;
+    align-items: flex-end;
+    justify-content: flex-end;
     overflow: visible;
 }
 
-/* Hide device stack when JS adds .mobile class (no media query) */
-body.mobile .hero-right {
+.hero-title-img {
+    display: block;
+    width: 100%;
+    max-width: 660px;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 4px 24px rgba(0, 0, 0, 0.7));
+}
+
+.hero-phones {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.hero-phone-img {
+    display: block;
+    height: auto;
+}
+
+/* Secondary phone: hidden by default, only shown on large desktop */
+.hero-phone-secondary {
     display: none;
 }
 
-.hero .device-stack {
-    max-width: 560px;
-    width: 100%;
-    margin: 0 auto;
-    position: relative;
+@keyframes phoneSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.hero .laptop-mockup {
-    max-width: 520px;
+/* Primary phone — portrait image, height fills hero-phones container */
+.hero-phone-primary {
+    height: calc(100% + 130px);
+    width: auto;
+    z-index: 2;
+    filter: drop-shadow(0 16px 48px rgba(0, 0, 0, 0.65));
+    margin-bottom: -60px;
+    animation: phoneSlideUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
 }
 
-.hero .phone-mockup {
-    position: absolute;
-    bottom: -50px;
-    right: -50px;
-    width: 220px;
-    z-index: 3;
+@media (prefers-reduced-motion: reduce) {
+    .hero-phone-primary { animation: none; }
 }
 
 /* Device stack phones now use the same styling as preview phones */
@@ -2778,6 +3022,7 @@ body.mobile .hero-right {
 .live-tournaments {
     padding: clamp(2.5rem, 4vw, 4rem) 0;
     position: relative;
+    z-index: 2;
     overflow: hidden;
     background:
         linear-gradient(135deg, rgba(10, 10, 10, 0.65), rgba(10, 10, 10, 0.65)),
@@ -4496,13 +4741,18 @@ footer::before {
 
     /* Disable sticky on tablet */
     .mechanics-right,
-    .hero-right,
     .benefits-right {
         position: static;
     }
 
+    /* Tablet: keep side-by-side but narrower left, wider right */
     .hero-left {
-        text-align: center;
+        flex: 0 0 45%;
+        text-align: left;
+    }
+
+    .hero-right {
+        flex: 0 0 55%;
     }
 
     .hero-social-proof {
@@ -4511,11 +4761,6 @@ footer::before {
 
     .marquee-promo-subtext {
         display: none;
-    }
-
-    .hero-right {
-        margin-top: 0;
-        justify-content: center;
     }
 
     .hero-content {
@@ -4532,20 +4777,10 @@ footer::before {
         margin-bottom: 0;
     }
 
-    /* Devices stay overlayed - scale down only, never stack */
-    .hero .device-stack {
-        max-width: 100%;
-    }
-
-    .hero .laptop-mockup {
-        max-width: min(400px, 55vw);
-    }
-
-    .hero .phone-mockup {
-        position: absolute !important;
-        width: min(180px, 35vw);
-        bottom: 0;
-        right: 0;
+    .hero-title-img {
+        max-width: 380px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .tournament-item {
@@ -5531,49 +5766,60 @@ footer::before {
     
     /* CRITICAL: Hero Section Mobile Layout - nav floats over hero */
     .hero {
-        min-height: auto;
+        min-height: 0;
+        max-height: none;
         height: auto;
         padding-top: calc(var(--hero-marquee-height) + 44px + 0.25rem);
-        padding-bottom: clamp(3.5rem, 8vw, 5rem);
+        padding-bottom: 0;
+        overflow: visible;
     }
-    
-    .hero-content {
-        grid-template-columns: 1fr;
-        gap: 3rem;
+
+    .hero .container {
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 0;
     }
-    
-    .hero h1 {
-        line-height: 1.1;
-        font-size: clamp(3rem, 18vw, 5rem) !important;
-        width: 100%;
-        max-width: 100%;
-        padding: 0 0.5rem;
-    }
-    
+
     .hero-left {
+        flex: none;
+        width: 100%;
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 1.5rem;
     }
-    
+
+    .hero-title-img {
+        max-width: min(85vw, 420px);
+        margin: 0 auto 1rem;
+    }
+
+    .hero-lead {
+        max-width: 44ch;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     .hero-ctas {
+        justify-content: center;
         margin-bottom: 0;
     }
-    
-    .hero-left {
-        order: 1;
+
+    .hero-right {
+        flex: none;
+        width: 100%;
+        justify-content: center;
+        overflow: visible;
     }
 
-    /* Device stack hidden on mobile */
-    .hero .laptop-mockup {
-        max-width: min(320px, 50vw);
+    .hero-phone-img {
+        width: 120vw;
+        max-width: none;
+        margin-left: -10vw;
+        height: auto;
     }
 
-    .hero .phone-mockup {
-        position: absolute !important;
-        width: min(150px, 30vw);
-        bottom: 0;
-        right: 0;
-    }
-    
     /* CRITICAL: Tournament Card Grid Collapse */
     .tournament-item {
         grid-template-columns: 1fr;
@@ -5784,7 +6030,16 @@ footer::before {
     .hero {
         min-height: auto;
         padding-top: calc(var(--hero-marquee-height) + 44px + 0.25rem);
-        padding-bottom: clamp(2rem, 5vw, 3rem);
+        padding-bottom: 0;
+    }
+
+    .hero-title-img {
+        max-width: min(80vw, 340px);
+    }
+
+    .hero-phone-img {
+        width: 130vw;
+        margin-left: -15vw;
     }
     
     /* Hero h1 and lead use clamp() in base */
@@ -8254,7 +8509,7 @@ body.menu-open::before {
         flex-direction: column;
         align-items: center;
         width: 100%;
-        max-width: 320px;
+        max-width: 100%;
     }
 
     .hero-ctas {
@@ -8292,9 +8547,10 @@ body.menu-open::before {
         overflow-x: hidden;
     }
 
-    .container,
-    section {
-        overflow-x: hidden;
+    .container:not(.hero .container),
+    section:not(.hero) {
+        overflow-x: clip;
     }
 }
 
+/* hero-mobile.css handles all mobile hero overrides */
