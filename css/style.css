@@ -1516,9 +1516,8 @@ nav {
 }
 
 .hero-phones {
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
+    position: relative;
+    width: 100%;
     height: 100%;
 }
 
@@ -1527,9 +1526,19 @@ nav {
     height: auto;
 }
 
-/* Secondary phone: hidden by default, only shown on large desktop */
+/* Secondary phone: same dimensions as primary, offset slightly left to show two phones */
 .hero-phone-secondary {
-    display: none;
+    display: block;
+    position: absolute;
+    bottom: -60px;
+    right: 0;
+    height: calc(100% + 130px);
+    width: auto;
+    z-index: 1;
+    opacity: 0.82;
+    transform: translateX(-55px);
+    filter: drop-shadow(-4px 16px 32px rgba(0, 0, 0, 0.45));
+    animation: phoneSlideUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
 }
 
 @keyframes phoneSlideUp {
@@ -1550,7 +1559,7 @@ nav {
     z-index: 2;
     filter: drop-shadow(0 16px 48px rgba(0, 0, 0, 0.65));
     margin-bottom: -60px;
-    animation: phoneSlideUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+    animation: phoneSlideUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
 }
 
 @media (prefers-reduced-motion: reduce) {

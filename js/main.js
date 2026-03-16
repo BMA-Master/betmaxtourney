@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     statusText = 'LIVE';
                 } else if (actualStatus === 'upcoming') {
                     statusClass = 'marquee-status-upcoming';
-                    statusText = 'UPCOMING';
+                    statusText = 'OPEN';
                 } else if (actualStatus === 'completed') {
                     statusClass = 'marquee-status-completed';
                     statusText = 'COMPLETED';
@@ -597,7 +597,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (timeRemaining > 0) {
                 const countdown = getCountdownString(timeRemaining);
-                displayContent = `UPCOMING • ${countdown}`;
+                displayContent = `OPEN • ${countdown}`;
                 statusClass = 'status-upcoming with-countdown';
 
                 // Store timestamp for live updates
@@ -768,7 +768,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const rank = group === 'live' ? 1 : group === 'upcoming' ? 2 : 3;
-        const label = group === 'completed' ? 'COMPLETED' : group === 'live' ? 'LOCKED • LIVE' : (timeInfo?.badge || 'UPCOMING');
+        const label = group === 'completed' ? 'COMPLETED' : group === 'live' ? 'LOCKED • LIVE' : (timeInfo?.badge || 'OPEN');
 
 
         return { statusGroup: group, statusRank: Number(rank), statusLabel: label };
@@ -1582,7 +1582,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // If startDate is null or invalid, show UPCOMING
         if (!startDate) {
             console.log('getTimeUntil: No start date provided');
-            return { text: 'UPCOMING', badge: 'UPCOMING', isUrgent: false };
+            return { text: 'OPEN', badge: 'OPEN', isUrgent: false };
         }
 
         // Ensure we have a Date object
@@ -1593,7 +1593,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Check if the date is valid
         if (!(startDate instanceof Date) || isNaN(startDate.getTime())) {
             console.log('getTimeUntil: Invalid date:', startDate);
-            return { text: 'UPCOMING', badge: 'UPCOMING', isUrgent: false };
+            return { text: 'OPEN', badge: 'OPEN', isUrgent: false };
         }
 
         // Get current time in user's timezone
@@ -2503,7 +2503,7 @@ function updateAllCountdowns() {
 
             if (timeRemaining > 0) {
                 const countdown = getCountdownString(timeRemaining);
-                element.textContent = `UPCOMING • ${countdown}`;
+                element.textContent = `OPEN • ${countdown}`;
             } else {
                 // Tournament has started, update to LIVE
                 element.innerHTML = 'LOCKED • LIVE';
