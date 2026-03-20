@@ -401,6 +401,16 @@ article.container .content a:hover {
     text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
 }
 
+/* Nowrap on desktop, allow wrap on mobile */
+.no-wrap-desktop {
+    white-space: nowrap;
+}
+@media (max-width: 600px) {
+    .no-wrap-desktop {
+        white-space: normal;
+    }
+}
+
 /* Alternative: Large display headlines for maximum impact */
 .section-header.display-large h2 {
     font-size: clamp(4rem, 9vw, 7rem);
