@@ -1082,9 +1082,74 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // ===== Promotions Carousel =====
+    async function loadPromotionsCarousel() {
+        const carouselEl = document.getElementById('promotions-carousel');
+        if (!carouselEl) return;
+
+        try {
+            const response = await fetch('https://machfive-bmacdev-rest.onrender.com/rss/promotions.xml');
+            const xmlText = await response.text();
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+            const items = xmlDoc.querySelectorAll('item');
+
+            if (items.length === 0) {
+                carouselEl.closest('.promotions-carousel-section').style.display = 'none';
+                return;
+            }
+
+            // Build slides from RSS items
+            let slidesHTML = '';
+            items.forEach(function(item) {
+                const title = item.querySelector('title')?.textContent || '';
+                const link = item.querySelector('link')?.textContent || '#';
+                const enclosure = item.querySelector('enclosure');
+                const imageUrl = enclosure ? enclosure.getAttribute('url') : '';
+
+                if (!imageUrl) return;
+
+                slidesHTML += '<div class="promo-slide">' +
+                    '<a href="' + link + '" target="_blank" rel="noopener noreferrer">' +
+                    '<img src="' + imageUrl + '" alt="' + title.replace(/"/g, '&quot;').replace(/</g, '&lt;') + '" loading="lazy">' +
+                    '</a>' +
+                    '</div>';
+            });
+
+            if (!slidesHTML) {
+                carouselEl.closest('.promotions-carousel-section').style.display = 'none';
+                return;
+            }
+
+            carouselEl.innerHTML = slidesHTML;
+
+            // Initialize Flickity
+            if (typeof Flickity !== 'undefined') {
+                new Flickity(carouselEl, {
+                    cellAlign: 'center',
+                    contain: false,
+                    wrapAround: true,
+                    autoPlay: 4000,
+                    pauseAutoPlayOnHover: true,
+                    prevNextButtons: true,
+                    pageDots: true,
+                    draggable: true,
+                    freeScroll: false,
+                    imagesLoaded: true,
+                    accessibility: true
+                });
+            }
+        } catch (error) {
+            console.error('Promotions carousel failed:', error);
+            var section = carouselEl.closest('.promotions-carousel-section');
+            if (section) section.style.display = 'none';
+        }
+    }
+
     // Load marquee and tables on page load
     loadTournamentMarquee();
     initTournamentTables();
+    loadPromotionsCarousel();
 
     // Refresh marquee every 60 seconds
     setInterval(loadTournamentMarquee, 60000);

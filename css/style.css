@@ -3037,6 +3037,192 @@ nav {
     padding: 0 !important;
 }
 
+/* ===== Promotions Carousel ===== */
+.promotions-carousel-section {
+    padding: clamp(2rem, 3vw, 3rem) 0 clamp(2.5rem, 4vw, 3.5rem);
+    position: relative;
+    z-index: 2;
+    background: var(--bma-dark-100);
+    overflow: hidden;
+}
+
+.promotions-carousel-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 clamp(1rem, 3vw, 2rem);
+}
+
+.promotions-carousel {
+    width: 100%;
+}
+
+.promo-carousel-loading {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0;
+}
+
+.promo-slide {
+    width: 80%;
+    max-width: 700px;
+    margin-right: 16px;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.promo-slide a {
+    display: block;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bma-dark-200);
+}
+
+.promo-slide img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+
+/* Flickity overrides for promotions */
+.promotions-carousel .flickity-page-dots {
+    bottom: -28px;
+}
+
+.promotions-carousel .flickity-page-dots .dot {
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    opacity: 1;
+}
+
+.promotions-carousel .flickity-page-dots .dot.is-selected {
+    background: var(--bma-green-bright);
+}
+
+.promotions-carousel .flickity-button {
+    background: rgba(10, 10, 10, 0.7);
+    color: var(--bma-white);
+    width: 44px;
+    height: 44px;
+    transition: background 0.2s ease;
+}
+
+.promotions-carousel .flickity-button:hover {
+    background: rgba(10, 10, 10, 0.9);
+}
+
+.promotions-carousel .flickity-button:disabled {
+    display: none;
+}
+
+.promotions-carousel .flickity-button .flickity-button-icon {
+    fill: white;
+}
+
+/* Promotions — large desktop (1025px+) */
+@media (min-width: 1025px) {
+    .promo-slide {
+        width: 60%;
+        max-width: 800px;
+    }
+
+    .promotions-carousel .flickity-prev-next-button.previous {
+        left: 16px;
+    }
+
+    .promotions-carousel .flickity-prev-next-button.next {
+        right: 16px;
+    }
+}
+
+/* Promotions — tablet (769px–1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .promo-slide {
+        width: 75%;
+        max-width: 700px;
+        margin-right: 14px;
+    }
+
+    .promotions-carousel .flickity-button {
+        width: 40px;
+        height: 40px;
+    }
+
+    .promotions-carousel-inner {
+        padding: 0 1rem;
+    }
+}
+
+/* Promotions — mobile (481px–768px) */
+@media (max-width: 768px) {
+    .promotions-carousel-section {
+        padding: clamp(1.5rem, 3vw, 2rem) 0 clamp(2.5rem, 5vw, 3.5rem);
+    }
+
+    .promotions-carousel-inner {
+        padding: 0 0.75rem;
+    }
+
+    .promo-slide {
+        width: 92%;
+        margin-right: 10px;
+        border-radius: 10px;
+    }
+
+    .promo-slide a,
+    .promo-slide img {
+        border-radius: 10px;
+    }
+
+    .promotions-carousel .flickity-button {
+        display: none;
+    }
+
+    .promotions-carousel .flickity-page-dots {
+        bottom: -22px;
+    }
+
+    .promotions-carousel .flickity-page-dots .dot {
+        width: 7px;
+        height: 7px;
+    }
+}
+
+/* Promotions — small mobile (480px and below) */
+@media (max-width: 480px) {
+    .promotions-carousel-section {
+        padding: 1.25rem 0 2.5rem;
+    }
+
+    .promotions-carousel-inner {
+        padding: 0 0.5rem;
+    }
+
+    .promo-slide {
+        width: 96%;
+        margin-right: 8px;
+        border-radius: 8px;
+    }
+
+    .promo-slide a,
+    .promo-slide img {
+        border-radius: 8px;
+    }
+
+    .promotions-carousel .flickity-page-dots {
+        bottom: -18px;
+    }
+
+    .promotions-carousel .flickity-page-dots .dot {
+        width: 6px;
+        height: 6px;
+        margin: 0 4px;
+    }
+}
+
 /* ===== Live Tournaments ===== */
 .live-tournaments {
     padding: clamp(2.5rem, 4vw, 4rem) 0;
