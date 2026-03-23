@@ -2449,8 +2449,23 @@ nav {
 .how-to-compete {
     padding: clamp(2.5rem, 4vw, 4rem) 0;
     background:
-        linear-gradient(135deg, rgba(46, 139, 87, 0.15), rgba(255, 215, 0, 0.08)),
-        rgba(10, 10, 10, 0.85);
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.015) 2px,
+            rgba(255, 255, 255, 0.015) 4px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.015) 2px,
+            rgba(255, 255, 255, 0.015) 4px
+        ),
+        linear-gradient(135deg, rgba(0, 230, 118, 0.7) 0%, rgba(0, 0, 0, 0.85) 100%),
+        linear-gradient(45deg, rgba(255, 215, 0, 0.15) 0%, rgba(220, 20, 60, 0.1) 100%);
+    background-color: #000;
     position: relative;
     overflow: visible;
 }
@@ -2458,6 +2473,13 @@ nav {
 .how-to-compete .container {
     position: relative;
     z-index: 1;
+}
+
+.how-to-compete .section-header h2 {
+    font-size: clamp(2rem, 7vw, 7rem);
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
 /* Tournament Types */
@@ -2603,24 +2625,47 @@ nav {
 }
 
 .mechanics-intro {
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.85);
+    font-size: clamp(0.75rem, 1.8vw, 1rem);
+    color: rgba(255, 255, 255, 0.9);
     margin: 0 auto 1.5rem;
-    line-height: 1.7;
-    max-width: 800px;
-    text-align: center;
+    line-height: 1.6;
     font-weight: 500;
+    background: rgba(0, 230, 118, 0.08);
+    border: 1px solid rgba(0, 230, 118, 0.2);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    max-width: fit-content;
+    white-space: nowrap;
+    position: relative;
+}
+
+.mechanics-intro::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 16px;
+    width: 20px;
+    height: 20px;
+    background: var(--bma-yellow);
+    border-radius: 50%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z'/%3E%3C/svg%3E");
+    background-size: 20px 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
 }
 
 .td-currency {
     color: var(--bma-green-bright);
-    font-weight: 800;
-    font-size: 1.1em;
+    font-weight: 700;
+    font-size: inherit;
 }
 
 .td-label {
-    color: var(--bma-green-bright);
+    color: rgba(255, 255, 255, 0.7);
     font-size: 0.9em;
+    font-weight: 400;
 }
 
 .mechanics-steps {
@@ -3049,14 +3094,11 @@ nav {
     z-index: 2;
     width: 100%;
     padding: clamp(1rem, 2vw, 1.5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
-    background-color: #101010;
-    background-image:
-        radial-gradient(circle at 25% 25%, rgba(0, 230, 118, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 75% 75%, rgba(255, 215, 0, 0.06) 0%, transparent 50%);
+    background: var(--bma-dark-100);
 }
 
 .promotions-carousel-wrap::before {
-    content: '';
+    display: none;
     position: absolute;
     top: 0;
     left: 0;
@@ -3354,6 +3396,10 @@ nav {
 
 .starting-soon-header h2 {
     margin: 0;
+    font-size: clamp(2rem, 7vw, 7rem);
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .section-subline {
