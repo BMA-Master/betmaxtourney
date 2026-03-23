@@ -1125,7 +1125,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Initialize Flickity
             if (typeof Flickity !== 'undefined') {
-                new Flickity(carouselEl, {
+                var flkty = new Flickity(carouselEl, {
                     cellAlign: 'center',
                     contain: false,
                     wrapAround: true,
@@ -1138,6 +1138,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     imagesLoaded: true,
                     accessibility: true
                 });
+
+                // Fade in once Flickity is ready
+                flkty.on('ready', function() {
+                    carouselEl.classList.add('is-ready');
+                });
+                // Fallback in case ready already fired synchronously
+                if (!carouselEl.classList.contains('is-ready')) {
+                    requestAnimationFrame(function() {
+                        carouselEl.classList.add('is-ready');
+                    });
+                }
             }
         } catch (error) {
             console.error('Promotions carousel failed:', error);

@@ -984,9 +984,7 @@ nav {
 
 /* ===== Hero Section - Rotating Background ===== */
 .hero {
-    height: calc(50vh + 80px);
     min-height: 420px;
-    max-height: 580px;
     padding: 0;
     padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 0.75rem);
     margin-top: -120px;
@@ -994,6 +992,14 @@ nav {
     overflow-x: clip;
     overflow-y: visible;
     background: #000;
+    display: flex;
+    flex-direction: column;
+}
+
+.hero > .container {
+    flex: 0 0 auto;
+    min-height: calc(50vh + 80px - var(--hero-marquee-height) - var(--hero-header-height));
+    max-height: 460px;
     display: flex;
     align-items: stretch;
 }
@@ -3038,12 +3044,43 @@ nav {
 }
 
 /* ===== Promotions Carousel ===== */
-.promotions-carousel-section {
-    padding: clamp(2rem, 3vw, 3rem) 0 clamp(2.5rem, 4vw, 3.5rem);
+.promotions-carousel-wrap {
     position: relative;
     z-index: 2;
-    background: var(--bma-dark-100);
-    overflow: hidden;
+    width: 100%;
+    padding: clamp(1rem, 2vw, 1.5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+    background-color: #101010;
+    background-image:
+        radial-gradient(circle at 25% 25%, rgba(0, 230, 118, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(255, 215, 0, 0.06) 0%, transparent 50%);
+}
+
+.promotions-carousel-wrap::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 12px,
+            rgba(255, 255, 255, 0.03) 12px,
+            rgba(255, 255, 255, 0.03) 14px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 12px,
+            rgba(255, 255, 255, 0.03) 12px,
+            rgba(255, 255, 255, 0.03) 14px
+        );
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    pointer-events: none;
+    z-index: 0;
 }
 
 .promotions-carousel-inner {
@@ -3054,6 +3091,12 @@ nav {
 
 .promotions-carousel {
     width: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.promotions-carousel.is-ready {
+    opacity: 1;
 }
 
 .promo-carousel-loading {
@@ -3103,15 +3146,17 @@ nav {
 }
 
 .promotions-carousel .flickity-button {
-    background: rgba(10, 10, 10, 0.7);
+    background: var(--gradient-primary);
     color: var(--bma-white);
     width: 44px;
     height: 44px;
-    transition: background 0.2s ease;
+    transition: opacity 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 12px rgba(0, 230, 118, 0.25);
 }
 
 .promotions-carousel .flickity-button:hover {
-    background: rgba(10, 10, 10, 0.9);
+    opacity: 0.9;
+    box-shadow: 0 4px 20px rgba(0, 230, 118, 0.4);
 }
 
 .promotions-carousel .flickity-button:disabled {
@@ -3158,8 +3203,8 @@ nav {
 
 /* Promotions — mobile (481px–768px) */
 @media (max-width: 768px) {
-    .promotions-carousel-section {
-        padding: clamp(1.5rem, 3vw, 2rem) 0 clamp(2.5rem, 5vw, 3.5rem);
+    .promotions-carousel-wrap {
+        padding: 0.5rem 0 clamp(1.5rem, 3vw, 2rem);
     }
 
     .promotions-carousel-inner {
@@ -3194,7 +3239,7 @@ nav {
 /* Promotions — small mobile (480px and below) */
 @media (max-width: 480px) {
     .promotions-carousel-section {
-        padding: 1.25rem 0 2.5rem;
+        padding: 0.25rem 0 2.5rem;
     }
 
     .promotions-carousel-inner {
