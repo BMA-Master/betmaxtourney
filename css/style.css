@@ -1540,6 +1540,10 @@ nav {
 .hero-phone-img {
     display: block;
     height: auto;
+    user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none;
+    -webkit-user-drag: none;
 }
 
 /* Secondary phone: same dimensions as primary, offset slightly left to show two phones */
@@ -3054,6 +3058,10 @@ nav {
     object-position: top center;
     display: block;
     border-radius: 28px; /* Slightly smaller for natural inset */
+    user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none;
+    -webkit-user-drag: none;
 }
 
 .placeholder-content {
