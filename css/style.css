@@ -2644,6 +2644,13 @@ nav {
     position: relative;
 }
 
+@media (max-width: 768px) {
+    .mechanics-intro {
+        white-space: normal;
+        max-width: 100%;
+    }
+}
+
 .mechanics-intro::before {
     content: '';
     position: absolute;
