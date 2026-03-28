@@ -2471,7 +2471,7 @@ nav {
         linear-gradient(45deg, rgba(255, 215, 0, 0.15) 0%, rgba(220, 20, 60, 0.1) 100%);
     background-color: #000;
     position: relative;
-    overflow: visible;
+    overflow: hidden;
 }
 
 .how-to-compete .container {
@@ -2483,7 +2483,6 @@ nav {
     font-size: clamp(2rem, 7vw, 7rem);
     letter-spacing: -0.03em;
     text-transform: uppercase;
-    white-space: nowrap;
 }
 
 /* Tournament Types */
@@ -2639,16 +2638,8 @@ nav {
     border-radius: 12px;
     padding: 1rem 1.5rem;
     text-align: center;
-    max-width: fit-content;
-    white-space: nowrap;
+    max-width: min(fit-content, 100%);
     position: relative;
-}
-
-@media (max-width: 768px) {
-    .mechanics-intro {
-        white-space: normal;
-        max-width: 100%;
-    }
 }
 
 .mechanics-intro::before {
