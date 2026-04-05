@@ -12,11 +12,11 @@ html {
 .how-to-play-hero {
     position: relative;
     padding-top: calc(6rem + 120px);
-    padding-bottom: 4rem;
+    padding-bottom: 20rem;
     margin-top: -120px;
-    margin-bottom: 3rem;
+    margin-bottom: 0;
     overflow: hidden;
-    background: url('../images/How to Play.jpg') center/cover no-repeat;
+    background: url('../images/How-To-Play-Hero-Optimized.png') center/cover no-repeat;
 }
 
 .how-to-play-hero::after {
@@ -26,22 +26,25 @@ html {
     background: rgba(0, 0, 0, 0.35);
 }
 
-.how-to-play-hero .container {
-    position: relative;
-    z-index: 1;
+/* Intro section between hero and content */
+.how-to-play-intro {
+    padding: clamp(2rem, 4vw, 3rem) 0;
+    background: var(--bma-dark-100);
+    text-align: center;
 }
 
-.how-to-play-hero h1 {
-    font-size: 3rem;
-    font-weight: 800;
+.how-to-play-intro h1 {
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    font-weight: 900;
     color: var(--bma-white);
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
-.how-to-play-hero .lead {
-    font-size: 1.25rem;
-    color: rgba(255, 255, 255, 0.8);
+.how-to-play-intro .lead {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.75);
     max-width: 700px;
+    margin: 0 auto;
 }
 
 /* Content Section */
