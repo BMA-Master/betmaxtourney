@@ -72,17 +72,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ===== Marquee mobile fix - force animation to run (iOS often defers until interaction) =====
-    function kickMarqueeAnimation() {
-        const track = document.getElementById('marquee-track');
+    // ===== Marquee animation sync =====
+    // Use a negative delay based on epoch time so the animation
+    // picks up at a consistent position across page navigations
+    // and avoids the iOS first-interaction jutter.
+    function syncMarqueeAnimation() {
+        var track = document.getElementById('marquee-track');
         if (!track) return;
-        track.style.animation = 'none';
-        track.offsetHeight;
-        track.style.animation = '';
+        var duration = 115; // matches CSS animation duration
+        var offset = (Date.now() / 1000) % duration;
+        track.style.animationDelay = '-' + offset.toFixed(2) + 's';
     }
-    document.addEventListener('touchstart', kickMarqueeAnimation, { once: true, passive: true });
-    document.addEventListener('click', kickMarqueeAnimation, { once: true });
-    setTimeout(kickMarqueeAnimation, 100);
+    syncMarqueeAnimation();
 
     // ===== FanDuel Style Tab Navigation =====
     const tabButtons = document.querySelectorAll('.fd-tab-btn');
@@ -167,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (items.length === 0) {
                 marqueeTrack.innerHTML = '<div class="marquee-item"><span class="marquee-item-title">No live tournaments</span></div>';
-                if (typeof kickMarqueeAnimation === 'function') kickMarqueeAnimation();
+                syncMarqueeAnimation();
                 return;
             }
 
@@ -323,12 +324,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const finalMarqueeHTML = oneSet + oneSet;
 
             marqueeTrack.innerHTML = finalMarqueeHTML;
-            if (typeof kickMarqueeAnimation === 'function') kickMarqueeAnimation();
+            syncMarqueeAnimation();
 
         } catch (error) {
             console.error('Failed to load tournaments:', error);
             marqueeTrack.innerHTML = '<div class="marquee-item"><span class="marquee-item-title">Unable to load tournaments</span></div>';
-            if (typeof kickMarqueeAnimation === 'function') kickMarqueeAnimation();
+            syncMarqueeAnimation();
         }
     }
 
