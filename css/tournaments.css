@@ -170,7 +170,11 @@
 }
 
 .tournaments-page .tournament-table {
-    margin-top: 2rem;
+    margin-top: 0;
+}
+
+.tournaments-page .tabulator {
+    border-radius: 0;
 }
 
 /* Force tournaments table to have exact same header style as homepage */
@@ -213,13 +217,15 @@
 
 /* Filter Controls */
 .tournaments-controls {
-    background: rgba(10, 10, 10, 0.85);
-    backdrop-filter: blur(20px);
-    border: 2px solid rgba(46, 139, 87, 0.3);
-    border-radius: 16px;
+    background: linear-gradient(135deg,
+        rgba(20, 20, 20, 0.9) 0%,
+        rgba(10, 10, 10, 0.95) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0;
     padding: 1.25rem 1.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    margin-bottom: 0;
+    box-shadow: none;
 }
 
 /* Row 1: Status tabs + search + sort */
@@ -288,6 +294,9 @@
     padding: 0.2rem 0.6rem;
     font-size: 0.85rem;
     font-weight: 700;
+    min-width: 2.2rem;
+    text-align: center;
+    display: inline-block;
 }
 
 .filter-tab.active .tab-count {

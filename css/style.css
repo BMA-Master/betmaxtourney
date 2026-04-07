@@ -3340,8 +3340,21 @@ nav {
     max-width: 100%;
     margin: 0 auto;
     width: 100%;
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: clamp(0.5rem, 2vw, 2rem);
+    padding-right: clamp(0.5rem, 2vw, 2rem);
+}
+
+@media (max-width: 768px) {
+    .live-tournaments-inner {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .live-tournaments-inner .starting-soon-header,
+    .live-tournaments-inner .starting-soon-footer {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
 }
 
 .live-tournaments .section-header h2,
@@ -3438,16 +3451,34 @@ nav {
         rgba(20, 20, 20, 0.9) 0%,
         rgba(10, 10, 10, 0.95) 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
+    border-radius: 0;
     box-shadow:
         0 20px 40px rgba(0, 0, 0, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    width: 95vw;
-    max-width: 95vw;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
     overflow: hidden;
+}
+
+/* Mobile: scrollbar at top via rotated wrapper */
+@media (max-width: 768px) {
+    .starting-soon-shell {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+
+    .starting-soon-shell .tabulator .tabulator-tableholder {
+        overflow-x: auto;
+        transform: rotateX(180deg);
+    }
+
+    .starting-soon-shell .tabulator .tabulator-tableholder > .tabulator-table {
+        transform: rotateX(180deg);
+    }
 }
 
 .starting-soon-toolbar {
@@ -3455,19 +3486,15 @@ nav {
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
-    background:
-        linear-gradient(135deg,
-            rgba(0, 230, 118, 0.15) 0%,
-            rgba(255, 215, 0, 0.08) 100%),
-        rgba(15, 15, 15, 0.95);
-    border-bottom: 1px solid rgba(0, 230, 118, 0.4);
-    box-shadow:
-        inset 0 -1px 0 rgba(255, 215, 0, 0.2),
-        0 2px 8px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg,
+        rgba(20, 20, 20, 0.9) 0%,
+        rgba(10, 10, 10, 0.95) 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: none;
     padding: 1rem 1.25rem;
     margin: 0;
     width: 100%;
-    border-radius: 16px 16px 0 0;
+    border-radius: 0;
 }
 
 .starting-soon-toolbar .toolbar-left {
@@ -3593,7 +3620,7 @@ nav {
 .starting-soon-shell .tabulator {
     background: transparent;
     border: none;
-    border-radius: 0 0 16px 16px;
+    border-radius: 0;
     box-shadow: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -4206,8 +4233,8 @@ nav {
         flex-direction: column;
         align-items: stretch;
         gap: 0.75rem;
-        width: 95vw;
-        max-width: 95vw;
+        width: 100%;
+        max-width: 100%;
     }
 
     .toolbar-search input {
@@ -4221,23 +4248,24 @@ nav {
     }
 
     .tabulator .tabulator-col .tabulator-col-content {
-        padding: 0.8rem 0.75rem;
+        padding: 0.6rem 0.6rem;
+        font-size: 0.75rem;
     }
 
     .tabulator-cell {
-        padding: 0.75rem 0.75rem;
-        font-size: 0.9rem;
+        padding: 0.6rem 0.6rem;
+        font-size: 0.8rem;
     }
 
     .tab-status {
-        font-size: 0.65rem;
-        padding: 0.3rem 0.6rem;
+        font-size: 0.6rem;
+        padding: 0.25rem 0.5rem;
     }
 
     .tabulator .tabulator-cell[tabulator-field="link"] .btn {
-        padding: 0.45rem 0.9rem;
-        min-height: 36px;
-        font-size: 0.85rem;
+        padding: 0.35rem 0.7rem;
+        min-height: 32px;
+        font-size: 0.78rem;
     }
 
     .tabulator .tabulator-responsive-collapse td {
@@ -4850,18 +4878,19 @@ nav {
 }
 
 .cta-content h2 {
-    font-size: 3.5rem;
+    font-size: clamp(1.75rem, 5vw, 4rem);
     font-weight: 900;
     margin-bottom: 1rem;
     color: var(--bma-white);
     line-height: 1.1;
+    letter-spacing: -0.02em;
 }
 
 .cta-content p {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2vw, 1.15rem);
     color: rgba(255, 255, 255, 0.85);
     margin: 0 0 1.5rem;
-    line-height: 1.7;
+    line-height: 1.6;
 }
 
 .cta-content .btn-primary {
@@ -6628,13 +6657,7 @@ footer::before {
         max-width: 120px;
     }
     
-    .cta-content h2 {
-        font-size: 1.5rem;
-    }
-    
-    .cta-content p {
-        font-size: 0.9rem;
-    }
+    /* cta-content h2/p use clamp() in base — no override needed */
 }
 
 

@@ -20,6 +20,7 @@
 .tabulator .tabulator-placeholder {
     background-color: #0a0a0a !important;
     background-image: none !important;
+    border-radius: 0 !important;
 }
 
 /* Apply to ALL viewports - both desktop and mobile */
