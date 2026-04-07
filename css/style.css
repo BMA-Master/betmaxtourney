@@ -4698,12 +4698,13 @@ nav {
 
 /* ===== Final CTA ===== */
 .final-cta {
-    padding: clamp(2rem, 3.5vw, 3.5rem) 0;
-    background: #000;
+    padding: clamp(2rem, 3.5vw, 3.5rem) 0 0;
+    background: #000 url('../images/BG-Hero.jpg') center / cover no-repeat;
     text-align: center;
     position: relative;
     overflow: hidden;
 }
+
 
 /* Ensure content is above the animated background */
 .final-cta .container {
@@ -4711,26 +4712,28 @@ nav {
     z-index: 3;
 }
 
-.final-cta-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: clamp(1.5rem, 3vw, 4rem);
-    align-items: center;
-    justify-items: center;
+.final-cta .cta-content {
+    padding-bottom: 0;
 }
 
-.final-cta-left {
-    position: relative;
-    z-index: 2;
-    padding: clamp(1.5rem, 3vw, 3rem);
+.final-cta .cta-content .btn {
+    margin: clamp(1.25rem, 2.5vw, 2rem) 0;
 }
 
-.final-cta-right {
+/* Podium sits at bottom, clipped by section overflow:hidden */
+.final-cta-podium {
     position: relative;
-    z-index: 2;
-    padding: clamp(0.75rem, 1.5vw, 1.5rem);
-    text-align: center;
-    max-width: 600px;
+    z-index: 3;
+    margin-top: 1rem;
+}
+
+.final-cta-podium .trophy-podium {
+    align-items: flex-end;
+    margin-bottom: -40px;
+}
+
+.final-cta-podium .podium-pedestal {
+    border-radius: 6px 6px 0 0;
 }
 
 .device-stack {

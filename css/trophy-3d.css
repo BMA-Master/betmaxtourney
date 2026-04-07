@@ -1,0 +1,168 @@
+/* ===== Trophy Podium ===== */
+
+.trophy-podium {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0;
+    max-width: 500px;
+    margin: 0 auto;
+    padding-top: 0.5rem;
+}
+
+/* Each podium place */
+.podium-place {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    max-width: 160px;
+}
+
+/* Trophy images */
+.podium-trophy {
+    width: 100%;
+    padding: 0 1rem;
+    margin-bottom: -4px;
+    position: relative;
+    z-index: 2;
+}
+
+.podium-trophy img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+}
+
+/* Float animation per place - staggered */
+.podium-place-1st .podium-trophy {
+    animation: podium-float 3s ease-in-out infinite;
+}
+
+.podium-place-2nd .podium-trophy {
+    animation: podium-float 3s ease-in-out 0.5s infinite;
+}
+
+.podium-place-3rd .podium-trophy {
+    animation: podium-float 3s ease-in-out 1s infinite;
+}
+
+@keyframes podium-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+/* Pedestals */
+.podium-pedestal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 0.75rem;
+    border-radius: 6px 6px 0 0;
+    position: relative;
+}
+
+/* 1st place - tallest, gold */
+.podium-place-1st {
+    order: 2;
+}
+
+.podium-place-1st .podium-pedestal {
+    height: 160px;
+    background: linear-gradient(180deg, #b8960b 0%, #7a6508 100%);
+    border-top: 2px solid var(--bma-yellow);
+}
+
+.podium-place-1st .podium-label {
+    color: var(--bma-yellow);
+}
+
+/* 2nd place - medium, silver */
+.podium-place-2nd {
+    order: 1;
+}
+
+.podium-place-2nd .podium-pedestal {
+    height: 120px;
+    background: linear-gradient(180deg, #6b6b6b 0%, #3d3d3d 100%);
+    border-top: 2px solid #aaa;
+}
+
+.podium-place-2nd .podium-label {
+    color: #ccc;
+}
+
+/* 3rd place - shortest, bronze */
+.podium-place-3rd {
+    order: 3;
+}
+
+.podium-place-3rd .podium-pedestal {
+    height: 90px;
+    background: linear-gradient(180deg, #8b5e34 0%, #5a3c1f 100%);
+    border-top: 2px solid #cd7f32;
+}
+
+.podium-place-3rd .podium-label {
+    color: #cd7f32;
+}
+
+/* Labels */
+.podium-label {
+    font-family: var(--font-display, 'Montserrat', sans-serif);
+    font-weight: 900;
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    letter-spacing: 0.02em;
+}
+
+/* Glow behind 1st place trophy */
+.podium-place-1st .podium-trophy::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+    animation: trophy-glow-pulse 3s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes trophy-glow-pulse {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .trophy-podium {
+        max-width: 380px;
+        padding-top: 1.5rem;
+    }
+    .podium-place-1st .podium-pedestal { height: 90px; }
+    .podium-place-2nd .podium-pedestal { height: 65px; }
+    .podium-place-3rd .podium-pedestal { height: 45px; }
+}
+
+@media (max-width: 480px) {
+    .trophy-podium {
+        max-width: 300px;
+        padding-top: 1rem;
+    }
+    .podium-place-1st .podium-pedestal { height: 70px; }
+    .podium-place-2nd .podium-pedestal { height: 50px; }
+    .podium-place-3rd .podium-pedestal { height: 35px; }
+    .podium-trophy {
+        padding: 0 0.5rem;
+    }
+}

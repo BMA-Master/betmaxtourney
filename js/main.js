@@ -1165,6 +1165,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Refresh marquee every 60 seconds
     setInterval(loadTournamentMarquee, 60000);
 
+
     // Mobile Menu Drawer Toggle
     const menuToggle = document.querySelector('.menu-toggle');
     const mobileMenu = document.querySelector('.mobile-menu');
