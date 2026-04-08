@@ -2665,7 +2665,7 @@ nav {
 }
 
 .td-bill-icon {
-    width: clamp(64px, 12vw, 100px);
+    width: clamp(120px, 25vw, 220px);
     height: auto;
     user-select: none;
     -webkit-user-select: none;
