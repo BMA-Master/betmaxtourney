@@ -170,6 +170,10 @@
     height: auto;
     display: block;
     margin: 0 auto;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
 }
 
 /* Phone Mockup (small, centered within left side) */
@@ -186,6 +190,10 @@
     display: block;
     filter: drop-shadow(0 20px 48px rgba(0, 0, 0, 0.6)) drop-shadow(0 6px 16px rgba(0, 0, 0, 0.4));
     animation: phoneFloat 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
 }
 
 @keyframes phoneFloat {

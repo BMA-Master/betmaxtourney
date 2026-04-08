@@ -1539,6 +1539,10 @@ nav {
     object-fit: contain;
     margin-bottom: 1.5rem;
     filter: drop-shadow(0 4px 24px rgba(0, 0, 0, 0.7));
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
 }
 
 .hero-phones {
@@ -5018,6 +5022,10 @@ footer::before {
     margin: 0 auto;
     display: block;
     object-fit: contain;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
 }
 
 .footer-content {

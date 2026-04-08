@@ -120,6 +120,8 @@
     font-weight: 900;
     font-size: clamp(1rem, 2vw, 1.5rem);
     letter-spacing: 0.02em;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 /* Glow behind 1st place trophy */
