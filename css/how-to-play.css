@@ -29,7 +29,7 @@ html {
 /* Intro section between hero and content */
 .how-to-play-intro {
     padding: clamp(2rem, 4vw, 3rem) 0;
-    background: var(--bma-dark-100);
+    background: #181818;
     text-align: center;
 }
 
@@ -52,6 +52,7 @@ html {
     padding: 2rem 0 4rem 0;
     position: relative;
     z-index: 1;
+    background: #181818;
 }
 
 .container-full {

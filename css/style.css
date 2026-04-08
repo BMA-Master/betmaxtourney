@@ -1395,6 +1395,13 @@ nav {
     min-height: 40px;
 }
 
+/* Nav-sized pill button */
+.nav-play-btn {
+    padding: 0.45rem 1.1rem;
+    font-size: 0.85rem;
+    min-height: 36px;
+}
+
 .hero-pill-cta {
     background: transparent;
     color: var(--bma-white);
@@ -2039,7 +2046,7 @@ nav {
 /* ===== Product Showcase Sports (Dark Background) ===== */
 .product-showcase-sports {
     padding: 2rem 0 3rem 0;
-    background: #101010;
+    background: #181818;
     position: relative;
 }
 
@@ -2631,11 +2638,12 @@ nav {
 }
 
 .mechanics-intro {
-    font-size: clamp(0.75rem, 1.8vw, 1rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
     color: rgba(255, 255, 255, 0.9);
     margin: 0 auto 1.5rem;
-    line-height: 1.6;
-    font-weight: 500;
     background: rgba(0, 230, 118, 0.08);
     border: 1px solid rgba(0, 230, 118, 0.2);
     border-radius: 12px;
@@ -2643,6 +2651,22 @@ nav {
     text-align: center;
     max-width: min(fit-content, 100%);
     position: relative;
+}
+
+.mechanics-intro p {
+    font-size: clamp(0.75rem, 1.8vw, 1rem);
+    line-height: 1.6;
+    font-weight: 500;
+    margin: 0;
+}
+
+.td-bill-icon {
+    width: clamp(64px, 12vw, 100px);
+    height: auto;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
 }
 
 .mechanics-intro::before {
@@ -4963,7 +4987,7 @@ nav {
 
 /* ===== Footer ===== */
 footer {
-    background: #101010;
+    background: #181818;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding: 4rem 0 0;
     position: relative;
@@ -5030,7 +5054,7 @@ footer::before {
     text-align: center;
     padding: 1.5rem 2rem;
     margin: 2rem calc(-50vw + 50%) 0 calc(-50vw + 50%); /* Full viewport width */
-    background: #101010;
+    background: #181818;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.9rem;
@@ -5721,7 +5745,7 @@ footer::before {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    filter: brightness(0) saturate(100%) invert(79%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(98%) contrast(119%);
+    filter: brightness(0) saturate(100%) invert(85%) sepia(60%) saturate(1000%) hue-rotate(360deg) brightness(105%) contrast(105%);
 }
 /* Large sport icons - for homepage sport boxes */
 .sport-icon.NFL,
