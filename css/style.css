@@ -3174,6 +3174,15 @@ nav {
     transition: opacity 0.5s ease;
 }
 
+/* Let the browser handle vertical scroll — Flickity only gets horizontal gestures.
+   Fixes scroll lock when scrolling past the carousel on mobile. */
+.promotions-carousel,
+.promotions-carousel .flickity-viewport,
+.promotions-carousel .flickity-slider,
+.promo-slide {
+    touch-action: pan-y !important;
+}
+
 .promotions-carousel.is-ready {
     opacity: 1;
 }
@@ -3498,11 +3507,7 @@ nav {
 
     .starting-soon-shell .tabulator .tabulator-tableholder {
         overflow-x: auto;
-        transform: rotateX(180deg);
-    }
-
-    .starting-soon-shell .tabulator .tabulator-tableholder > .tabulator-table {
-        transform: rotateX(180deg);
+        touch-action: pan-x pan-y;
     }
 }
 

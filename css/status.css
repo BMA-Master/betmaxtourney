@@ -1,0 +1,314 @@
+/* ===== Status Page ===== */
+.status-page {
+    padding: clamp(3rem, 6vw, 5rem) 0 clamp(3rem, 6vw, 5rem);
+    background: #181818;
+    min-height: 70vh;
+    position: relative;
+}
+
+.status-page .container {
+    max-width: 960px;
+}
+
+/* Header */
+.status-header {
+    text-align: center;
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.status-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.5rem;
+    color: var(--bma-white);
+}
+
+.status-subline {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+    margin: 0;
+}
+
+/* Overall banner */
+.status-overall {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(10, 10, 10, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.status-overall.is-operational {
+    border-color: rgba(0, 230, 118, 0.35);
+    box-shadow: 0 0 24px rgba(0, 230, 118, 0.08);
+}
+
+.status-overall.is-degraded {
+    border-color: rgba(255, 215, 0, 0.45);
+    box-shadow: 0 0 24px rgba(255, 215, 0, 0.08);
+}
+
+.status-overall.is-down {
+    border-color: rgba(220, 20, 60, 0.5);
+    box-shadow: 0 0 24px rgba(220, 20, 60, 0.1);
+}
+
+.status-overall-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.status-overall-label {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--bma-white);
+}
+
+.status-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.status-last-checked {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+.status-refresh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.85rem;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--bma-white);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.status-refresh-btn:hover {
+    background: rgba(0, 230, 118, 0.08);
+    border-color: rgba(0, 230, 118, 0.3);
+}
+
+.status-refresh-btn:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+/* Status dots */
+.status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+}
+
+.status-dot.is-operational {
+    background: var(--bma-green-bright);
+    box-shadow: 0 0 8px rgba(0, 230, 118, 0.6);
+}
+
+.status-dot.is-degraded {
+    background: var(--bma-yellow);
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+.status-dot.is-down {
+    background: var(--bma-red);
+    box-shadow: 0 0 8px rgba(220, 20, 60, 0.6);
+}
+
+.status-dot-pulse {
+    animation: statusPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Cards */
+.status-card {
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(10, 10, 10, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+}
+
+.status-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.status-card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.status-card-title h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--bma-white);
+}
+
+.status-card-state {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.status-card-state.is-operational {
+    background: rgba(0, 230, 118, 0.12);
+    color: var(--bma-green-bright);
+    border: 1px solid rgba(0, 230, 118, 0.3);
+}
+
+.status-card-state.is-degraded {
+    background: rgba(255, 215, 0, 0.12);
+    color: var(--bma-yellow);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.status-card-state.is-down {
+    background: rgba(220, 20, 60, 0.12);
+    color: #ff5c7a;
+    border: 1px solid rgba(220, 20, 60, 0.3);
+}
+
+.status-card-desc {
+    margin: 0 0 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.status-card-meta {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.status-card-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.status-meta-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.status-meta-value {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--bma-white);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Section header */
+.status-section-header {
+    margin: 2.5rem 0 1rem;
+}
+
+.status-section-header h2 {
+    margin: 0 0 0.25rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+    font-weight: 900;
+    color: var(--bma-white);
+}
+
+.status-section-header p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.9rem;
+}
+
+/* Daemons grid */
+.status-daemons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+.status-daemon-loading {
+    display: grid;
+    gap: 0.75rem;
+}
+
+/* Error state */
+.status-card.is-error {
+    border-color: rgba(220, 20, 60, 0.35);
+}
+
+.status-error-msg {
+    color: #ff8a9f;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+/* Footer note */
+.status-footer-note {
+    margin-top: 2rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.85rem;
+}
+
+.status-footer-note strong {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .status-overall {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .status-meta {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .status-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
