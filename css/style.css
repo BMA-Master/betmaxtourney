@@ -2486,6 +2486,11 @@ nav {
     background-color: #000;
     position: relative;
     overflow: hidden;
+    overflow-anchor: none;
+}
+
+.how-to-compete * {
+    overflow-anchor: none;
 }
 
 .how-to-compete .container {
@@ -2653,7 +2658,9 @@ nav {
     border-radius: 12px;
     padding: 1rem 1.5rem;
     text-align: center;
-    max-width: min(fit-content, 100%);
+    max-width: min(500px, 100%);
+    width: max-content;
+    box-sizing: border-box;
     position: relative;
 }
 
@@ -2666,7 +2673,9 @@ nav {
 
 .td-bill-icon {
     width: clamp(120px, 25vw, 220px);
+    max-width: 100%;
     height: auto;
+    flex-shrink: 0;
     user-select: none;
     -webkit-user-select: none;
     -webkit-user-drag: none;

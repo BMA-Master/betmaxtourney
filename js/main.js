@@ -1140,6 +1140,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     accessibility: true
                 });
 
+
                 // Fade in once Flickity is ready
                 flkty.on('ready', function() {
                     carouselEl.classList.add('is-ready');
@@ -1165,6 +1166,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Refresh marquee every 60 seconds
     setInterval(loadTournamentMarquee, 60000);
+
+    // Disable bfcache entirely. Flickity and other widgets leave touch event
+    // listeners attached when the page is cached, which traps scroll on return.
+    // Adding ANY unload listener opts out of bfcache per spec, forcing a fresh
+    // page load every navigation.
+    window.addEventListener('unload', function() {});
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
 
 
     // Mobile Menu Drawer Toggle
