@@ -15,6 +15,9 @@
         daemon_odds_sync_sport: 'Odds Sync'
     };
 
+    // Daemons to exclude from the status page entirely
+    var DAEMON_EXCLUDE = ['daemon_alltime_leaderboard_summary'];
+
     var overallEl = document.getElementById('status-overall');
     var overallLabelEl = document.getElementById('overall-label');
     var overallDotEl = document.getElementById('overall-dot');
@@ -149,7 +152,9 @@
             var res = await fetch(DAEMON_URL, { cache: 'no-store' });
             if (!res.ok) throw new Error('HTTP ' + res.status);
             var json = await res.json();
-            var list = (json && json.data) || [];
+            var list = ((json && json.data) || []).filter(function (d) {
+                return DAEMON_EXCLUDE.indexOf(d.caption) === -1;
+            });
 
             daemonsEl.innerHTML = '';
             var worstState = 'operational';
