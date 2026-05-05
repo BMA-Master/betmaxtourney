@@ -1,28 +1,27 @@
 // ============================================
 // Bet Max Tourney - Main JavaScript
-// Tournament Betting Platform
+// Tournament Competition Platform
 // ============================================
 
-// Map RSS sport codes to icon classes
-function mapSportToIcon(sportCode) {
-    const sportMap = {
-        'americanfootball_nfl': 'NFL',
-        'basketball_nba': 'NBA',
-        'basketball_ncaab': 'NCAAB',
-        'baseball_mlb': 'MLB',
-        'icehockey_nhl': 'NHL',
-        'mma_mixed_martial_arts': 'MMA',
-        'boxing_boxing': 'Boxing',
-        'soccer_epl': 'EPL',
-        'soccer_uefa': 'UEFA',
-        'soccer_mls': 'MLS',
-        'americanfootball_ncaaf': 'NCAAF',
-        'americanfootball_cfl': 'CFL',
-        'australianfootball_afl': 'AFL',
-        'rugbyleague_nrl': 'NRL'
-    };
 
-    return sportMap[sportCode] || 'NFL'; // Default to NFL if not found
+// Sport code -> { code, label } via SportRegistry. The original code is
+// preserved so the renderer can pick the correct icon family at draw time.
+// Returns null for empty/unparseable input.
+function mapSportToIcon(sportCode) {
+    if (!sportCode || !window.SportRegistry) return null;
+    const code = String(sportCode).trim();
+    if (!code) return null;
+    const r = window.SportRegistry.resolve(code);
+    return r ? { code: code, label: r.label } : null;
+}
+
+// Build the public client-app preview URL for a tournament GUID. The client
+// renders an unauth preview for every tournament regardless of state, so the
+// marketing site can deep-link directly. Returns '' if guid is missing.
+const TOURNAMENT_PREVIEW_BASE = 'https://www.betmaxtourney.com/app/#/preview/';
+function tournamentPreviewUrl(guid) {
+    if (!guid) return '';
+    return TOURNAMENT_PREVIEW_BASE + encodeURIComponent(String(guid).trim());
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -84,6 +83,110 @@ document.addEventListener('DOMContentLoaded', function() {
         track.style.animationDelay = '-' + offset.toFixed(2) + 's';
     }
     syncMarqueeAnimation();
+
+    // ===== Recent Winners bento marquee — clone children for seamless loop =====
+    const winnersTrack = document.querySelector('[data-winners-track]');
+    if (winnersTrack && winnersTrack.children.length && !winnersTrack.dataset.cloned) {
+        winnersTrack.dataset.cloned = 'true';
+        const original = Array.from(winnersTrack.children);
+        original.forEach(function (el) {
+            const clone = el.cloneNode(true);
+            clone.setAttribute('aria-hidden', 'true');
+            winnersTrack.appendChild(clone);
+        });
+
+        // Lock the marquee speed to a constant px/sec regardless of viewport
+        // so phone screens don't whip the cards by faster than they can be
+        // read. Animation translates -50%, which equals the single-set width.
+        // Mobile gets an even slower target since each card occupies more of
+        // the visible window — a card that flies past in 4s on desktop should
+        // feel like 8s on a phone for parity.
+        const setDuration = function () {
+            const singleSetWidth = winnersTrack.scrollWidth / 2;
+            if (singleSetWidth <= 0) return;
+            const isMobile = window.innerWidth <= 768;
+            const targetPxPerSec = isMobile ? 25 : 32;
+            const duration = singleSetWidth / targetPxPerSec;
+            winnersTrack.style.animationDuration = duration.toFixed(1) + 's';
+            // eslint-disable-next-line no-console
+            console.log('[winners-marquee] vw=' + window.innerWidth + ' singleSetWidth=' + singleSetWidth.toFixed(0) + 'px target=' + targetPxPerSec + 'px/s → duration=' + duration.toFixed(1) + 's');
+        };
+        // Layout may not be fully settled at DOMContentLoaded; defer one frame.
+        requestAnimationFrame(setDuration);
+        window.addEventListener('load', setDuration);
+        window.addEventListener('resize', setDuration);
+    }
+
+    // ===== Game Modes tabbed selector (used on Home + Bet Max Pools pages) =====
+    // Scoped per-container so multiple .home-modes blocks on the same page (or
+    // page reuse) don't cross-talk. Each scope can also wrap its tabs in a
+    // .home-modes-rail with prev/next arrows; we wire those up when present.
+    document.querySelectorAll('.home-modes').forEach(scope => {
+        const tabs = scope.querySelectorAll('.home-modes-tab');
+        const panels = scope.querySelectorAll('.home-modes-panel');
+        if (!tabs.length || !panels.length) return;
+
+        const rail = scope.querySelector('[data-modes-rail]');
+        const scroller = scope.querySelector('[data-modes-rail-scroller]');
+
+        function syncRailBounds() {
+            if (!rail || !scroller) return;
+            const max = scroller.scrollWidth - scroller.clientWidth;
+            const x = scroller.scrollLeft;
+            const atStart = x <= 1;
+            const atEnd = x >= max - 1;
+            rail.setAttribute('data-at-start', atStart ? 'true' : 'false');
+            rail.setAttribute('data-at-end', atEnd || max <= 0 ? 'true' : 'false');
+        }
+
+        function scrollActiveIntoView() {
+            const active = scope.querySelector('.home-modes-tab.active');
+            if (!active || !scroller) return;
+            const aLeft = active.offsetLeft;
+            const aRight = aLeft + active.offsetWidth;
+            const sLeft = scroller.scrollLeft;
+            const sRight = sLeft + scroller.clientWidth;
+            // Center the tab if it's outside the visible window
+            if (aLeft < sLeft || aRight > sRight) {
+                const target = aLeft - (scroller.clientWidth - active.offsetWidth) / 2;
+                scroller.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+            }
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function () {
+                const mode = this.dataset.mode;
+                tabs.forEach(t => {
+                    const on = t === this;
+                    t.classList.toggle('active', on);
+                    t.setAttribute('aria-selected', on ? 'true' : 'false');
+                });
+                panels.forEach(p => {
+                    const on = p.dataset.mode === mode;
+                    p.classList.toggle('active', on);
+                    if (on) p.removeAttribute('hidden');
+                    else p.setAttribute('hidden', '');
+                });
+                scrollActiveIntoView();
+            });
+        });
+
+        if (rail && scroller) {
+            // Arrow click: scroll by ~80% of the visible window
+            rail.querySelectorAll('[data-modes-rail-arrow]').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const dir = this.getAttribute('data-modes-rail-arrow') === 'prev' ? -1 : 1;
+                    scroller.scrollBy({ left: dir * scroller.clientWidth * 0.8, behavior: 'smooth' });
+                });
+            });
+            scroller.addEventListener('scroll', syncRailBounds, { passive: true });
+            window.addEventListener('resize', syncRailBounds);
+            // Initial pass
+            syncRailBounds();
+            // After layout settles, run again (image trophy icons load)
+            requestAnimationFrame(syncRailBounds);
+        }
+    });
 
     // ===== FanDuel Style Tab Navigation =====
     const tabButtons = document.querySelectorAll('.fd-tab-btn');
@@ -154,6 +257,23 @@ document.addEventListener('DOMContentLoaded', function() {
         return daysSinceEnd <= 7;
     }
 
+    // True if a tournament title looks like a test tournament. Word-boundary
+    // match so "Contest" / "Latest" don't false-positive.
+    function isTestTournament(title) {
+        return /\btest\b/i.test(title || '');
+    }
+
+    // True if the RSS <item> is flagged private via the bma:isPrivate tag.
+    // Uses the namespace wildcard so it doesn't matter whether the prefix is
+    // resolved to a URI or treated as part of the local name.
+    function isPrivateTournament(item) {
+        if (!item) return false;
+        const el = item.getElementsByTagNameNS
+            ? item.getElementsByTagNameNS('*', 'isPrivate')[0]
+            : item.querySelector('isPrivate');
+        return !!(el && el.textContent && el.textContent.trim().toLowerCase() === 'true');
+    }
+
     // ===== Live Tournament Marquee =====
     async function loadTournamentMarquee() {
         const marqueeTrack = document.getElementById('marquee-track');
@@ -176,6 +296,8 @@ document.addEventListener('DOMContentLoaded', function() {
             let marqueeHTML = '';
             items.forEach((item, index) => {
                 const title = item.querySelector('title')?.textContent || 'Tournament';
+                if (isTestTournament(title)) return;
+                if (isPrivateTournament(item)) return;
                 const description = item.querySelector('description')?.textContent || '';
                 const pubDate = item.querySelector('pubDate')?.textContent || '';
 
@@ -199,15 +321,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // If no sport in description, infer from title
                 if (sports.length === 0) {
-                    const titleLower = title.toLowerCase();
-                    if (titleLower.includes('hoop') || titleLower.includes('basketball') || titleLower.includes('nba')) sports = ['NBA'];
-                    else if (titleLower.includes('football') || titleLower.includes('nfl')) sports = ['NFL'];
-                    else if (titleLower.includes('baseball') || titleLower.includes('mlb')) sports = ['MLB'];
-                    else if (titleLower.includes('hockey') || titleLower.includes('nhl')) sports = ['NHL'];
-                    else if (titleLower.includes('soccer') || titleLower.includes('epl') || titleLower.includes('uefa')) sports = ['SOCCER'];
-                    else if (titleLower.includes('college') || titleLower.includes('ncaa')) sports = ['NCAAF'];
-                    else if (titleLower.includes('boxing') || titleLower.includes('boxer')) sports = ['BOXING'];
-                    else if (titleLower.includes('mma') || titleLower.includes('ufc') || titleLower.includes('mixed martial')) sports = ['MMA'];
+                    sports = inferSportsFromTitle(title);
                 }
 
                 const startTimeStr = startTimeMatch ? startTimeMatch[1].trim() : '';
@@ -287,12 +401,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Generate sport icons HTML (icon + label for each sport)
                 let sportsHTML = '';
                 if (sports.length > 0) {
-                    console.log(`Tournament "${title}" has sports:`, sports);
                     sports.forEach((sport, index) => {
-                        let iconClass = sport;
-                        if (sport === 'BOXING') iconClass = 'MMA';
-                        if (sport === 'UEFA') iconClass = 'EPL';
-                        sportsHTML += `<span class="sport-icon-small ${iconClass}"></span><span class="marquee-sport">${sport}</span>`;
+                        const code = (typeof sport === 'object' && sport) ? sport.code : sport;
+                        const labelOverride = (typeof sport === 'object' && sport) ? sport.label : null;
+                        sportsHTML += window.SportRegistry.renderChip(code, {
+                            variant: 'marquee',
+                            labelOverride: labelOverride
+                        });
                         if (index < sports.length - 1) {
                             sportsHTML += '<span class="marquee-separator">•</span>';
                         }
@@ -344,6 +459,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const tournaments = [];
         items.forEach((item) => {
             const title = item.querySelector('title')?.textContent || 'Tournament';
+            if (isTestTournament(title)) return;
+            if (isPrivateTournament(item)) return;
             const description = item.querySelector('description')?.textContent || '';
             const link = item.querySelector('link')?.textContent || '#';
             const pubDate = item.querySelector('pubDate')?.textContent || '';
@@ -418,6 +535,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 timeInfo
             });
 
+            // sports is an array of { code, label } objects from mapSportToIcon.
+            // (Title-inferred fallbacks may push plain strings; handle both.)
+            const rawSports = t.sports || [];
+            const sportLabels = rawSports.map(s => (typeof s === 'object' && s) ? s.label : s).filter(Boolean);
+            const sportFirst = (typeof t.sport === 'object' && t.sport) ? t.sport.code : t.sport;
+
             return {
                 status: normalized.statusLabel,
                 time: t.startDate ? formatDateTime(t.startDate) : 'TBD',
@@ -425,13 +548,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 statusRank: normalized.statusRank,
                 title: t.title,
                 titleText: t.title,
-                sports: (t.sports || []).join(', '),
-                sportsRaw: t.sports || [],
-                sportFilter: normalizeSportFilter(t.sport || ''),
-                sportsFilter: (t.sports || []).map(s => normalizeSportFilter(s)).filter(s => s),
+                sports: sportLabels.join(', '),
+                sportsRaw: rawSports,
+                sportFilter: normalizeSportFilter(sportFirst || ''),
+                sportsFilter: rawSports.map(s => {
+                    const code = (typeof s === 'object' && s) ? s.code : s;
+                    return normalizeSportFilter(code);
+                }).filter(s => s),
                 matches: t.matchCount || 0,
                 td: t.prizePool ? t.prizePool.toLocaleString() : '—',
-                link: t.link || '#',
+                guid: t.guid || '',
+                link: tournamentPreviewUrl(t.guid) || t.link || '#',
                 rawStatus: t.status,
                 statusGroup: normalized.statusGroup
             };
@@ -498,7 +625,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {title: "Status", field: "status", headerSort: true, formatter: statusFormatter, sorter: statusSorter},
                 {title: "Tournament", field: "title", headerSort: true, formatter: titleFormatter},
                 {title: "Sports", field: "sports", headerSort: true, formatter: sportsFormatter},
-                {title: "Matches", field: "matches", headerSort: true, hozAlign: "right"},
+                {title: "Matches", field: "matches", visible: false, headerSort: true, hozAlign: "right"},
                 {title: "Tournament Dollars (TD$)", field: "td", headerSort: true, hozAlign: "right"},
                 {title: "", field: "link", headerSort: false, formatter: ctaFormatter, widthGrow: 1}
             ]
@@ -560,7 +687,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {title: "Status", field: "status", headerSort: true, formatter: statusFormatter, sorter: statusSorter},
                 {title: "Tournament", field: "title", headerSort: true, formatter: titleFormatter},
                 {title: "Sports", field: "sports", headerSort: true, formatter: sportsFormatter},
-                {title: "Matches", field: "matches", headerSort: true, hozAlign: "right"},
+                {title: "Matches", field: "matches", visible: false, headerSort: true, hozAlign: "right"},
                 {title: "Tournament Dollars (TD$)", field: "td", headerSort: true, hozAlign: "right"},
                 {title: "", field: "link", headerSort: false, formatter: ctaFormatter, widthGrow: 1}
             ]
@@ -684,19 +811,14 @@ document.addEventListener('DOMContentLoaded', function() {
             return '';
         }
 
-        // Create HTML with icon and text for each sport
-        const sportsHTML = sportsArray.map(sport => {
-            // Map sport codes to display names if needed
-            const displayName = sport;
-            const iconClass = sport === 'SOCCER' ? 'EPL' : sport; // Use EPL icon for soccer
-
-            return `<span class="sport-with-icon">
-                <span class="sport-icon-small ${iconClass}"></span>
-                <span class="sport-name">${displayName}</span>
-            </span>`;
+        return sportsArray.map(sport => {
+            const code = (typeof sport === 'object' && sport) ? sport.code : sport;
+            const labelOverride = (typeof sport === 'object' && sport) ? sport.label : null;
+            return window.SportRegistry.renderChip(code, {
+                variant: 'row',
+                labelOverride: labelOverride
+            });
         }).join(' ');
-
-        return sportsHTML;
     }
 
     function titleFormatter(cell) {
@@ -869,26 +991,19 @@ document.addEventListener('DOMContentLoaded', function() {
         return 'upcoming';
     }
 
+    // Map any sport input to the short filter token used by the .sport-pill UI.
+    // Soccer leagues all collapse to SOCCER since the filter button is generic.
     function normalizeSportFilter(sport) {
-        if (!sport) return '';
-        const value = sport.toUpperCase();
-        if (value === 'EPL' || value === 'UEFA' || value === 'MLS' || value === 'SOCCER') {
-            return 'SOCCER';
-        }
-        return value;
+        if (!sport || !window.SportRegistry) return '';
+        const r = window.SportRegistry.resolve(sport);
+        if (!r) return '';
+        if (r.family === 'soccer') return 'SOCCER';
+        return r.label.toUpperCase();
     }
 
     function inferSportsFromTitle(title) {
-        const titleLower = (title || '').toLowerCase();
-        if (titleLower.includes('hoop') || titleLower.includes('basketball') || titleLower.includes('nba')) return ['NBA'];
-        if (titleLower.includes('football') || titleLower.includes('nfl')) return ['NFL'];
-        if (titleLower.includes('baseball') || titleLower.includes('mlb')) return ['MLB'];
-        if (titleLower.includes('hockey') || titleLower.includes('nhl')) return ['NHL'];
-        if (titleLower.includes('soccer') || titleLower.includes('epl') || titleLower.includes('uefa')) return ['SOCCER'];
-        if (titleLower.includes('college') || titleLower.includes('ncaa')) return ['NCAAF'];
-        if (titleLower.includes('boxing') || titleLower.includes('boxer')) return ['BOXING'];
-        if (titleLower.includes('mma') || titleLower.includes('ufc') || titleLower.includes('mixed martial')) return ['MMA'];
-        return [];
+        const token = window.SportRegistry && window.SportRegistry.inferFromTitle(title);
+        return token ? [token] : [];
     }
 
     function initTournamentsFilters(table, rows) {
@@ -896,7 +1011,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!tournamentsPage || !table) return;
 
         const filterTabs = document.querySelectorAll('.filter-tab');
-        const sportPills = document.querySelectorAll('.sport-pill');
+        const sportFiltersContainer = document.getElementById('sport-filters');
         const sortSelect = document.getElementById('sort-select');
         const sizeSelect = document.getElementById('items-per-page');
         const searchInput = document.getElementById('tournament-search');
@@ -938,7 +1053,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!statusMatch || !sportMatch) return false;
                 if (currentQuery) {
                     const q = currentQuery.toLowerCase();
-                    const name = (data.name || '').toLowerCase();
+                    const name = (data.titleText || data.title || data.name || '').toLowerCase();
                     const sports = (data.sports || '').toLowerCase();
                     return name.includes(q) || sports.includes(q);
                 }
@@ -993,14 +1108,47 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        sportPills.forEach(pill => {
-            pill.addEventListener('click', function() {
-                sportPills.forEach(p => p.classList.remove('active'));
-                this.classList.add('active');
-                currentSport = this.dataset.sport;
+        // Build sport pill chips dynamically from the rows that actually loaded.
+        // Counts are aggregated by normalized token (soccer leagues collapse to SOCCER).
+        if (sportFiltersContainer) {
+            const counts = new Map();
+            rows.forEach(r => {
+                const tokens = new Set();
+                (r.sportsFilter || []).forEach(t => { if (t) tokens.add(t); });
+                if (tokens.size === 0 && r.sportFilter) tokens.add(r.sportFilter);
+                tokens.forEach(t => counts.set(t, (counts.get(t) || 0) + 1));
+            });
+            const sorted = Array.from(counts.entries()).sort((a, b) => {
+                if (b[1] !== a[1]) return b[1] - a[1];
+                return a[0].localeCompare(b[0]);
+            });
+            const chips = [
+                `<button class="sport-pill active" data-sport="all">All Sports <span class="sport-pill-count">${rows.length}</span></button>`
+            ];
+            sorted.forEach(([token, count]) => {
+                const r = window.SportRegistry ? window.SportRegistry.resolve(token) : null;
+                const label = r ? r.label : token;
+                chips.push(
+                    `<button class="sport-pill" data-sport="${token}">` +
+                    `<span data-sport-icon="${token}"></span>` +
+                    `${label} <span class="sport-pill-count">${count}</span>` +
+                    `</button>`
+                );
+            });
+            sportFiltersContainer.innerHTML = chips.join('');
+            sportFiltersContainer.setAttribute('data-state', 'ready');
+            sportFiltersContainer.removeAttribute('aria-busy');
+            if (window.SportRegistry) window.SportRegistry.hydrate(sportFiltersContainer);
+
+            sportFiltersContainer.addEventListener('click', function (e) {
+                const pill = e.target.closest('.sport-pill');
+                if (!pill || pill.classList.contains('sport-pill-skeleton')) return;
+                sportFiltersContainer.querySelectorAll('.sport-pill').forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                currentSport = pill.dataset.sport;
                 applyFilters();
             });
-        });
+        }
 
         if (searchInput) {
             let searchTimeout;
@@ -1025,7 +1173,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 {column: 'startTs', dir: 'desc'}
                             ]);
                             break;
-                        case 'participants-desc':
+                        case 'matches-desc':
                             table.setSort([
                                 {column: 'statusRank', dir: 'asc'},
                                 {column: 'matches', dir: 'desc'}
@@ -1100,7 +1248,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Build slides from RSS items
+            // Build slides from RSS items. Filter out promotions whose CTA
+            // link contains a `gbp` token (Bet Max Action B2B promos that
+            // shouldn't surface on the consumer Bet Max Tourney site).
             let slidesHTML = '';
             items.forEach(function(item) {
                 const title = item.querySelector('title')?.textContent || '';
@@ -1109,6 +1259,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const imageUrl = enclosure ? enclosure.getAttribute('url') : '';
 
                 if (!imageUrl) return;
+                if (/(?:^|[?&/=._-])gbp(?:[?&/=._-]|$)/i.test(link)) return;
 
                 slidesHTML += '<div class="promo-slide">' +
                     '<a href="' + link + '" target="_blank" rel="noopener noreferrer">' +
@@ -1554,15 +1705,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // If no sport in description, infer from title
                 if (sports.length === 0) {
-                    const titleLower = title.toLowerCase();
-                    if (titleLower.includes('hoop') || titleLower.includes('basketball') || titleLower.includes('nba')) sports = ['NBA'];
-                    else if (titleLower.includes('football') || titleLower.includes('nfl')) sports = ['NFL'];
-                    else if (titleLower.includes('baseball') || titleLower.includes('mlb')) sports = ['MLB'];
-                    else if (titleLower.includes('soccer')) sports = ['SOCCER'];
-                    else if (titleLower.includes('hockey') || titleLower.includes('nhl')) sports = ['NHL'];
-                    else if (titleLower.includes('boxing') || titleLower.includes('boxer')) sports = ['BOXING'];
-                    else if (titleLower.includes('mma') || titleLower.includes('ufc') || titleLower.includes('mixed martial')) sports = ['MMA'];
-                    else sports = ['SPORTS']; // Default fallback
+                    sports = inferSportsFromTitle(title);
+                    if (sports.length === 0) sports = ['SPORTS']; // multi-sport fallback
                 }
 
                 // For filtering purposes, use the first sport
@@ -1601,9 +1745,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Generate sport icons HTML for homepage tournament cards
                 const sportsArray = t.sports || [t.sport];
-                const sportIconsHTML = sportsArray.map(sport =>
-                    `<div class="sport-icon ${sport}"></div><span class="sport-label">${sport}</span>`
-                ).join('');
+                const sportIconsHTML = sportsArray.map(sport => {
+                    const code = (typeof sport === 'object' && sport) ? sport.code : sport;
+                    const labelOverride = (typeof sport === 'object' && sport) ? sport.label : null;
+                    return window.SportRegistry.renderChip(code, {
+                        variant: 'card',
+                        labelOverride: labelOverride
+                    });
+                }).join('');
 
                 // Determine state class and badge classes
                 const stateClass = timeUntil.isLocked ? 'state-locked' : 'state-upcoming';
@@ -1974,16 +2123,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // If no sport in description, infer from title
                 if (sports.length === 0) {
-                    const titleLower = title.toLowerCase();
-                    if (titleLower.includes('hoop') || titleLower.includes('basketball') || titleLower.includes('nba')) sports = ['NBA'];
-                    else if (titleLower.includes('football') || titleLower.includes('nfl')) sports = ['NFL'];
-                    else if (titleLower.includes('baseball') || titleLower.includes('mlb')) sports = ['MLB'];
-                    else if (titleLower.includes('soccer') || titleLower.includes('epl') || titleLower.includes('uefa')) sports = ['SOCCER'];
-                    else if (titleLower.includes('hockey') || titleLower.includes('nhl')) sports = ['NHL'];
-                    else if (titleLower.includes('college') || titleLower.includes('ncaa')) sports = ['NCAAF'];
-                    else if (titleLower.includes('boxing') || titleLower.includes('boxer')) sports = ['BOXING'];
-                    else if (titleLower.includes('mma') || titleLower.includes('ufc') || titleLower.includes('mixed martial')) sports = ['MMA'];
-                    else sports = ['SPORTS']; // Default fallback
+                    sports = inferSportsFromTitle(title);
+                    if (sports.length === 0) sports = ['SPORTS']; // multi-sport fallback
                 }
 
                 // For filtering purposes, use the first sport
@@ -2042,18 +2183,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Filter by sport
-        const sportPills = document.querySelectorAll('.sport-pill');
-        sportPills.forEach(pill => {
-            pill.addEventListener('click', function() {
-                sportPills.forEach(p => p.classList.remove('active'));
-                this.classList.add('active');
-
-                currentSportFilter = this.dataset.sport;
-                applyFilters();
-            });
-        });
-
         // Sort tournaments
         const sortSelect = document.getElementById('sort-select');
         if (sortSelect) {
@@ -2068,7 +2197,13 @@ document.addEventListener('DOMContentLoaded', function() {
         function applyFilters() {
             filteredTournaments = allTournaments.filter(t => {
                 const statusMatch = currentStatusFilter === 'all' || t.status === currentStatusFilter;
-                const sportMatch = currentSportFilter === 'all' || t.sport === currentSportFilter;
+                let sportMatch = currentSportFilter === 'all';
+                if (!sportMatch) {
+                    sportMatch = (t.sports || []).some(s => {
+                        const code = (typeof s === 'object' && s) ? s.code : s;
+                        return normalizeSportFilter(code) === currentSportFilter;
+                    });
+                }
                 return statusMatch && sportMatch;
             });
 
@@ -2132,9 +2267,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Generate sport icons HTML for tournament cards
                 const sportsArray = t.sports || [t.sport];
-                const sportIconsHTML = sportsArray.map(sport =>
-                    `<div class="sport-icon ${sport}"></div><span class="sport-label">${sport}</span>`
-                ).join('');
+                const sportIconsHTML = sportsArray.map(sport => {
+                    const code = (typeof sport === 'object' && sport) ? sport.code : sport;
+                    const labelOverride = (typeof sport === 'object' && sport) ? sport.label : null;
+                    return window.SportRegistry.renderChip(code, {
+                        variant: 'card',
+                        labelOverride: labelOverride
+                    });
+                }).join('');
 
                 // Determine state class and badge classes
                 const stateClass = timeInfo.isLocked ? 'state-locked' : 'state-upcoming';
@@ -2517,6 +2657,157 @@ function initHowToPlayNav() {
     });
 }
 
+function initSectionRail(rail) {
+    if (!rail || rail.dataset.sectionRailReady === 'true') return;
+    rail.dataset.sectionRailReady = 'true';
+
+    const isHowToPlayRail = rail.classList.contains('htp-jump-nav');
+    const scroller = rail.querySelector('[data-section-rail-scroller], [data-htp-rail-scroller]');
+    const chips = Array.from(rail.querySelectorAll('[data-section-rail-chip], [data-htp-rail-chip]'));
+    if (!scroller || !chips.length) return;
+
+    const spacer = document.createElement('div');
+    spacer.className = isHowToPlayRail ? 'htp-rail-spacer' : 'section-rail-spacer';
+    rail.insertAdjacentElement('afterend', spacer);
+
+    const sections = chips
+        .map(chip => {
+            const id = chip.getAttribute('href')?.replace('#', '');
+            return id ? document.getElementById(id) : null;
+        })
+        .filter(Boolean);
+
+    let railDocumentTop = 0;
+
+    const getFixedTop = () => {
+        if (window.matchMedia('(max-width: 768px)').matches) return 0;
+
+        const header = document.querySelector('body > header');
+        if (!header) return 0;
+
+        const headerStyle = window.getComputedStyle(header);
+        if (headerStyle.position !== 'sticky' && headerStyle.position !== 'fixed') return 0;
+
+        return Math.max(0, Math.round(header.getBoundingClientRect().bottom));
+    };
+
+    const setRailVar = (name, value) => {
+        rail.style.setProperty(`--section-rail-${name}`, value);
+        rail.style.setProperty(`--htp-rail-${name}`, value);
+    };
+
+    const measureRail = () => {
+        const wasFixed = rail.classList.contains('is-fixed');
+        if (wasFixed) {
+            rail.classList.remove('is-fixed');
+            spacer.classList.remove('is-active');
+        }
+
+        railDocumentTop = rail.getBoundingClientRect().top + window.scrollY;
+        setRailVar('height', `${rail.offsetHeight}px`);
+
+        if (wasFixed) {
+            rail.classList.add('is-fixed');
+            spacer.classList.add('is-active');
+        }
+    };
+
+    const scrollChipIntoView = (chip) => {
+        if (!chip) return;
+
+        const chipLeft = chip.offsetLeft;
+        const chipWidth = chip.offsetWidth;
+        const scrollerWidth = scroller.clientWidth;
+        const currentScroll = scroller.scrollLeft;
+
+        if (chipLeft >= currentScroll && chipLeft + chipWidth <= currentScroll + scrollerWidth) {
+            return;
+        }
+
+        scroller.scrollTo({
+            left: Math.max(0, chipLeft - (scrollerWidth - chipWidth) / 2),
+            behavior: 'smooth'
+        });
+    };
+
+    const setActiveChip = (targetId, shouldScroll = true) => {
+        let activeChip = null;
+
+        chips.forEach(chip => {
+            const isActive = chip.getAttribute('href') === `#${targetId}`;
+            chip.classList.toggle('is-active', isActive);
+            if (isActive) {
+                chip.setAttribute('aria-current', 'true');
+                activeChip = chip;
+            } else {
+                chip.removeAttribute('aria-current');
+            }
+        });
+
+        if (shouldScroll) {
+            scrollChipIntoView(activeChip);
+        }
+    };
+
+    const syncActiveFromScroll = () => {
+        if (!sections.length) return;
+
+        const marker = getFixedTop() + rail.offsetHeight + 96;
+        let activeSection = sections[0];
+
+        sections.forEach(section => {
+            if (section.getBoundingClientRect().top <= marker) {
+                activeSection = section;
+            }
+        });
+
+        if (activeSection) setActiveChip(activeSection.id);
+    };
+
+    const syncRailStickiness = () => {
+        const fixedTop = getFixedTop();
+        const shouldFix = window.scrollY >= railDocumentTop - fixedTop;
+
+        setRailVar('fixed-top', `${fixedTop}px`);
+        rail.classList.toggle('is-fixed', shouldFix);
+        spacer.classList.toggle('is-active', shouldFix);
+        syncActiveFromScroll();
+    };
+
+    rail.querySelectorAll('[data-section-rail-arrow], [data-htp-rail-arrow]').forEach(button => {
+        button.addEventListener('click', () => {
+            const directionName = button.dataset.sectionRailArrow || button.dataset.htpRailArrow;
+            const direction = directionName === 'next' ? 1 : -1;
+            const step = Math.max(160, scroller.clientWidth * 0.6);
+            scroller.scrollBy({ left: direction * step, behavior: 'smooth' });
+        });
+    });
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            const targetId = chip.getAttribute('href')?.replace('#', '');
+            if (targetId) setActiveChip(targetId);
+        });
+    });
+
+    const initialId = window.location.hash?.replace('#', '');
+    if (initialId && document.getElementById(initialId)) {
+        setActiveChip(initialId, false);
+    }
+
+    measureRail();
+    syncRailStickiness();
+    window.addEventListener('scroll', syncRailStickiness, { passive: true });
+    window.addEventListener('resize', () => {
+        measureRail();
+        syncRailStickiness();
+    });
+}
+
+function initSectionRails() {
+    document.querySelectorAll('.htp-jump-nav, [data-section-rail]').forEach(initSectionRail);
+}
+
 // Accordion Glossary
 function initGlossaryAccordion() {
     const accordionHeaders = document.querySelectorAll('.accordion-header');
@@ -2579,6 +2870,8 @@ if (document.querySelector('.how-to-play-content')) {
     initSportsGlossaryTabs();
 }
 
+initSectionRails();
+
 // Removed JavaScript hack - CSS solution implemented at end of style.css
 
 // Update countdown timers every 30 seconds
@@ -2629,4 +2922,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-

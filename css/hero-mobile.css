@@ -4,7 +4,7 @@
         max-height: none !important;
         height: auto !important;
         overflow: visible !important;
-        padding-top: calc(var(--hero-marquee-height) + 44px + 0.25rem) !important;
+        padding-top: calc(var(--hero-marquee-height) + 7rem) !important;
         padding-bottom: 0 !important;
     }
 
@@ -22,13 +22,34 @@
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        padding-bottom: 1.5rem !important;
+        padding-bottom: clamp(0.75rem, 3vw, 1.25rem) !important;
+    }
+
+    section.hero .home-hero-eyebrow {
+        justify-content: center !important;
+        margin-bottom: 0.85rem !important;
+        font-size: 0.72rem !important;
+    }
+
+    section.hero .home-hero-title-img {
+        width: min(88vw, 360px) !important;
+        margin: 0 auto 1rem !important;
+    }
+
+    section.hero .home-hero-subline {
+        max-width: 34ch !important;
+        margin: 0 auto 0.85rem !important;
+        font-size: 0.98rem !important;
+        line-height: 1.6 !important;
+        text-align: center !important;
     }
 
     section.hero .hero-ctas {
         justify-content: center !important;
         flex-direction: row !important;
         flex-wrap: nowrap !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
     }
 
     section.hero .hero-right {
@@ -37,40 +58,114 @@
         justify-content: center !important;
         align-items: flex-end !important;
         width: 100% !important;
-        height: auto !important;
+        height: clamp(335px, 80vw, 440px) !important;
+        margin: 1.1rem auto -18px !important;
         overflow: visible !important;
         visibility: visible !important;
         opacity: 1 !important;
+        position: relative !important;
     }
 
-    /* Hide secondary phone on mobile — only show primary */
     section.hero .hero-phone-secondary {
-        display: none !important;
+        display: block !important;
+        position: absolute !important;
+        bottom: -10px !important;
+        left: 50% !important;
+        width: clamp(220px, 61vw, 286px) !important;
+        height: auto !important;
+        margin: 0 !important;
+        opacity: 0.96 !important;
+        transform: translateX(-82%) !important;
+        filter: drop-shadow(-4px 14px 28px rgba(0, 0, 0, 0.48)) !important;
+        z-index: 1 !important;
+        animation: none !important;
     }
 
     section.hero .hero-phones {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: flex-end !important;
-        width: auto !important;
-        height: auto !important;
+        display: block !important;
+        position: relative !important;
+        width: min(100vw, 470px) !important;
+        height: 100% !important;
+        margin: 0 auto !important;
+    }
+
+    section.hero .hero-phones::before {
+        top: 4% !important;
+        right: 0 !important;
+        width: 58% !important;
+        height: 72% !important;
+    }
+
+    section.hero .hero-phones::after {
+        bottom: 4% !important;
+        left: 2% !important;
+        width: 58% !important;
+        height: 72% !important;
     }
 
     section.hero .hero-phone-primary {
         display: block !important;
-        width: clamp(180px, 52vw, 280px) !important;
+        position: absolute !important;
+        bottom: -18px !important;
+        left: 50% !important;
+        width: clamp(240px, 68vw, 310px) !important;
         height: auto !important;
         object-fit: initial !important;
         margin: 0 !important;
+        transform: translateX(-18%) !important;
         visibility: visible !important;
         opacity: 1 !important;
+        z-index: 2 !important;
+        animation: none !important;
+    }
+}
+
+@media (max-width: 380px) {
+    section.hero {
+        padding-top: calc(var(--hero-marquee-height) + 6.25rem) !important;
+    }
+
+    section.hero .home-hero-title-img {
+        width: min(86vw, 320px) !important;
+    }
+
+    section.hero .home-hero-subline {
+        font-size: 0.94rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    section.hero .hero-phones {
+        width: min(100vw, 390px) !important;
+        height: 100% !important;
+    }
+
+    section.hero .hero-phone-secondary {
+        width: clamp(205px, 60vw, 240px) !important;
+        bottom: -8px !important;
+        opacity: 0.96 !important;
+        transform: translateX(-82%) !important;
+    }
+
+    section.hero .hero-phone-primary {
+        width: clamp(225px, 66vw, 265px) !important;
+        bottom: -16px !important;
+        transform: translateX(-18%) !important;
     }
 }
 
 /* Tablet: keep phone bottom-anchored (flex-end), extend below hero via margin-bottom */
 @media (min-width: 769px) and (max-width: 1100px) {
     section.hero .hero-phone-secondary {
-        display: none !important;
+        display: block !important;
+        position: absolute !important;
+        right: clamp(5.5rem, 13vw, 8rem) !important;
+        bottom: -44px !important;
+        width: auto !important;
+        height: calc(100% + 78px) !important;
+        opacity: 0.82 !important;
+        transform: rotate(-3deg) !important;
+        z-index: 1 !important;
+        animation: none !important;
     }
 
     section.hero .hero-right {
@@ -79,13 +174,22 @@
     }
 
     section.hero .hero-phones {
-        justify-content: flex-end !important;
+        position: relative !important;
+        width: min(54vw, 460px) !important;
         height: 100% !important;
+        margin-left: auto !important;
     }
 
     section.hero .hero-phone-primary {
-        width: clamp(280px, 34vw, 440px) !important;
-        height: auto !important;
-        margin-bottom: -60px !important;
+        display: block !important;
+        position: absolute !important;
+        right: 0 !important;
+        bottom: -44px !important;
+        width: auto !important;
+        height: calc(100% + 78px) !important;
+        margin: 0 !important;
+        transform: rotate(2deg) !important;
+        z-index: 2 !important;
+        animation: none !important;
     }
 }

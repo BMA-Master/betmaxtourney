@@ -182,18 +182,13 @@
     align-items: center;
     justify-content: center;
     margin: clamp(0.5rem, 1.5vw, 1rem) 0;
+    padding: clamp(0.75rem, 2vw, 1.5rem);
 }
 
-.download-phone-img {
-    width: clamp(300px, 40vw, 500px);
-    height: auto;
-    display: block;
-    filter: drop-shadow(0 20px 48px rgba(0, 0, 0, 0.6)) drop-shadow(0 6px 16px rgba(0, 0, 0, 0.4));
+.download-phone .phone-mockup {
+    width: 100%;
+    max-width: clamp(220px, 30vw, 320px);
     animation: phoneFloat 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-user-drag: none;
-    pointer-events: none;
 }
 
 @keyframes phoneFloat {
@@ -415,8 +410,8 @@
         width: clamp(180px, 44vw, 300px);
     }
 
-    .download-phone-img {
-        width: clamp(160px, 32vw, 240px);
+    .download-phone .phone-mockup {
+        max-width: clamp(180px, 32vw, 260px);
     }
 
     .qr-code-container {
@@ -432,9 +427,20 @@
 
 /* Mobile: swap QR for Play Now button + homescreen instructions */
 @media (max-width: 768px) {
+    /* Keep the negative margin so the green hero background extends behind
+       the floating nav (matches the hero pattern on other pages). Drop the
+       vertical centering and pad the wrapper internally so the title sits
+       below the floating marquee + nav. */
+    .download-page {
+        align-items: flex-start;
+    }
+
     .download-container-wrapper {
         padding-left: 1.5rem;
         padding-right: 1.5rem;
+        /* Marquee (48px) + nav box (~92px) + breathing room. */
+        padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 1rem);
+        min-height: 0;
     }
 
     .download-qr {
@@ -476,8 +482,8 @@
         margin-bottom: 0;
     }
 
-    .download-phone-img {
-        width: clamp(200px, 55vw, 300px);
+    .download-phone .phone-mockup {
+        max-width: clamp(200px, 55vw, 300px);
     }
 
     .download-page .hero-bg-image {
@@ -486,6 +492,10 @@
 }
 
 @media (max-width: 480px) {
+    .download-container-wrapper {
+        padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 0.5rem);
+    }
+
     .download-container-wrapper {
         padding-left: 1rem;
         padding-right: 1rem;
@@ -499,8 +509,8 @@
         width: clamp(220px, 64vw, 320px);
     }
 
-    .download-phone-img {
-        width: clamp(120px, 42vw, 180px);
+    .download-phone .phone-mockup {
+        max-width: clamp(140px, 42vw, 200px);
     }
 
     .download-benefits li {
@@ -524,7 +534,7 @@
 
 /* Reduce animations */
 @media (prefers-reduced-motion: reduce) {
-    .download-phone-img {
+    .download-phone .phone-mockup {
         animation: none;
     }
 
