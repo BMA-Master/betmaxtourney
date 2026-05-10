@@ -8845,7 +8845,7 @@ p, .description, .lead {
     /* Reduce animations on mobile (exclude marquees - they need their own
        duration). Excludes the top tournaments marquee and the recent winners
        marquee track. */
-    *:not(.marquee-track):not(.home-winners-track) {
+    *:not(.marquee-track):not(.home-winners-track):not(.pools-sports-track) {
         animation-duration: 0.3s !important;
     }
 
@@ -9784,6 +9784,61 @@ body.menu-open::before {
 }
 .home-modes-panel-visual .phone-mockup {
     max-width: 240px;
+}
+
+/* ===== Reusable hand-drawn flow stage =========================================
+   Generic Splash-style backdrop: green diagonal pinstripes anchored top-right,
+   yellow pinstripes bottom-left, both fading via a radial mask. Wrap any
+   section/grid in `.flow-stage` to add the energy. Children are placed above
+   the pinstripes via `position: relative; z-index: 1`. */
+.flow-stage {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    padding: clamp(2rem, 4vw, 3rem) clamp(1rem, 2vw, 1.5rem);
+}
+
+.flow-stage::before,
+.flow-stage::after {
+    content: '';
+    position: absolute;
+    width: 60%;
+    height: 75%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.flow-stage::before {
+    top: -8%;
+    right: -8%;
+    background: repeating-linear-gradient(
+        135deg,
+        transparent 0,
+        transparent 9px,
+        rgba(0, 230, 118, 0.18) 9px,
+        rgba(0, 230, 118, 0.18) 11px
+    );
+    -webkit-mask-image: radial-gradient(ellipse at top right, black 0%, transparent 70%);
+    mask-image: radial-gradient(ellipse at top right, black 0%, transparent 70%);
+}
+
+.flow-stage::after {
+    bottom: -8%;
+    left: -8%;
+    background: repeating-linear-gradient(
+        135deg,
+        transparent 0,
+        transparent 9px,
+        rgba(255, 215, 0, 0.14) 9px,
+        rgba(255, 215, 0, 0.14) 11px
+    );
+    -webkit-mask-image: radial-gradient(ellipse at bottom left, black 0%, transparent 70%);
+    mask-image: radial-gradient(ellipse at bottom left, black 0%, transparent 70%);
+}
+
+.flow-stage > * {
+    position: relative;
+    z-index: 1;
 }
 
 /* ===== Reusable phone stage backdrop (Splash-style diagonal pinstripes) =====

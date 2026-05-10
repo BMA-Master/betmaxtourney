@@ -117,6 +117,49 @@ document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('resize', setDuration);
     }
 
+    // ===== Pools sports conveyor =====
+    // Clone each row's children so translateX(-50%) loops seamlessly, then
+    // compute animation-duration from the measured track width so the
+    // px/sec speed stays consistent across viewports — no whip-fast scroll
+    // on phones, no crawl on ultra-wide displays.
+    document.querySelectorAll('[data-sports-track]').forEach(function (track) {
+        if (!track.children.length || track.dataset.cloned) return;
+        track.dataset.cloned = 'true';
+        // Clone enough copies to make the track at least 3x the viewport
+        // width — guarantees a non-jumpy seamless loop on ultra-wide screens.
+        const originals = Array.from(track.children);
+        const minWidth = Math.max(window.innerWidth * 3, 1600);
+        let appended = 0;
+        while (track.scrollWidth < minWidth && appended < originals.length * 8) {
+            originals.forEach(function (el) {
+                const clone = el.cloneNode(true);
+                clone.setAttribute('aria-hidden', 'true');
+                track.appendChild(clone);
+                appended++;
+            });
+        }
+        // Always at least one clone pass so translateX(-50%) lines up.
+        if (appended === 0) {
+            originals.forEach(function (el) {
+                const clone = el.cloneNode(true);
+                clone.setAttribute('aria-hidden', 'true');
+                track.appendChild(clone);
+            });
+        }
+
+        const setDuration = function () {
+            const halfWidth = track.scrollWidth / 2;
+            if (halfWidth <= 0) return;
+            const isMobile = window.innerWidth <= 768;
+            const targetPxPerSec = isMobile ? 35 : 55;
+            const duration = halfWidth / targetPxPerSec;
+            track.style.animationDuration = duration.toFixed(1) + 's';
+        };
+        requestAnimationFrame(setDuration);
+        window.addEventListener('load', setDuration);
+        window.addEventListener('resize', setDuration);
+    });
+
     // ===== Game Modes tabbed selector (used on Home + Bet Max Pools pages) =====
     // Scoped per-container so multiple .home-modes blocks on the same page (or
     // page reuse) don't cross-talk. Each scope can also wrap its tabs in a

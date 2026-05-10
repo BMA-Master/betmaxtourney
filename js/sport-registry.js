@@ -76,6 +76,9 @@
         UCL:    'soccer_uefa_champs_league',
         UEL:    'soccer_uefa_europa_league',
         MLS:    'soccer_mls',
+        SERIEA:     'soccer_italy_serie_a',
+        LIGUE1:     'soccer_france_ligue_one',
+        BUNDESLIGA: 'soccer_germany_bundesliga',
         NRL:    'rugbyleague_nrl'
     };
 
