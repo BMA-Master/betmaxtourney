@@ -1780,7 +1780,6 @@ nav {
     display: block;
     right: clamp(7rem, 11vw, 9.25rem);
     z-index: 1;
-    opacity: 0.84;
     transform: rotate(-3deg);
     filter: drop-shadow(-4px 16px 32px rgba(0, 0, 0, 0.45));
     animation: none;
