@@ -176,20 +176,51 @@
     pointer-events: none;
 }
 
-/* Phone Mockup (small, centered within left side) */
+/* Phone Mockup (small, centered within left side).
+   Width is constrained to the phone-mockup width itself so the decor
+   layer anchored inside .download-phone (.phone-decor) hugs the phone
+   instead of sprawling across the column. */
 .download-phone {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: clamp(0.5rem, 1.5vw, 1rem) 0;
+    margin: clamp(0.5rem, 1.5vw, 1rem) auto;
     padding: clamp(0.75rem, 2vw, 1.5rem);
+    position: relative;
+    width: 100%;
+    max-width: clamp(220px, 30vw, 320px);
+    /* The shared .phone-stage class clips with overflow: hidden so the
+       pinstripe accents stay inside a rounded box. We need decor items
+       to peek out past those edges, so unclip here. The decor items
+       remain clipped by .download-page's overflow: hidden. */
+    overflow: visible;
+}
+
+.download-phone.phone-stage { overflow: visible; }
+
+/* Give the decor a bit more breathing room than the shared default so
+   items peek out past the phone instead of crowding against it. */
+.download-phone .phone-decor {
+    inset: -8% -22% -8% -22%;
+}
+
+@media (max-width: 900px) {
+    .download-phone .phone-decor {
+        inset: -4% -10% -4% -10%;
+    }
 }
 
 .download-phone .phone-mockup {
     width: 100%;
-    max-width: clamp(220px, 30vw, 320px);
     animation: phoneFloat 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+    position: relative;
+    z-index: 1;
 }
+
+/* Phone decor rules now live in style.css (.phone-decor, .decor-*) so the
+   same treatment can be reused on any page that puts the markup inside a
+   .phone-stage. The .download-phone.phone-stage gets `overflow: visible`
+   above so the decor isn't clipped by the shared .phone-stage rule. */
 
 @keyframes phoneFloat {
     from {

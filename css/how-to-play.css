@@ -108,6 +108,12 @@ html {
     padding: clamp(1rem, 2vw, 2rem);
 }
 
+/* Unclip the shared .phone-stage overflow so the decor items (TD$, trophies,
+   X marks) can peek out past the stage edges behind the phone. */
+.htp-hero-visual.phone-stage {
+    overflow: visible;
+}
+
 .htp-hero-visual .phone-mockup {
     max-width: 310px;
 }
