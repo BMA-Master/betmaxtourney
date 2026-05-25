@@ -229,6 +229,29 @@ document.addEventListener('DOMContentLoaded', function() {
             // After layout settles, run again (image trophy icons load)
             requestAnimationFrame(syncRailBounds);
         }
+
+        // Idle-preload bg splash images for hidden feature panels so first
+        // tab-switch doesn't flicker while the 1-2MB png downloads. Browsers
+        // skip fetching backgrounds on display:none elements, so we warm the
+        // cache by instantiating Image() with the URL parsed from inline style.
+        const featurePanels = scope.querySelectorAll('.home-modes-panel--feature[style*="background-image"]');
+        if (featurePanels.length) {
+            const preload = () => {
+                featurePanels.forEach(panel => {
+                    if (!panel.hasAttribute('hidden')) return; // active panel already loaded
+                    const match = panel.style.backgroundImage.match(/url\(["']?(.+?)["']?\)/);
+                    if (match && match[1]) {
+                        const img = new Image();
+                        img.src = match[1];
+                    }
+                });
+            };
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(preload, { timeout: 3000 });
+            } else {
+                setTimeout(preload, 1200);
+            }
+        }
     });
 
     // ===== FanDuel Style Tab Navigation =====
