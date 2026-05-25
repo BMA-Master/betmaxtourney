@@ -9774,7 +9774,6 @@ body.menu-open::before {
    Inline `style="background-image: url(...)"` is set per panel in index.html. */
 .home-modes-panel--feature {
     position: relative;
-    overflow: hidden;
     border-radius: 18px;
     padding: clamp(1.75rem, 3vw, 2.75rem);
     background-color: var(--bma-dark-200);
@@ -9783,10 +9782,16 @@ body.menu-open::before {
     background-repeat: no-repeat;
     isolation: isolate;
 }
+/* Dark overlay sits on its own absolute layer that inherits the panel's
+   border-radius. The panel itself stays `overflow: visible` so the phone's
+   hover scale/rotate can extend past the card edge without clipping. The
+   background-image (set inline per panel) is still clipped to the rounded
+   shape automatically via `background-clip: border-box` (the default). */
 .home-modes-panel--feature::before {
     content: '';
     position: absolute;
     inset: 0;
+    border-radius: inherit;
     background:
         linear-gradient(135deg, rgba(8, 8, 8, 0.58) 0%, rgba(8, 8, 8, 0.4) 45%, rgba(8, 8, 8, 0.64) 100%),
         radial-gradient(ellipse at center left, rgba(0, 0, 0, 0.45) 0%, transparent 70%);
@@ -9796,6 +9801,14 @@ body.menu-open::before {
 .home-modes-panel--feature > * {
     position: relative;
     z-index: 1;
+}
+
+/* Hide the global .phone-stage pinstripe lines inside feature panels — the
+   per-mode splash bg already provides the energy behind the phone. Remove
+   this rule to bring the green/yellow diagonals back. */
+.home-modes-panel--feature .phone-stage::before,
+.home-modes-panel--feature .phone-stage::after {
+    display: none;
 }
 
 /* Single badge above the panel title (replaces 3-trophy podium) */
