@@ -606,6 +606,129 @@
     }
 }
 
+/* ============================================
+   Game-mode badge conveyor (Pick your format)
+   Mirrors .pools-sports-conveyor but with bigger artwork-driven badge cards.
+   Reuses the same `pools-sports-conveyor-rtl/ltr` keyframes since the
+   transform path is identical (translateX 0 → -50% on a JS-cloned track).
+   ============================================ */
+.pools-modes-conveyor {
+    width: min(100vw, 1600px);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: clamp(2rem, 4vw, 3rem);
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem, 2vw, 1.75rem);
+    -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        rgba(0, 0, 0, 0.4) 32px,
+        #000 96px,
+        #000 calc(100% - 96px),
+        rgba(0, 0, 0, 0.4) calc(100% - 32px),
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        rgba(0, 0, 0, 0.4) 32px,
+        #000 96px,
+        #000 calc(100% - 96px),
+        rgba(0, 0, 0, 0.4) calc(100% - 32px),
+        transparent 100%
+    );
+}
+
+.pools-modes-row {
+    overflow: hidden;
+    width: 100%;
+}
+
+.pools-modes-track {
+    display: flex;
+    gap: clamp(1rem, 2.5vw, 2.25rem);
+    width: max-content;
+    padding: 0.5rem 0;
+    will-change: transform;
+    align-items: center;
+}
+
+.pools-modes-row[data-sports-direction="rtl"] .pools-modes-track {
+    animation: pools-sports-conveyor-rtl 65s linear infinite;
+}
+.pools-modes-row[data-sports-direction="ltr"] .pools-modes-track {
+    animation: pools-sports-conveyor-ltr 80s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pools-modes-track { animation: none; }
+}
+
+.pools-mode-card {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(0.5rem, 0.9vw, 0.85rem);
+    width: clamp(140px, 18vw, 220px);
+    color: rgba(255, 255, 255, 0.95);
+    user-select: none;
+    -webkit-user-select: none;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+.pools-mode-card:hover {
+    transform: translateY(-4px);
+}
+
+.pools-mode-card-badge {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    filter:
+        drop-shadow(0 12px 24px rgba(0, 0, 0, 0.55))
+        drop-shadow(0 0 18px rgba(0, 230, 118, 0.18));
+    transition: filter 0.3s ease;
+    -webkit-user-drag: none;
+}
+.pools-mode-card:hover .pools-mode-card-badge {
+    filter:
+        drop-shadow(0 14px 28px rgba(0, 0, 0, 0.6))
+        drop-shadow(0 0 26px rgba(0, 230, 118, 0.35))
+        drop-shadow(0 0 16px rgba(255, 215, 0, 0.2));
+}
+
+.pools-mode-card-label {
+    font-family: var(--font-display);
+    font-size: clamp(0.78rem, 1vw, 0.95rem);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .pools-mode-card {
+        width: clamp(120px, 32vw, 160px);
+    }
+    .pools-mode-card-label {
+        font-size: 0.78rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pools-mode-card {
+        width: 120px;
+    }
+}
+
 .pools-sports-note {
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.5);

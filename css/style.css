@@ -8864,7 +8864,7 @@ p, .description, .lead {
     /* Reduce animations on mobile (exclude marquees - they need their own
        duration). Excludes the top tournaments marquee and the recent winners
        marquee track. */
-    *:not(.marquee-track):not(.home-winners-track):not(.pools-sports-track) {
+    *:not(.marquee-track):not(.home-winners-track):not(.pools-sports-track):not(.pools-modes-track) {
         animation-duration: 0.3s !important;
     }
 
