@@ -810,6 +810,8 @@ article.container .content a:hover {
     white-space: nowrap;
     position: relative;
     flex-shrink: 0;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 /* Enhanced LIVE status - matching table style */
@@ -938,6 +940,8 @@ article.container .content a:hover {
     font-weight: 700;
     font-size: 0.72rem;
     letter-spacing: 0.4px;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .marquee-sport-icon {
@@ -2158,6 +2162,16 @@ nav {
 }
 
 /* ===== Buttons - Clean PrizePicks Style ===== */
+.btn,
+button,
+a.btn,
+a.hero-pill-btn,
+a.hero-cta,
+a.cta-button {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
 .btn {
     display: inline-flex;
     align-items: center;
@@ -4279,6 +4293,8 @@ nav {
     white-space: nowrap;
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
     gap: 0.4rem;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .status-debug-copy {
@@ -5211,6 +5227,8 @@ footer::before {
     font-weight: 700;
     margin-bottom: 1rem;
     color: var(--bma-yellow);
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .footer-column ul {
@@ -5961,6 +5979,8 @@ footer::before {
     vertical-align: middle;
     color: var(--bma-yellow);
     line-height: 1;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .sport-chip__icon {
@@ -10345,6 +10365,8 @@ body.menu-open::before {
     white-space: nowrap;
     border-bottom: 2px solid transparent;
     transition: color 0.16s ease, border-color 0.16s ease;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .section-rail-chip:hover,
