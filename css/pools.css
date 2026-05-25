@@ -432,10 +432,26 @@
    2.5 SPORTS STRIP — compact lineup
    ============================================ */
 .pools-sports {
-    background:
-        linear-gradient(180deg, #0d0d0d 0%, #141414 100%);
+    background-color: var(--bma-dark-100);
+    background-image:
+        linear-gradient(180deg, rgba(8, 8, 8, 0.94) 0%, rgba(12, 12, 12, 0.78) 50%, rgba(8, 8, 8, 0.94) 100%),
+        linear-gradient(135deg, rgba(0, 230, 118, 0.1) 0%, transparent 45%, rgba(255, 215, 0, 0.08) 100%),
+        url('https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=3000&auto=format');
+    background-size: cover, cover, cover;
+    background-position: center, center, center;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-attachment: scroll, scroll, fixed;
     padding: clamp(3.5rem, 7vw, 6rem) 0;
     text-align: left;
+    position: relative;
+    overflow: hidden;
+}
+
+/* iOS Safari doesn't support background-attachment: fixed cleanly — drop to scroll. */
+@supports (-webkit-touch-callout: none) {
+    .pools-sports {
+        background-attachment: scroll, scroll, scroll;
+    }
 }
 
 .pools-sports-title {
