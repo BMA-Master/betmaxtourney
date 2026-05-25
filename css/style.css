@@ -9770,6 +9770,66 @@ body.menu-open::before {
     margin-bottom: 1rem;
 }
 
+/* Feature-card variant: full-bleed splash bg per mode + single badge above title.
+   Inline `style="background-image: url(...)"` is set per panel in index.html. */
+.home-modes-panel--feature {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    padding: clamp(1.75rem, 3vw, 2.75rem);
+    background-color: var(--bma-dark-200);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    isolation: isolate;
+}
+.home-modes-panel--feature::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(135deg, rgba(8, 8, 8, 0.72) 0%, rgba(8, 8, 8, 0.55) 45%, rgba(8, 8, 8, 0.78) 100%),
+        radial-gradient(ellipse at center left, rgba(0, 0, 0, 0.6) 0%, transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+}
+.home-modes-panel--feature > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Single badge above the panel title (replaces 3-trophy podium) */
+.home-modes-badge-wrap {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    margin: 0 0 1.25rem;
+    height: clamp(140px, 14vw, 200px);
+    pointer-events: none;
+}
+.home-modes-badge {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+    filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 22px rgba(255, 215, 0, 0.18));
+}
+@media (max-width: 768px) {
+    .home-modes-badge-wrap {
+        justify-content: center;
+        height: clamp(120px, 28vw, 160px);
+    }
+}
+
+/* Feature-card titles stay on a single line so "Bet Max Survivor" etc. don't
+   wrap awkwardly. Font scales down on narrower viewports to keep that promise. */
+.home-modes-panel--feature .home-modes-panel-copy h3 {
+    white-space: nowrap;
+    font-size: clamp(1.6rem, 2.4vw + 0.6rem, 3rem) !important;
+    text-wrap: nowrap;
+}
+
 /* Inline 1st/2nd/3rd podium above each panel headline */
 .home-modes-podium {
     display: flex;
@@ -10002,6 +10062,36 @@ body.menu-open::before {
     .home-modes-panel-visual { order: 1; min-height: 0; }
     .home-modes-panel-copy { order: 2; text-align: center; }
     .home-modes-panel-copy p { margin-left: auto; margin-right: auto; }
+
+    /* Feature variant on mobile: badge → phone → title → body.
+       `display: contents` on the copy block hoists its children up so they
+       can be re-ordered alongside the phone visual. The hoisted children also
+       need their own position/z-index since they're no longer covered by the
+       `.home-modes-panel--feature > *` rule (their DOM parent is still copy). */
+    .home-modes-panel--feature .home-modes-panel-copy { display: contents; }
+    .home-modes-panel--feature .home-modes-badge-wrap {
+        order: 0;
+        justify-content: center;
+        height: clamp(160px, 38vw, 220px);
+        margin: 0 auto 0.25rem;
+        position: relative;
+        z-index: 1;
+    }
+    .home-modes-panel--feature .home-modes-panel-visual { order: 1; }
+    .home-modes-panel--feature .home-modes-panel-copy h3 {
+        order: 2;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+    .home-modes-panel--feature .home-modes-panel-copy p {
+        order: 3;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        z-index: 1;
+    }
 }
 
 /* Three-column info strip: Formats / Market Types / Sports */
