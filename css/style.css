@@ -1581,7 +1581,9 @@ nav {
 .hero-pill-cta {
     background: transparent;
     color: var(--bma-white);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    /* inset shadow used in place of border — reuses the bg's AA path on the
+       rounded shape, eliminates the 1-2px halo where border AA meets bg AA. */
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.3);
     position: relative;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -1606,7 +1608,7 @@ nav {
 
 .hero-pill-cta:hover {
     background: rgba(255, 255, 255, 0.08);
-    border-color: transparent;
+    box-shadow: inset 0 0 0 2px transparent;
     color: var(--bma-yellow-bright);
 }
 
@@ -3796,7 +3798,7 @@ a.cta-button {
 
 .toolbar-pill {
     background: rgba(0, 0, 0, 0.45);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
     color: rgba(255, 255, 255, 0.7);
     padding: 0.35rem 0.65rem;
     font-size: 0.7rem;
@@ -3806,7 +3808,7 @@ a.cta-button {
 }
 
 .toolbar-pill.active {
-    border-color: rgba(0, 230, 118, 0.6);
+    box-shadow: inset 0 0 0 1px rgba(0, 230, 118, 0.6);
     color: var(--bma-green-bright);
 }
 
@@ -5872,7 +5874,7 @@ footer::before {
 
 .sport-pill {
     background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
     border-radius: 24px;
     padding: 0.5rem 1rem;
     color: rgba(255, 255, 255, 0.7);
@@ -5887,13 +5889,13 @@ footer::before {
 
 .sport-pill:hover {
     background: rgba(46, 139, 87, 0.1);
-    border-color: var(--bma-green);
+    box-shadow: inset 0 0 0 1px var(--bma-green);
     color: var(--bma-white);
 }
 
 .sport-pill.active {
     background: var(--bma-green);
-    border-color: var(--bma-green-bright);
+    box-shadow: inset 0 0 0 1px var(--bma-green-bright);
     color: var(--bma-white);
 }
 
@@ -6104,7 +6106,7 @@ footer::before {
 
 .tournament-card-full {
     background: linear-gradient(135deg, rgba(46, 139, 87, 0.08) 0%, rgba(10, 10, 10, 0.6) 100%);
-    border: 2px solid rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.05);
     border-radius: 16px;
     padding: 1.5rem;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -6114,8 +6116,9 @@ footer::before {
 
 .tournament-card-full:hover {
     transform: translateY(-8px);
-    border-color: var(--bma-green);
-    box-shadow: 0 12px 40px rgba(0, 230, 118, 0.15);
+    box-shadow:
+        inset 0 0 0 2px var(--bma-green),
+        0 12px 40px rgba(0, 230, 118, 0.15);
 }
 
 .tournament-card-header {
