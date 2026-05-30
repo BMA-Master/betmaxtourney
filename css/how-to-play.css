@@ -263,7 +263,8 @@ html {
 .htp-other-modes,
 .htp-td,
 .htp-odds-guide,
-.htp-glossary {
+.htp-glossary,
+.htp-strip {
     position: relative;
     padding: clamp(3.5rem, 7vw, 6rem) 0;
     background: #0d0d0d;
