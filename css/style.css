@@ -9207,25 +9207,10 @@ body.menu-open::before {
 
 /* ===== Home: Recent Winners — bento mosaic of champion cards ===== */
 .home-winners {
-    background-color: var(--bma-dark-100);
-    background-image:
-        linear-gradient(180deg, rgba(8, 8, 8, 0.94) 0%, rgba(12, 12, 12, 0.78) 50%, rgba(8, 8, 8, 0.94) 100%),
-        linear-gradient(135deg, rgba(0, 230, 118, 0.1) 0%, transparent 45%, rgba(255, 215, 0, 0.08) 100%),
-        url('https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=3000&auto=format');
-    background-size: cover, cover, cover;
-    background-position: center, center, center;
-    background-repeat: no-repeat, no-repeat, no-repeat;
-    background-attachment: scroll, scroll, fixed;
+    background: #0d0d0d;
     padding: clamp(3.5rem, 7vw, 6rem) 0 clamp(3rem, 6vw, 5rem);
     position: relative;
     overflow: hidden;
-}
-
-/* iOS Safari fallback for fixed attachment */
-@supports (-webkit-touch-callout: none) {
-    .home-winners {
-        background-attachment: scroll, scroll, scroll;
-    }
 }
 
 .home-winners-title {
@@ -9611,6 +9596,61 @@ body.menu-open::before {
     }
 }
 .home-game .container { position: relative; }
+
+/* Seamless top/bottom fade for image-based parallax sections so the splash
+   image blends into the adjacent darker sections instead of cutting off
+   abruptly. Fade color is #0d0d0d (common surrounding section color). The
+   pseudo bands sit above the bg layers and below content (z-index 1). */
+.home-game,
+.home-pools,
+.pools-sports,
+.htp-td,
+.htp-other-modes {
+    position: relative;
+    overflow: hidden;
+}
+.home-game::before,
+.home-pools::before,
+.pools-sports::before,
+.htp-td::before,
+.htp-other-modes::before,
+.home-game::after,
+.home-pools::after,
+.pools-sports::after,
+.htp-td::after,
+.htp-other-modes::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: clamp(64px, 8vw, 120px);
+    pointer-events: none;
+    z-index: 1;
+}
+.home-game::before,
+.home-pools::before,
+.pools-sports::before,
+.htp-td::before,
+.htp-other-modes::before {
+    top: 0;
+    background: linear-gradient(180deg, #0d0d0d 0%, transparent 100%);
+}
+.home-game::after,
+.home-pools::after,
+.pools-sports::after,
+.htp-td::after,
+.htp-other-modes::after {
+    bottom: 0;
+    background: linear-gradient(0deg, #0d0d0d 0%, transparent 100%);
+}
+.home-game > *,
+.home-pools > *,
+.pools-sports > *,
+.htp-td > *,
+.htp-other-modes > * {
+    position: relative;
+    z-index: 2;
+}
 
 .home-game-header {
     text-align: center;
@@ -10379,9 +10419,22 @@ body.menu-open::before {
     position: relative;
     z-index: 2;
     overflow: hidden;
-    /* Flat dark to flow seamlessly out of the .htp-basics section above
-       (which ends on #0d0d0d via its top-to-bottom gradient). */
-    background: #0d0d0d;
+    background-color: var(--bma-dark-100);
+    background-image:
+        linear-gradient(180deg, rgba(8, 8, 8, 0.94) 0%, rgba(12, 12, 12, 0.78) 50%, rgba(8, 8, 8, 0.94) 100%),
+        linear-gradient(135deg, rgba(0, 230, 118, 0.1) 0%, transparent 45%, rgba(255, 215, 0, 0.08) 100%),
+        url('https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=3000&auto=format');
+    background-size: cover, cover, cover;
+    background-position: center, center, center;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-attachment: scroll, scroll, fixed;
+}
+
+/* iOS Safari fallback for fixed attachment */
+@supports (-webkit-touch-callout: none) {
+    .home-pools {
+        background-attachment: scroll, scroll, scroll;
+    }
 }
 .home-pools .container { position: relative; }
 

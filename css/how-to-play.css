@@ -270,11 +270,39 @@ html {
     background: #0d0d0d;
 }
 
-.htp-basics,
-.htp-other-modes,
-.htp-td {
+.htp-basics {
     background:
         linear-gradient(180deg, #101010 0%, #0d0d0d 100%);
+}
+
+/* Parallax background — mirrors the .home-game treatment on the home page:
+   dark vignette + brand-tint diagonal + sports-photo backdrop on fixed
+   attachment for parallax on desktop. Falls back to scroll on iOS. */
+.htp-td,
+.htp-other-modes {
+    background-color: var(--bma-dark-100);
+    background-size: cover, cover, cover;
+    background-position: center, center, center;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-attachment: scroll, scroll, fixed;
+}
+.htp-td {
+    background-image:
+        linear-gradient(180deg, rgba(8, 8, 8, 0.94) 0%, rgba(12, 12, 12, 0.78) 50%, rgba(8, 8, 8, 0.94) 100%),
+        linear-gradient(135deg, rgba(0, 230, 118, 0.1) 0%, transparent 45%, rgba(255, 215, 0, 0.08) 100%),
+        url('https://images.unsplash.com/photo-1762013315117-1c8005ad2b41?fm=jpg&q=80&w=3000&auto=format&fit=crop');
+}
+.htp-other-modes {
+    background-image:
+        linear-gradient(180deg, rgba(8, 8, 8, 0.94) 0%, rgba(12, 12, 12, 0.78) 50%, rgba(8, 8, 8, 0.94) 100%),
+        linear-gradient(135deg, rgba(0, 230, 118, 0.1) 0%, transparent 45%, rgba(255, 215, 0, 0.08) 100%),
+        url('https://images.unsplash.com/photo-1766756467595-fd3f1f62d562?fm=jpg&q=80&w=3000&auto=format&fit=crop');
+}
+@supports (-webkit-touch-callout: none) {
+    .htp-td,
+    .htp-other-modes {
+        background-attachment: scroll, scroll, scroll;
+    }
 }
 
 .htp-modes,
