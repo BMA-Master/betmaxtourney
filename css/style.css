@@ -8898,7 +8898,7 @@ p, .description, .lead {
     /* Reduce animations on mobile (exclude marquees - they need their own
        duration). Excludes the top tournaments marquee and the recent winners
        marquee track. */
-    *:not(.marquee-track):not(.home-winners-track):not(.pools-sports-track):not(.pools-modes-track) {
+    *:not(.marquee-track):not(.home-winners-track):not(.pools-sports-track):not(.pools-modes-track):not(.htp-pulse-up):not(.htp-pulse-down) {
         animation-duration: 0.3s !important;
     }
 
@@ -9120,6 +9120,26 @@ body.menu-open::before {
         max-width: 240px;
         margin-top: -10px;
         margin-bottom: -10px;
+    }
+
+    /* Touch target floor — every tappable element should be at least 40-44px
+       in its shortest dimension on mobile. Pads out tight chip/arrow shapes
+       (rail chips, rail arrows, toolbar pills) without inflating their
+       visible style. */
+    .section-rail-chip,
+    .htp-rail-chip,
+    .home-modes-tab {
+        min-height: 44px;
+    }
+    .section-rail-arrow,
+    .htp-rail-arrow,
+    .home-modes-rail-arrow {
+        width: 44px;
+        height: 44px;
+    }
+    .toolbar-pill {
+        min-height: 36px;
+        padding: 0.5rem 0.8rem;
     }
 
     /* Fix nav container on mobile */
@@ -9402,6 +9422,20 @@ body.menu-open::before {
     .home-winner { width: 220px; padding: 1.2rem 1rem 1.3rem; }
     .home-winner-wide {
         width: 320px;
+    }
+    /* Long names like "shotgunsavant" at 1.4rem were clipping the right edge
+       of the wide card. Shrink the type and let it break onto two lines if
+       needed — keeps the trophy + info layout intact. */
+    .home-winner-wide .home-winner-name {
+        font-size: 1.1rem;
+        line-height: 1.1;
+        word-break: break-word;
+    }
+    .home-winner-wide .home-winner-score {
+        font-size: 1.1rem;
+    }
+    .home-winner-wide .home-winner-trophy {
+        height: 110px;
     }
 }
 
@@ -10149,12 +10183,23 @@ body.menu-open::before {
     .home-modes-panel--feature .home-modes-badge-wrap {
         order: 0;
         justify-content: center;
-        height: clamp(160px, 38vw, 220px);
-        margin: 0 auto 0.25rem;
+        /* Badge was 160-220px → felt visually heavier than the phone. Cut to
+           96-140px so the phone (the actual product proof) wins visual weight. */
+        height: clamp(96px, 22vw, 140px);
+        margin: 0 auto 0;
         position: relative;
         z-index: 1;
     }
-    .home-modes-panel--feature .home-modes-panel-visual { order: 1; }
+    .home-modes-panel--feature .home-modes-panel-visual {
+        order: 1;
+        min-height: 0;
+    }
+    /* Let the phone fill more horizontal space inside the feature card on
+       mobile — desktop max-width:240px was too tight when paired with a
+       headline below. */
+    .home-modes-panel--feature .home-modes-panel-visual .phone-mockup {
+        max-width: min(78vw, 300px);
+    }
     .home-modes-panel--feature .home-modes-panel-copy h3 {
         order: 2;
         text-align: center;
