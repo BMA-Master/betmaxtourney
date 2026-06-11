@@ -1064,9 +1064,35 @@ nav {
     -webkit-backdrop-filter: blur(20px);
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
     z-index: 999;
-    padding: 6rem 2rem 2rem;
+    padding: 4.5rem 1.5rem 2rem;
     transition: right 0.3s ease;
     overflow-y: auto;
+}
+
+/* In-drawer close button (X). Provides a discoverable close affordance in
+   addition to the hamburger-toggle, overlay tap, and Escape key. */
+.mobile-menu-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 0;
+    border-radius: 999px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+    z-index: 1;
+}
+.mobile-menu-close:hover,
+.mobile-menu-close:focus-visible {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--bma-green-bright);
+    outline: none;
 }
 
 .mobile-menu.active {
@@ -5483,9 +5509,14 @@ footer::before {
     }
 
     .logo-image {
+        /* Flush logo in the mobile nav — wide aspect-ratio logo would max out
+           at ~57px tall with max-width:200px; bump max-width so the natural
+           height fills the bar. */
         height: 120px;
         width: auto;
-        max-width: 200px;
+        max-width: 280px;
+        margin-top: -10px;
+        margin-bottom: -10px;
     }
 
     .nav-links {
@@ -9056,8 +9087,17 @@ body.menu-open::before {
 
 /* MOBILE: Show hamburger menu on mobile only */
 @media (max-width: 768px) {
+    /* Pull the hamburger out of the flex flow so the logo can center within
+       the FULL nav width instead of (nav width − hamburger width). */
+    nav {
+        position: relative;
+    }
     .menu-toggle {
         display: block;
+        position: absolute;
+        right: clamp(0.5rem, 2vw, 1rem);
+        top: 50%;
+        transform: translateY(-50%);
     }
 
     .nav-links,
@@ -9070,10 +9110,16 @@ body.menu-open::before {
         padding-top: calc(var(--hero-marquee-height) + 44px + 0.25rem) !important;
     }
 
-    /* Adjust logo size on mobile */
+    /* Mobile logo — sized to fill the nav vertically. Negative margins
+       bleed past the nav padding so the BM + wordmark feels flush. The
+       earlier .logo-image rules in this file are overridden here because
+       this block appears later in cascade order. */
     .logo-image {
-        height: 32px;
+        height: 64px;
         width: auto;
+        max-width: 240px;
+        margin-top: -10px;
+        margin-bottom: -10px;
     }
 
     /* Fix nav container on mobile */

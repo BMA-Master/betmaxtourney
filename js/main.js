@@ -1396,57 +1396,80 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-    // Mobile Menu Drawer Toggle
+    // Mobile Menu Drawer — open/close paths funnel through openMenu()/closeMenu()
+    // so every dismissal (toggle button, in-drawer close, overlay tap, link tap,
+    // Escape key) resets the full state and the hamburger icon flips back to X.
     const menuToggle = document.querySelector('.menu-toggle');
     const mobileMenu = document.querySelector('.mobile-menu');
+    const mobileCloseBtn = mobileMenu ? mobileMenu.querySelector('.mobile-menu-close') : null;
     const body = document.body;
 
-    // Create overlay element
     const overlay = document.createElement('div');
     overlay.className = 'mobile-overlay';
     body.appendChild(overlay);
 
-    // Toggle mobile menu
     if (menuToggle && mobileMenu) {
-        menuToggle.addEventListener('click', function() {
-            const isActive = mobileMenu.classList.contains('active');
+        // iOS Safari ignores `overflow: hidden` on body for touch scrolling.
+        // Pin body via `position: fixed` and restore scroll position on close.
+        let savedScrollY = 0;
 
-            if (isActive) {
-                // Close menu
-                mobileMenu.classList.remove('active');
-                overlay.classList.remove('active');
-                menuToggle.classList.remove('active');
-                menuToggle.setAttribute('aria-expanded', 'false');
-                body.classList.remove('menu-open');
-                body.style.overflow = '';
-            } else {
-                // Open menu
-                mobileMenu.classList.add('active');
-                overlay.classList.add('active');
-                menuToggle.classList.add('active');
-                menuToggle.setAttribute('aria-expanded', 'true');
-                body.classList.add('menu-open');
-                body.style.overflow = 'hidden';
-            }
-        });
+        function openMenu() {
+            savedScrollY = window.scrollY || window.pageYOffset || 0;
+            mobileMenu.classList.add('active');
+            overlay.classList.add('active');
+            menuToggle.classList.add('active');
+            menuToggle.setAttribute('aria-expanded', 'true');
+            mobileMenu.setAttribute('aria-hidden', 'false');
+            body.classList.add('menu-open');
+            // Lock scroll robustly (iOS-safe)
+            body.style.position = 'fixed';
+            body.style.top = '-' + savedScrollY + 'px';
+            body.style.left = '0';
+            body.style.right = '0';
+            body.style.width = '100%';
+            body.style.overflow = 'hidden';
+            // Move focus into the drawer for keyboard users
+            if (mobileCloseBtn) mobileCloseBtn.focus();
+        }
 
-        // Close menu when clicking overlay
-        overlay.addEventListener('click', function() {
+        function closeMenu() {
             mobileMenu.classList.remove('active');
             overlay.classList.remove('active');
+            menuToggle.classList.remove('active');
             menuToggle.setAttribute('aria-expanded', 'false');
+            mobileMenu.setAttribute('aria-hidden', 'true');
+            body.classList.remove('menu-open');
+            // Release scroll lock and restore prior position
+            body.style.position = '';
+            body.style.top = '';
+            body.style.left = '';
+            body.style.right = '';
+            body.style.width = '';
             body.style.overflow = '';
+            window.scrollTo(0, savedScrollY);
+            // Return focus to the toggle so keyboard users keep their place
+            menuToggle.focus();
+        }
+
+        menuToggle.addEventListener('click', function () {
+            if (mobileMenu.classList.contains('active')) closeMenu();
+            else openMenu();
         });
 
-        // Close menu when clicking a link
-        const mobileLinks = mobileMenu.querySelectorAll('a');
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                mobileMenu.classList.remove('active');
-                overlay.classList.remove('active');
-                menuToggle.setAttribute('aria-expanded', 'false');
-                body.style.overflow = '';
-            });
+        if (mobileCloseBtn) {
+            mobileCloseBtn.addEventListener('click', closeMenu);
+        }
+
+        overlay.addEventListener('click', closeMenu);
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                closeMenu();
+            }
         });
     }
 
