@@ -9510,10 +9510,25 @@ body.menu-open::before {
 
 /* ===== Home: combined Game Modes + Formats + Market Types + Sports ===== */
 .home-game {
-    background: #181818;
+    background-color: var(--bma-dark-100);
+    background-image:
+        linear-gradient(180deg, rgba(8, 8, 8, 0.94) 0%, rgba(12, 12, 12, 0.78) 50%, rgba(8, 8, 8, 0.94) 100%),
+        linear-gradient(135deg, rgba(0, 230, 118, 0.1) 0%, transparent 45%, rgba(255, 215, 0, 0.08) 100%),
+        url('https://images.unsplash.com/photo-1762013315117-1c8005ad2b41?fm=jpg&q=80&w=3000&auto=format&fit=crop');
+    background-size: cover, cover, cover;
+    background-position: center, center, center;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-attachment: scroll, scroll, fixed;
     padding: clamp(3rem, 6vw, 5rem) 0;
     position: relative;
     overflow: hidden;
+}
+
+/* iOS Safari fallback for fixed attachment */
+@supports (-webkit-touch-callout: none) {
+    .home-game {
+        background-attachment: scroll, scroll, scroll;
+    }
 }
 .home-game .container { position: relative; }
 
@@ -10243,9 +10258,9 @@ body.menu-open::before {
     position: relative;
     z-index: 2;
     overflow: hidden;
-    background:
-        linear-gradient(135deg, rgba(10, 10, 10, 0.65), rgba(10, 10, 10, 0.65)),
-        url('../images/Bet Max Tourney Background.jpg') center/cover no-repeat;
+    /* Flat dark to flow seamlessly out of the .htp-basics section above
+       (which ends on #0d0d0d via its top-to-bottom gradient). */
+    background: #0d0d0d;
 }
 .home-pools .container { position: relative; }
 
@@ -10339,6 +10354,44 @@ body.menu-open::before {
     max-width: 520px;
     height: 540px;
     margin: 0 auto;
+}
+/* Cross-hatch backdrop behind the pool phones — same green/yellow pinstripe
+   treatment used on .htp-journey-stage and .phone-stage. Radial mask fades
+   the lines toward the corners; pseudo-elements sit behind the phones. */
+.home-pools-visual::before,
+.home-pools-visual::after {
+    content: '';
+    position: absolute;
+    width: 70%;
+    height: 78%;
+    pointer-events: none;
+    z-index: 0;
+}
+.home-pools-visual::before {
+    top: -6%;
+    right: -6%;
+    background: repeating-linear-gradient(
+        135deg,
+        transparent 0,
+        transparent 9px,
+        rgba(0, 230, 118, 0.18) 9px,
+        rgba(0, 230, 118, 0.18) 11px
+    );
+    -webkit-mask-image: radial-gradient(ellipse at top right, black 0%, transparent 70%);
+    mask-image: radial-gradient(ellipse at top right, black 0%, transparent 70%);
+}
+.home-pools-visual::after {
+    bottom: -6%;
+    left: -6%;
+    background: repeating-linear-gradient(
+        135deg,
+        transparent 0,
+        transparent 9px,
+        rgba(255, 215, 0, 0.14) 9px,
+        rgba(255, 215, 0, 0.14) 11px
+    );
+    -webkit-mask-image: radial-gradient(ellipse at bottom left, black 0%, transparent 70%);
+    mask-image: radial-gradient(ellipse at bottom left, black 0%, transparent 70%);
 }
 .home-pools-phone {
     position: absolute;
