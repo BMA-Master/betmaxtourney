@@ -9676,7 +9676,7 @@ body.menu-open::before {
     display: flex;
     align-items: stretch;
     gap: 0.5rem;
-    margin: 0 0 2rem;
+    margin: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 .home-modes-rail-scroller {
@@ -9761,7 +9761,7 @@ body.menu-open::before {
     gap: 0.55rem;
     background: transparent;
     border: 0;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.7);
     font-family: var(--font-display);
     font-size: clamp(0.95rem, 1.4vw, 1.15rem);
     font-weight: 800;
@@ -9770,28 +9770,49 @@ body.menu-open::before {
     cursor: pointer;
     white-space: nowrap;
     position: relative;
-    transition: color 0.2s ease;
-    border-bottom: 3px solid transparent;
+    transition: color 0.2s ease, background 0.2s ease;
     margin-bottom: -1px;
 }
-.home-modes-tab:hover { color: rgba(255, 255, 255, 0.85); }
+.home-modes-tab:hover {
+    color: var(--bma-white);
+    background: rgba(255, 255, 255, 0.04);
+}
 .home-modes-tab.active {
     color: var(--bma-white);
-    border-bottom-color: var(--bma-green-bright);
+}
+/* Solid green underline that scales in on the active tab. */
+.home-modes-tab::after {
+    content: '';
+    position: absolute;
+    left: 0.6rem;
+    right: 0.6rem;
+    bottom: 0;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--bma-green-bright);
+    opacity: 0;
+    transform: scaleX(0.4);
+    transform-origin: center;
+    transition: opacity 0.2s ease, transform 0.25s ease;
+    pointer-events: none;
+}
+.home-modes-tab.active::after {
+    opacity: 1;
+    transform: scaleX(1);
 }
 
 .home-modes-tab-icon {
     width: 22px;
     height: 22px;
     object-fit: contain;
-    opacity: 0.55;
+    opacity: 0.65;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
     transition: opacity 0.2s ease, transform 0.2s ease;
     user-select: none;
     -webkit-user-drag: none;
     pointer-events: none;
 }
-.home-modes-tab:hover .home-modes-tab-icon { opacity: 0.85; }
+.home-modes-tab:hover .home-modes-tab-icon { opacity: 0.9; }
 .home-modes-tab.active .home-modes-tab-icon {
     opacity: 1;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 8px rgba(255, 215, 0, 0.35));
@@ -9869,11 +9890,18 @@ body.menu-open::before {
 }
 
 /* Feature-card variant: full-bleed splash bg per mode + single badge above title.
-   Inline `style="background-image: url(...)"` is set per panel in index.html. */
+   Inline `style="background-image: url(...)"` is set per panel in index.html.
+   Negative margins bleed past the .home-game .home-modes gray-box padding so
+   the splash bg meets the wrapper's left/right/bottom border. Bottom corners
+   round to match the wrapper's `border-radius: 8px`; top corners square so
+   the splash sits flush against the tab rail's bottom border. */
 .home-modes-panel--feature {
     position: relative;
-    border-radius: 18px;
+    border-radius: 0 0 8px 8px;
     padding: clamp(1.75rem, 3vw, 2.75rem);
+    margin-left: calc(-1 * clamp(1rem, 2vw, 1.5rem));
+    margin-right: calc(-1 * clamp(1rem, 2vw, 1.5rem));
+    margin-bottom: calc(-1 * clamp(1rem, 2vw, 1.5rem));
     background-color: var(--bma-dark-200);
     background-size: cover;
     background-position: center;
