@@ -16,7 +16,11 @@
     };
 
     // Daemons to exclude from the status page entirely
-    var DAEMON_EXCLUDE = ['daemon_alltime_leaderboard_summary'];
+    var DAEMON_EXCLUDE = [
+        'daemon_alltime_leaderboard_summary',
+        'daemon_stale_matches_summary',
+        'daemon_user_tourney_matches_summary'
+    ];
 
     var overallEl = document.getElementById('status-overall');
     var overallLabelEl = document.getElementById('overall-label');
