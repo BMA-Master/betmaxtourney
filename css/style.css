@@ -10749,3 +10749,20 @@ body.menu-open::before {
         scroll-margin-top: 64px;
     }
 }
+
+/* ── Live Tournaments section (embedded app cards via bmt-embed.js) ── */
+.home-tournaments {
+    background-color: var(--bma-dark-100);
+    background-image:
+        radial-gradient(120% 80% at 50% 0%, rgba(0, 230, 118, 0.10) 0%, transparent 55%),
+        linear-gradient(180deg, rgba(8, 8, 8, 0.6) 0%, rgba(12, 12, 12, 0) 40%, rgba(8, 8, 8, 0.6) 100%);
+    padding: clamp(3rem, 6vw, 5rem) 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.home-tournaments-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+}
