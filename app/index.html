@@ -3,19 +3,39 @@
   <head>
     <meta charset="UTF-8">
     <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <!-- viewport-fit=cover is REQUIRED for env(safe-area-inset-*) to be non-zero
+         on iOS — without it the foot nav sits under the home indicator. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
     <title>Bet Max Tourney</title>
 
+    <!-- Standalone home-screen launch (manifest only — NO service worker).
+         All URLs relative: this page is served from /app/, so root-absolute
+         paths would resolve against the marketing site. -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#141414">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Bet Max">
+    <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
+
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400..900&family=Roboto+Condensed:wght@100;300;400&family=Roboto+Slab:wght@300&family=Roboto+Mono:wght@300&family=Material+Symbols+Outlined&display=block">
+        <link rel="stylesheet" type="text/css" requestor="Neodigm 55" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400..900&family=Roboto+Condensed:wght@100;300;400&family=Roboto+Slab:wght@300&family=Roboto+Mono:wght@300&family=Material+Symbols+Outlined&display=block" crossorigin="anonymous">
         <link rel="stylesheet" href="https://arcanus55.github.io/neodigm55/dist/neodigm55__v5_0.css">
         <script>
 let neodigmOptCustom = { mvvLegit:true, N55_DEBUG_LOG:false, EVENT_SOUNDS:false, CONSOLE_LOG_VER:false, W4S_VOLUME: .018, N55_CARO_BLUR_OUT: true }
         </script>
         <!-- ##turnaround## -->
         <script src="https://arcanus55.github.io/neodigm55/dist/neodigm55__v5_0.js"></script>
-    <script type="module" crossorigin src="assets/index_7c41167f.js"></script>
-    <link rel="stylesheet" crossorigin href="assets/index_7c41167f.css">
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+    <script type="module" crossorigin src="assets/index_cddd5892.js"></script>
+    <link rel="stylesheet" crossorigin href="assets/index_cddd5892.css">
   </head>
-  <body style="background-color: #181818;">
+  <body style="background-color: #141414;">
     <div id="app" data-sync-env="DEV" data-sync-theme="dark" data-sync-motif="brand" data-sync-lang="en"></div>
+    <!-- Cleanup any service worker left from the PWA era — this page never
+         shipped the cleanup before, so phones that installed the old SW
+         still have it. Relative path: served at /app/unregister-sw.js. -->
+    <script src="unregister-sw.js"></script>
   </body>
 </html>
