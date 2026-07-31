@@ -1521,73 +1521,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Form validation (if contact form exists)
-    const contactForm = document.querySelector('#contact-form');
-
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            // Basic validation
-            const name = this.querySelector('[name="name"]');
-            const email = this.querySelector('[name="email"]');
-            const message = this.querySelector('[name="message"]');
-
-            let isValid = true;
-
-            if (name && !name.value.trim()) {
-                showError(name, 'Name is required');
-                isValid = false;
-            }
-
-            if (email && !isValidEmail(email.value)) {
-                showError(email, 'Valid email is required');
-                isValid = false;
-            }
-
-            if (message && !message.value.trim()) {
-                showError(message, 'Message is required');
-                isValid = false;
-            }
-
-            if (isValid) {
-                // Form is valid - submit or process
-                console.log('Form is valid - ready to submit');
-                // Add your form submission logic here
-            }
-        });
-    }
-
-    // Helper function to validate email
-    function isValidEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
-
-    // Helper function to show error
-    function showError(input, message) {
-        const formGroup = input.parentElement;
-        const error = formGroup.querySelector('.error-message') || document.createElement('span');
-
-        error.className = 'error-message';
-        error.textContent = message;
-        error.style.color = '#e94560';
-        error.style.fontSize = '0.875rem';
-        error.style.marginTop = '0.25rem';
-        error.style.display = 'block';
-
-        if (!formGroup.querySelector('.error-message')) {
-            formGroup.appendChild(error);
-        }
-
-        input.style.borderColor = '#e94560';
-
-        // Remove error on input
-        input.addEventListener('input', function() {
-            error.remove();
-            input.style.borderColor = '';
-        }, { once: true });
-    }
+    // Contact capture is handled by the Mach Five Magnet embeds (#signup inline card +
+    // the site chat panel); the old never-rendered #contact-form handler is gone.
 
     // Add loading state to buttons
     const buttons = document.querySelectorAll('.btn');

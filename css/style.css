@@ -10766,3 +10766,45 @@ body.menu-open::before {
     justify-content: center;
     margin-top: clamp(1.5rem, 3vw, 2.5rem);
 }
+
+/* ============================================
+   Signup section — Mach Five Magnet inline card (#signup)
+   Homepage (after How It Works) + Bet Max Pools closer. The card styles itself
+   inside a shadow root (mag_theme_color); this is section chrome only, and the
+   section is the landing target for footer Contact + "Enter Free" fallbacks.
+   ============================================ */
+.signup-section {
+    background: var(--bma-dark-200);
+    padding: clamp(3.5rem, 7vw, 6rem) 0;
+    position: relative;
+    z-index: 2;
+}
+
+.signup-heading {
+    max-width: 780px;
+    margin: 0 auto clamp(2rem, 4vw, 3rem);
+    text-align: center;
+}
+
+.signup-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    color: var(--bma-green-bright);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.signup-heading h2 {
+    margin: 0;
+    color: var(--bma-white);
+    font-size: var(--fs-h2);
+    line-height: var(--lh-snug);
+    font-weight: 950;
+    letter-spacing: var(--tracking-tightest);
+    text-transform: uppercase;
+    text-wrap: balance;
+}
