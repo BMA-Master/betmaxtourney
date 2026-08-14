@@ -1600,6 +1600,10 @@ nav {
     transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
     min-height: 40px;
 }
+.hero-pill-btn:focus-visible {
+    outline: 2px solid rgba(0, 230, 118, 0.6);
+    outline-offset: 3px;
+}
 
 /* Nav-sized pill button */
 .nav-play-btn {
