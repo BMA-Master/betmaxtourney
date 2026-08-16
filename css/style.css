@@ -9832,6 +9832,12 @@ body.menu-open::before {
     color: var(--bma-white);
     background: rgba(255, 255, 255, 0.04);
 }
+.home-modes-tab:focus-visible {
+    color: var(--bma-white);
+    outline: 2px solid rgba(0, 230, 118, 0.55);
+    outline-offset: -2px;
+    border-radius: 4px;
+}
 .home-modes-tab.active {
     color: var(--bma-white);
 }
