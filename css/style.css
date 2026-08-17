@@ -5932,6 +5932,14 @@ footer::before {
     color: var(--bma-white);
 }
 
+.sport-pill:focus-visible {
+    background: rgba(46, 139, 87, 0.14);
+    box-shadow: inset 0 0 0 1px var(--bma-green-bright);
+    color: var(--bma-white);
+    outline: 2px solid rgba(0, 230, 118, 0.55);
+    outline-offset: 2px;
+}
+
 .sport-pill.active {
     background: var(--bma-green);
     box-shadow: inset 0 0 0 1px var(--bma-green-bright);
