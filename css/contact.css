@@ -1,0 +1,76 @@
+/* ============================================
+   Contact page (/contact/): Mach Five Magnet inline card
+   ============================================
+   Loaded only on this page via the front-matter extra_css hook. Section chrome
+   only: the magnet card styles itself inside a shadow root (mag_theme_color),
+   so nothing here reaches into the widget. The slot reserves the card's height
+   up front so the page does not jump when the SDK mounts.
+
+   Mirrors .signup-section (home + pools) so the contact page reads as the same
+   surface, with an h1 instead of an h2 since this page owns its own title.
+   ============================================ */
+
+.contact-page {
+    background: var(--bma-dark-200);
+    padding: clamp(3.5rem, 7vw, 6rem) 0;
+    position: relative;
+    z-index: 2;
+}
+
+.contact-heading {
+    max-width: 780px;
+    margin: 0 auto clamp(2rem, 4vw, 3rem);
+    text-align: center;
+}
+
+.contact-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    color: var(--bma-green-bright);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.contact-heading h1 {
+    margin: 0;
+    color: var(--bma-white);
+    font-size: var(--fs-h1);
+    line-height: var(--lh-snug);
+    font-weight: 950;
+    letter-spacing: var(--tracking-tightest);
+    text-transform: uppercase;
+    text-wrap: balance;
+}
+
+.contact-subline {
+    margin: 1.25rem auto 0;
+    max-width: 46ch;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: var(--lh-normal);
+    text-wrap: pretty;
+}
+
+/* Magnet mount. min-height matches the package's mag_inline_height (620px) so
+   the reserved box equals the rendered card and nothing reflows on mount. */
+.contact-slot {
+    display: flex;
+    justify-content: center;
+    min-height: 620px;
+}
+
+.contact-slot [data-m5m-inline] {
+    width: 100%;
+    max-width: 760px; /* matches mag_inline_width */
+    margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+    .contact-slot {
+        min-height: 560px;
+    }
+}
