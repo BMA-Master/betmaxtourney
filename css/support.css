@@ -1,0 +1,295 @@
+/* ===========================
+   SUPPORT PAGE
+   =========================== */
+
+.support-hero,
+.support-magnet,
+.support-contact,
+.support-faq {
+    position: relative;
+    padding: clamp(1.5rem, 3vw, 2.5rem) 0;
+    background: #0d0d0d;
+}
+
+.support-hero {
+    padding-top: calc(var(--hero-marquee-height) + var(--hero-header-height) + 1rem);
+    padding-bottom: clamp(1rem, 2vw, 1.75rem);
+    background:
+        linear-gradient(180deg, #101010 0%, #0d0d0d 100%);
+    text-align: center;
+}
+
+.support-magnet {
+    padding-top: 0;
+}
+
+.support-hero-inner {
+    max-width: 780px;
+}
+
+.support-hero-title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h1);
+    font-weight: 950;
+    line-height: var(--lh-tight);
+    text-transform: uppercase;
+    color: var(--bma-white);
+    margin: 0;
+    text-wrap: balance;
+}
+
+/* Shared eyebrow + section title */
+.support-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--fs-eyebrow);
+    font-weight: 800;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--bma-yellow);
+    margin-bottom: 0.5rem;
+}
+
+.support-section-title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h2);
+    font-weight: 950;
+    line-height: var(--lh-snug);
+    text-transform: uppercase;
+    color: var(--bma-white);
+    margin: 0 0 0.75rem;
+    text-wrap: balance;
+}
+
+.support-section-heading {
+    max-width: 780px;
+    margin: 0 auto clamp(0.75rem, 1.5vw, 1.25rem);
+    text-align: center;
+}
+
+.support-section-heading p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+    line-height: 1.55;
+    max-width: 620px;
+    margin: 0 auto;
+}
+
+/* ============================================
+   Mach Five Magnet embed area
+   ============================================ */
+.support-magnet-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.support-magnet-embed {
+    position: relative;
+    min-height: clamp(300px, 45vh, 480px);
+    border-radius: 16px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 24px 60px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Placeholder shown until the magnet embed script mounts and takes over */
+.support-magnet-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    padding: 2rem;
+}
+
+.support-magnet-placeholder-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--bma-green-bright);
+    box-shadow: 0 0 12px rgba(0, 230, 118, 0.5);
+    animation: support-magnet-pulse 1.4s ease-in-out infinite;
+}
+.support-magnet-placeholder-dot:nth-child(2) { animation-delay: 0.2s; }
+.support-magnet-placeholder-dot:nth-child(3) { animation-delay: 0.4s; }
+
+.support-magnet-placeholder-note {
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+@keyframes support-magnet-pulse {
+    0%, 100% { transform: scale(0.85); opacity: 0.45; }
+    50%      { transform: scale(1.1);  opacity: 1;    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .support-magnet-placeholder-dot { animation: none; }
+}
+
+/* Once the embed mounts and replaces the placeholder, the widget's own
+   styles take over inside this container. */
+
+/* ============================================
+   Contact cards
+   ============================================ */
+.support-contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+    max-width: 920px;
+    margin: 0 auto;
+}
+
+.support-contact-card {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: clamp(1.5rem, 2.5vw, 2rem) clamp(1.5rem, 2.5vw, 2rem);
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+    color: inherit;
+    min-height: 108px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.support-contact-card:hover,
+.support-contact-card:focus-visible {
+    transform: translateY(-3px);
+    box-shadow:
+        inset 0 0 0 1px rgba(0, 230, 118, 0.45),
+        0 16px 36px rgba(0, 0, 0, 0.32);
+    background: linear-gradient(180deg, rgba(0, 230, 118, 0.08), rgba(255, 255, 255, 0.03));
+    outline: none;
+}
+.support-contact-card:hover .support-contact-card-arrow,
+.support-contact-card:focus-visible .support-contact-card-arrow {
+    color: var(--bma-green-bright);
+    transform: translateX(4px);
+}
+
+.support-contact-card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 230, 118, 0.1);
+    color: var(--bma-green-bright);
+    flex-shrink: 0;
+}
+
+.support-contact-card-body {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+.support-contact-card-body h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--bma-white);
+    margin: 0 0 0.35rem;
+}
+.support-contact-card-body p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.95rem;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.support-contact-card-arrow {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* ============================================
+   FAQ
+   ============================================ */
+.support-faq-list {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.support-faq-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+}
+
+.support-faq-item summary {
+    cursor: pointer;
+    padding: 1rem 1.25rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--bma-white);
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: background 0.15s ease;
+}
+.support-faq-item summary::-webkit-details-marker { display: none; }
+.support-faq-item summary:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+.support-faq-item summary:focus-visible {
+    outline: 2px solid rgba(0, 230, 118, 0.55);
+    outline-offset: -2px;
+    background: rgba(255, 255, 255, 0.03);
+}
+.support-faq-item summary::after {
+    content: '+';
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--bma-green-bright);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    flex-shrink: 0;
+}
+.support-faq-item[open] summary::after {
+    transform: rotate(45deg);
+}
+.support-faq-item p {
+    padding: 0 1.25rem 1.25rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.55;
+    font-size: 0.95rem;
+}
+.support-faq-item p a {
+    color: var(--bma-yellow);
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(255, 215, 0, 0.4);
+}
+.support-faq-item p a:hover {
+    color: var(--bma-yellow-bright);
+    border-bottom-color: var(--bma-yellow-bright);
+}
