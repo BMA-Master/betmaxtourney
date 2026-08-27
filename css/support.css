@@ -85,24 +85,8 @@
     margin: 0 auto;
 }
 
-.support-magnet-embed {
-    position: relative;
-    min-height: clamp(300px, 45vh, 480px);
-    border-radius: 16px;
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-    box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.08),
-        0 24px 60px rgba(0, 0, 0, 0.35);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-}
-
-/* The inline magnet mount (same sizing contract as .contact-slot) */
-.support-magnet-embed [data-m5m-inline] {
+/* The inline magnet mount, bare (same sizing contract as .contact-slot) */
+.support-magnet-wrap [data-m5m-inline] {
     width: 100%;
     max-width: 760px; /* matches mag_inline_width */
     margin: 0 auto;
