@@ -98,44 +98,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 1.5rem;
 }
 
-/* Placeholder shown until the magnet embed script mounts and takes over */
-.support-magnet-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.25rem;
-    color: rgba(255, 255, 255, 0.5);
-    text-align: center;
-    padding: 2rem;
-}
-
-.support-magnet-placeholder-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--bma-green-bright);
-    box-shadow: 0 0 12px rgba(0, 230, 118, 0.5);
-    animation: support-magnet-pulse 1.4s ease-in-out infinite;
-}
-.support-magnet-placeholder-dot:nth-child(2) { animation-delay: 0.2s; }
-.support-magnet-placeholder-dot:nth-child(3) { animation-delay: 0.4s; }
-
-.support-magnet-placeholder-note {
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin: 0;
-}
-
-@keyframes support-magnet-pulse {
-    0%, 100% { transform: scale(0.85); opacity: 0.45; }
-    50%      { transform: scale(1.1);  opacity: 1;    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .support-magnet-placeholder-dot { animation: none; }
+/* The inline magnet mount (same sizing contract as .contact-slot) */
+.support-magnet-embed [data-m5m-inline] {
+    width: 100%;
+    max-width: 760px; /* matches mag_inline_width */
+    margin: 0 auto;
 }
 
 /* Once the embed mounts and replaces the placeholder, the widget's own
