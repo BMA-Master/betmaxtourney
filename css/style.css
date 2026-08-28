@@ -1215,13 +1215,16 @@ nav {
     overflow: hidden;
 }
 
-/* Static Background Image for Home Hero only */
+/* Static Background Image for Home Hero only — bespoke TD$ bills + BM
+   trophies composition (same art as the app's auth backdrop). Art is
+   already dark with a right-anchored gold trophy, so the gradient only
+   guards text legibility on the left. */
 #home-hero .hero-bg {
     background-image:
-        linear-gradient(120deg, rgba(0, 0, 0, 0.92) 0%, rgba(10, 10, 10, 0.78) 54%, rgba(47, 121, 77, 0.5) 100%),
-        url('../images/How-To-Play-Hero-Optimized.png');
+        linear-gradient(120deg, rgba(0, 0, 0, 0.88) 0%, rgba(10, 10, 10, 0.55) 50%, rgba(10, 10, 10, 0.12) 100%),
+        url('../images/auth/bmt-auth-bespoke.jpg');
     background-size: cover;
-    background-position: center 42%;
+    background-position: center;
     opacity: 1;
 }
 
