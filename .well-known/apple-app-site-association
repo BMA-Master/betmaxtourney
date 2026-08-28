@@ -1,0 +1,14 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": ["N7HN9X7CDM.com.betmaxtourney.app"],
+        "components": [
+          { "/": "/verify", "comment": "email verification opens the app" },
+          { "/": "/verify/*" }
+        ]
+      }
+    ]
+  }
+}
