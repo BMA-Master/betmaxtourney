@@ -10856,3 +10856,99 @@ body.menu-open::before {
     text-transform: uppercase;
     text-wrap: balance;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   ANIMATED HERO — falling TD$ bills + drifting BM trophies
+   Markup: layouts/partials/hero-animated-bg.html (inside #home-hero .hero-bg)
+   Gating: desktop + no prefers-reduced-motion only. Everyone else keeps
+   the static bmt-auth-bespoke.jpg fallback already on .hero-bg.
+   Transform-only animation (GPU-composited); blur/brightness filters are
+   constant per element so each layer rasters once.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.hero-anim { display: none; }
+
+@media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+  /* Swap the flattened JPG for live gradients; the elements provide the art. */
+  #home-hero .hero-bg {
+    background:
+      radial-gradient(60% 55% at 18% 8%, rgba(47, 163, 114, 0.22), transparent 62%),
+      radial-gradient(50% 45% at 85% 92%, rgba(247, 198, 13, 0.10), transparent 55%),
+      linear-gradient(155deg, #151816 0%, #101211 45%, #0B0D0C 100%);
+  }
+  .hero-anim { display: block; position: absolute; inset: 0; overflow: hidden; }
+}
+
+.hero-anim img {
+  position: absolute;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Scrim ABOVE the moving layers: text-guard on the left + calm center. */
+.ha-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background:
+    linear-gradient(120deg, rgba(0, 0, 0, 0.88) 0%, rgba(10, 10, 10, 0.55) 50%, rgba(10, 10, 10, 0.12) 100%),
+    radial-gradient(46% 52% at 50% 46%, rgba(13, 15, 14, 0.42), transparent 74%);
+}
+
+/* ── Trophies: resident, slow bob-and-tilt ─────────────────────────── */
+/* Trophies are OPAQUE (dimmed via brightness, never opacity) — a
+   translucent trophy lets bills ghost through its body no matter the
+   z-order, which was the last source of the pass-through jank.
+   Depth rule (v3, the one that stuck): EVERY bill falls BEHIND EVERY
+   trophy — bills z1, far trophies z2, hero gold/bronze z4, scrim z5.
+   Any bill-over-trophy crossing read as ghosting no matter the blur mix,
+   so none are allowed. The big soft trophies now read as foreground
+   bokeh with sharp bills falling behind them. */
+.ha-tr {
+  z-index: 2;
+  animation: ha-drift var(--dur, 16s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+@keyframes ha-drift {
+  from { transform: translate3d(0, 0, 0) rotate(var(--r0, 0deg)); }
+  to   { transform: translate3d(0, -16px, 0) rotate(var(--r1, 3deg)); }
+}
+
+.ha-tr-gold    { width: 34%;   right: 13%; bottom: -12%; --r0: 6deg;   --r1: 8.5deg;  --dur: 14s; --delay: -3s;
+                 filter: brightness(0.9) drop-shadow(0 0 60px rgba(247, 198, 13, 0.28)) drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6)); z-index: 4; }
+.ha-tr-silver  { width: 22%;   right: 42%; bottom: -9%;  --r0: -7deg;  --r1: -4.5deg; --dur: 17s; --delay: -9s;
+                 filter: blur(8px) brightness(0.36); }
+.ha-tr-bronze  { width: 21%;   left: 8%;   bottom: -5%;  --r0: 8deg;   --r1: 5.5deg;  --dur: 15s; --delay: -6s;
+                 filter: blur(2px) brightness(0.66); z-index: 4; }
+.ha-tr-gold2   { width: 13%;   right: 36%; top: 7%;      --r0: -11deg; --r1: -8deg;   --dur: 19s; --delay: -12s;
+                 filter: blur(12px) brightness(0.28); }
+.ha-tr-silver2 { width: 11%;   left: 48%;  top: 4%;      --r0: -14deg; --r1: -11deg;  --dur: 18s; --delay: -2s;
+                 filter: blur(10px) brightness(0.28); }
+.ha-tr-bronze2 { width: 12.5%; left: 6%;   top: 21%;     --r0: -10deg; --r1: -13deg;  --dur: 16s; --delay: -8s;
+                 filter: blur(7px) brightness(0.36); }
+
+/* ── Bills: continuous fall with rotation sway ─────────────────────
+   Negative delays start every bill mid-flight, so the loop is already
+   "full" on page load and never visibly restarts. */
+.ha-fb {
+  top: 0;
+  z-index: 1;
+  animation: ha-fall var(--dur, 24s) linear var(--delay, 0s) infinite;
+}
+@keyframes ha-fall {
+  from { transform: translate3d(0, -45vh, 0) rotate(var(--r0, -15deg)); }
+  to   { transform: translate3d(0, 115vh, 0) rotate(var(--r1, 15deg)); }
+}
+
+.ha-fb-1  { left: 2%;  width: 20%; --dur: 26s; --delay: 0s;   --r0: -20deg; --r1: 8deg;   filter: blur(6px) brightness(0.6);  opacity: 0.7;  }
+.ha-fb-2  { left: 15%; width: 12%; --dur: 19s; --delay: -7s;  --r0: 12deg;  --r1: -14deg; filter: brightness(0.75);           opacity: 0.9;  }
+.ha-fb-3  { left: 27%; width: 16%; --dur: 31s; --delay: -15s; --r0: -8deg;  --r1: 18deg;  filter: blur(3px) brightness(0.65); opacity: 0.8;  }
+.ha-fb-4  { left: 38%; width: 9%;  --dur: 17s; --delay: -3s;  --r0: 20deg;  --r1: -6deg;  filter: brightness(0.72);           opacity: 0.85; }
+.ha-fb-5  { left: 47%; width: 14%; --dur: 28s; --delay: -20s; --r0: -15deg; --r1: 10deg;  filter: blur(5px) brightness(0.6);  opacity: 0.7;  }
+.ha-fb-6  { left: 58%; width: 11%; --dur: 21s; --delay: -11s; --r0: 9deg;   --r1: -19deg; filter: blur(1px) brightness(0.7);  opacity: 0.85; }
+.ha-fb-7  { left: 66%; width: 18%; --dur: 34s; --delay: -5s;  --r0: -22deg; --r1: 5deg;   filter: blur(7px) brightness(0.55); opacity: 0.65; }
+.ha-fb-8  { left: 76%; width: 10%; --dur: 18s; --delay: -14s; --r0: 16deg;  --r1: -9deg;  filter: brightness(0.72);           opacity: 0.9;  }
+.ha-fb-9  { left: 84%; width: 15%; --dur: 27s; --delay: -22s; --r0: -12deg; --r1: 14deg;  filter: blur(4px) brightness(0.62); opacity: 0.75; }
+.ha-fb-10 { left: 92%; width: 12%; --dur: 23s; --delay: -9s;  --r0: 6deg;   --r1: -16deg; filter: blur(2px) brightness(0.68); opacity: 0.8;  }
+.ha-fb-11 { left: 8%;  width: 7%;  --dur: 16s; --delay: -12s; --r0: -18deg; --r1: 12deg;  filter: brightness(0.7);            opacity: 0.8;  }
+.ha-fb-12 { left: 52%; width: 8%;  --dur: 20s; --delay: -17s; --r0: 14deg;  --r1: -8deg;  filter: blur(1px) brightness(0.68); opacity: 0.8;  }
