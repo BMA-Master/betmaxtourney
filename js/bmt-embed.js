@@ -70,7 +70,7 @@ var BMT=(function(l){"use strict";class f{constructor(){this._theme="dark",this.
       outline: none;
       box-shadow: var(--focus-ring, 0 0 0 2px rgba(247, 198, 13, 0.4));
     }
-  `}class _ extends HTMLElement{connectedCallback(){this.attachShadow({mode:"open"}),this.render(),this._unsub=d.subscribe(()=>this.render())}disconnectedCallback(){this._unsub&&this._unsub()}static get observedAttributes(){return["sport","data-sync-theme"]}attributeChangedCallback(){this.shadowRoot&&this.render()}render(){this.getAttribute("sport");const e=d.theme;let t=this.getAttribute("data-sport-group")||"Soccer",a,i;t==="Multi"?(a="Multi",i=`var(--sport-icon__Multi--${e})`):(a=t.replaceAll(" ","_"),i=`var(--sport-icon__${a}--${e})`),this.shadowRoot.innerHTML=`
+  `}class _ extends HTMLElement{connectedCallback(){this.shadowRoot||this.attachShadow({mode:"open"}),this.render(),this._unsub=d.subscribe(()=>this.render())}disconnectedCallback(){this._unsub&&this._unsub()}static get observedAttributes(){return["sport","data-sync-theme"]}attributeChangedCallback(){this.shadowRoot&&this.render()}render(){this.getAttribute("sport");const e=d.theme;let t=this.getAttribute("data-sport-group")||"Soccer",a,i;t==="Multi"?(a="Multi",i=`var(--sport-icon__Multi--${e})`):(a=t.replaceAll(" ","_"),i=`var(--sport-icon__${a}--${e})`),this.shadowRoot.innerHTML=`
       <style>
         ${b()}
 

@@ -106,21 +106,32 @@
     position: absolute;
     inset: 0;
     z-index: 0;
-    /* Bespoke TD$ bills + BM trophies art (shared with the home hero and
-       the app's auth backdrop) — already dark, gradient guards left text. */
+    /* Stadium-field composite: night-stadium photo + TD$ bills + BM
+       trophies, edge-faded (shared with the home hero and the app's auth
+       backdrop). The art bakes in its own darkness; only a light left
+       text-guard remains. */
     background:
-        linear-gradient(120deg, rgba(0, 0, 0, 0.88) 0%, rgba(10, 10, 10, 0.55) 50%, rgba(10, 10, 10, 0.12) 100%),
-        url('../images/auth/bmt-auth-bespoke.jpg') center / cover no-repeat;
+        linear-gradient(100deg, rgba(0, 0, 0, 0.55) 0%, rgba(8, 8, 8, 0.28) 45%, rgba(8, 8, 8, 0.05) 100%),
+        url('../images/auth/bmt-auth-stadium.jpg') center / cover no-repeat;
 }
 
+/* Parallax: the stadium stays pinned while the page scrolls over it.
+   Desktop/fine-pointer only — iOS Safari breaks fixed attachment with
+   cover sizing, so touch devices keep the normal scroll. The text-guard
+   gradient (first layer) stays attached to the hero. */
+@media (min-width: 769px) and (pointer: fine) {
+    .pools-hero-bg {
+        background-attachment: scroll, fixed;
+    }
+}
+
+/* The stadium art carries its own light: no glow overlay over it. */
 .pools-hero-overlay {
     position: absolute;
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    background:
-        radial-gradient(circle at 20% 25%, rgba(0, 230, 118, 0.12), transparent 30%),
-        radial-gradient(circle at 82% 72%, rgba(255, 215, 0, 0.13), transparent 28%);
+    background: none;
 }
 
 .pools-hero-grid {
