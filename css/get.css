@@ -1,0 +1,9 @@
+:root { --bma-green-bright: #00E676; --bma-dark-100: #0a0a0a; }
+html, body { margin: 0; min-height: 100%; background: var(--bma-dark-100); color: #fafafa; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+.get-page { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 2rem 1rem; text-align: center; box-sizing: border-box; }
+.get-logo { width: min(220px, 60vw); height: auto; }
+.get-copy { margin: 0; font-size: 1rem; color: rgba(255, 255, 255, 0.75); max-width: 28em; }
+.get-links { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.get-badge img { height: 52px; width: auto; display: block; }
+.get-web { display: inline-block; padding: 0.8rem 1.6rem; border-radius: 999px; background: var(--bma-green-bright); color: var(--bma-dark-100); font-weight: 800; text-decoration: none; letter-spacing: 0.02em; }
+.get-web:hover { background: #19f08a; }

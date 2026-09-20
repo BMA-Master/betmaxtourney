@@ -6,7 +6,9 @@
         "appIDs": ["N7HN9X7CDM.com.betmaxtourney.app"],
         "components": [
           { "/": "/verify", "comment": "email verification opens the app" },
-          { "/": "/verify/*" }
+          { "/": "/verify/*" },
+          { "/": "/app/", "comment": "shared pool/tourney links (#/preview/... rides the fragment, which iOS ignores for matching)" },
+          { "/": "/app/*" }
         ]
       }
     ]

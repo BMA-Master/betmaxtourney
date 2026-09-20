@@ -349,62 +349,12 @@
 
 /* Mobile CTA uses .hero-pill and .hero-pill-cta from style.css */
 
-/* Homescreen Instructions */
-.homescreen-instructions {
-    text-align: center;
-    margin-top: 1.5rem;
-}
-
-.homescreen-title {
-    font-family: var(--font-display);
-    font-size: 1rem;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.9);
-    margin: 0 0 1rem 0;
-}
-
-.homescreen-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.homescreen-platform {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
-    padding: 1rem 1.25rem;
-    text-align: left;
-}
-
-.platform-label {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.95);
-    margin: 0 0 0.5rem 0;
-}
-
-.platform-label svg {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.homescreen-platform ol {
-    margin: 0;
-    padding-left: 1.25rem;
-}
-
-.homescreen-platform li {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.5;
-}
-
-.homescreen-platform li strong {
-    color: rgba(255, 255, 255, 0.95);
-}
+/* Store badge (Apple's black badge, sized to the block it sits in) */
+.store-badge { display: inline-block; line-height: 0; }
+.store-badge img { height: clamp(44px, 5vw, 56px); width: auto; display: block; }
+.qr-code-container .store-badge { margin-top: clamp(1rem, 2.5vw, 1.5rem); }
+.store-badge-mobile { margin-bottom: 1rem; }
+.store-badge-mobile img { height: 52px; }
 
 /* Fine Print Footer — pinned to bottom */
 .download-footer {
@@ -456,7 +406,7 @@
     }
 }
 
-/* Mobile: swap QR for Play Now button + homescreen instructions */
+/* Mobile: swap QR for App Store badge + web app button */
 @media (max-width: 768px) {
     /* Keep the negative margin so the green hero background extends behind
        the floating nav (matches the hero pattern on other pages). Drop the

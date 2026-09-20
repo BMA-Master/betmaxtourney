@@ -221,7 +221,7 @@ html {
 
 /* Global scrollbar branding */
 html {
-    scrollbar-color: var(--bma-yellow) var(--bma-dark-200);
+    scrollbar-color: var(--bma-green-bright) var(--bma-dark-200);
     scrollbar-width: thin;
 }
 
@@ -235,13 +235,13 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--bma-yellow);
+    background: var(--bma-green-bright);
     border-radius: 999px;
     border: 2px solid var(--bma-dark-200);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--bma-yellow-bright);
+    background: var(--bma-green);
 }
 
 .container {
@@ -922,7 +922,7 @@ article.container .content a:hover {
 
 .marquee-sport {
     font-family: var(--font-display);
-    color: var(--bma-yellow);
+    color: var(--bma-green-bright);
     font-weight: 700;
     font-size: 0.7rem;
     text-transform: uppercase;
@@ -936,7 +936,7 @@ article.container .content a:hover {
 }
 
 .marquee-countdown {
-    color: rgba(255, 237, 78, 0.9);
+    color: rgba(255, 255, 255, 0.72);
     font-weight: 700;
     font-size: 0.72rem;
     letter-spacing: 0.4px;
@@ -1215,19 +1215,24 @@ nav {
     overflow: hidden;
 }
 
-/* Static Background Image for Home Hero — stadium-field composite: real
-   night-stadium photo + TD$ bills + BM trophies, edge-faded to black
-   (same art as the app's auth backdrop). This IS the hero on every
-   viewport (the former animated-bills layer is retired); the art bakes
-   in its own darkness and edge fade, so only a light left text-guard
-   remains. */
+/* Static Background Image for Home Hero: the TD$ bills pattern from the
+   brand background set (static/images/backgrounds, sources kept in
+   collateral/Background Images). The art is already dark, so only a light
+   left text-guard sits over it. Mobile gets the 960px cut. */
 #home-hero .hero-bg {
     background-image:
-        linear-gradient(100deg, rgba(0, 0, 0, 0.55) 0%, rgba(8, 8, 8, 0.28) 45%, rgba(8, 8, 8, 0.05) 100%),
-        url('../images/auth/bmt-auth-stadium.jpg');
+        linear-gradient(100deg, rgba(0, 0, 0, 0.5) 0%, rgba(8, 8, 8, 0.25) 45%, rgba(8, 8, 8, 0.05) 100%),
+        url('../images/backgrounds/bg-td.webp');
     background-size: cover;
     background-position: center;
     opacity: 1;
+}
+@media (max-width: 768px) {
+    #home-hero .hero-bg {
+        background-image:
+            linear-gradient(100deg, rgba(0, 0, 0, 0.5) 0%, rgba(8, 8, 8, 0.25) 45%, rgba(8, 8, 8, 0.05) 100%),
+            url('../images/backgrounds/bg-td-960.webp');
+    }
 }
 
 /* Parallax: the stadium stays pinned while the page scrolls over it.
@@ -1627,13 +1632,11 @@ nav {
 }
 
 .hero-pill-cta {
-    background: transparent;
-    color: var(--bma-white);
-    /* inset shadow used in place of border — reuses the bg's AA path on the
-       rounded shape, eliminates the 1-2px halo where border AA meets bg AA. */
-    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+    /* Flat brand-green button, dark text, no gradient or glow. */
+    background: var(--bma-green-bright);
+    color: #0a0a0a;
     position: relative;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
 .hero-pill-cta::before {
@@ -1642,7 +1645,7 @@ nav {
     inset: 0;
     border-radius: 50px;
     padding: 2px;
-    background: linear-gradient(135deg, var(--bma-green-bright), var(--bma-yellow));
+    background: linear-gradient(135deg, var(--bma-green-bright), var(--bma-green-bright));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -1651,34 +1654,32 @@ nav {
 }
 
 .hero-pill-cta:hover::before {
-    opacity: 1;
+    opacity: 0;
 }
 
 .hero-pill-cta:hover {
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: inset 0 0 0 2px transparent;
-    color: var(--bma-yellow-bright);
+    background: #19f08a;
+    color: #0a0a0a;
 }
 
 .hero-pill-primary {
-    background: var(--gradient-primary);
+    background: var(--bma-green-bright);
     color: #0a0a0a;
-    box-shadow: 0 0 18px rgba(0, 230, 118, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .hero-pill-primary:hover {
-    box-shadow: 0 0 28px rgba(0, 230, 118, 0.65), 0 2px 12px rgba(0, 0, 0, 0.3);
+    background: #19f08a;
     color: #0a0a0a;
 }
 
 .hero-pill-secondary {
-    background: transparent;
-    color: var(--bma-yellow);
+    background: var(--bma-green-bright);
+    color: #0a0a0a;
 }
 
 .hero-pill-secondary:hover {
-    background: rgba(255, 215, 0, 0.1);
-    color: var(--bma-yellow-bright);
+    background: #19f08a;
+    color: #0a0a0a;
 }
 
 .hero-pill-icon {
@@ -1688,9 +1689,10 @@ nav {
     display: block;
 }
 
-.hero-pill-cta .hero-pill-icon {
-    color: var(--bma-yellow);
-    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
+.hero-pill-cta .hero-pill-icon,
+.hero-pill-secondary .hero-pill-icon {
+    color: #0a0a0a;
+    filter: none;
 }
 
 .hero-pill-primary .hero-pill-icon {
@@ -1705,8 +1707,8 @@ nav {
     width: 24px;
     height: 24px;
     flex-shrink: 0;
-    color: var(--bma-yellow);
-    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
+    color: #0a0a0a;
+    filter: none;
 }
 
 .cta-meta {
@@ -2270,7 +2272,7 @@ a.cta-button {
     inset: 0;
     border-radius: inherit;
     padding: 2px;
-    background: linear-gradient(135deg, var(--bma-green-bright), var(--bma-yellow));
+    background: var(--bma-green-bright);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -3467,7 +3469,7 @@ a.cta-button {
 
 .promo-slide {
     width: 80%;
-    max-width: 700px;
+    max-width: 560px;
     margin-right: 16px;
     border-radius: 12px;
     overflow: hidden;
@@ -3530,8 +3532,8 @@ a.cta-button {
 /* Promotions — large desktop (1025px+) */
 @media (min-width: 1025px) {
     .promo-slide {
-        width: 60%;
-        max-width: 800px;
+        width: 50%;
+        max-width: 620px;
     }
 
     .promotions-carousel .flickity-prev-next-button.previous {
@@ -3546,8 +3548,8 @@ a.cta-button {
 /* Promotions — tablet (769px–1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
     .promo-slide {
-        width: 75%;
-        max-width: 700px;
+        width: 70%;
+        max-width: 560px;
         margin-right: 14px;
     }
 
@@ -5289,7 +5291,7 @@ footer::before {
     font-size: 1rem !important;
     font-weight: 700;
     margin-bottom: 1rem;
-    color: var(--bma-yellow);
+    color: var(--bma-green-bright);
     user-select: none;
     -webkit-user-select: none;
 }
@@ -5308,7 +5310,7 @@ footer::before {
 }
 
 .footer-column a:hover {
-    color: var(--bma-yellow);
+    color: var(--bma-green-bright);
 }
 
 .footer-bottom {
@@ -5322,13 +5324,13 @@ footer::before {
 }
 
 .footer-bottom a {
-    color: var(--bma-yellow);
+    color: var(--bma-green-bright);
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .footer-bottom a:hover {
-    color: var(--bma-yellow-bright);
+    color: var(--bma-green);
     text-decoration: underline;
 }
 
@@ -5341,7 +5343,7 @@ footer::before {
 }
 
 .footer-copyright a {
-    color: var(--bma-yellow);
+    color: var(--bma-green-bright);
     text-decoration: none;
     transition: color 0.2s ease;
     /* Keep the brand names atomic so the line wraps at a sensible word
@@ -6053,7 +6055,7 @@ footer::before {
     align-items: center;
     gap: 0.4rem;
     vertical-align: middle;
-    color: var(--bma-yellow);
+    color: var(--bma-green-bright);
     line-height: 1;
     user-select: none;
     -webkit-user-select: none;
@@ -6063,7 +6065,7 @@ footer::before {
     width: 20px;
     height: 20px;
     flex: 0 0 auto;
-    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.4));
+    filter: drop-shadow(0 0 4px rgba(0, 230, 118, 0.4));
     transition: filter 0.2s ease;
 }
 
@@ -6072,22 +6074,22 @@ footer::before {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: var(--bma-yellow);
+    color: var(--bma-green-bright);
     white-space: nowrap;
 }
 
-/* Marquee variant (live tournaments scroller) — yellow to match the rest of the site */
+/* Marquee variant (live tournaments scroller): brand green */
 .sport-chip--marquee {
-    color: var(--bma-yellow);
+    color: var(--bma-green-bright);
     margin: 0 0.1rem;
 }
 .sport-chip--marquee .sport-chip__icon {
     width: 28px;
     height: 28px;
-    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.5));
+    filter: drop-shadow(0 0 6px rgba(0, 230, 118, 0.5));
 }
 .sport-chip--marquee .sport-chip__label {
-    color: var(--bma-yellow);
+    color: var(--bma-green-bright);
     font-size: 0.85rem;
 }
 
@@ -6103,13 +6105,13 @@ footer::before {
     background-color: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 8px;
-    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.5));
+    filter: drop-shadow(0 0 4px rgba(0, 230, 118, 0.5));
 }
 .tabulator-row:hover .sport-chip--row .sport-chip__icon {
-    background-color: rgba(255, 215, 0, 0.08);
-    border-color: rgba(255, 215, 0, 0.25);
+    background-color: rgba(0, 230, 118, 0.08);
+    border-color: rgba(0, 230, 118, 0.25);
     transform: scale(1.05);
-    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+    filter: drop-shadow(0 0 8px rgba(0, 230, 118, 0.8));
 }
 
 /* Tournament card variant — small green inline icon used on homepage cards */
@@ -8869,7 +8871,7 @@ section {
     }
 
     .tabulator-table-holder::-webkit-scrollbar-thumb {
-        background: rgba(255, 215, 0, 0.4);
+        background: rgba(0, 230, 118, 0.4);
         border-radius: 3px;
     }
 
@@ -9250,10 +9252,31 @@ body.menu-open::before {
 
 /* ===== Home: Recent Winners — bento mosaic of champion cards ===== */
 .home-winners {
-    background: #0d0d0d;
     padding: clamp(3.5rem, 7vw, 6rem) 0 clamp(3rem, 6vw, 5rem);
     position: relative;
     overflow: hidden;
+}
+
+/* Champions + FAQ share one continuous black texture from the brand
+   background set. Fixed attachment on desktop makes the two sections read as
+   one surface with no seam between them; iOS falls back to scroll, where the
+   matching dark base colour hides the join. */
+.home-winners,
+.home-faq {
+    background-color: #0d0d0d;
+    background-image: url('../images/backgrounds/bg-black.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+@supports (-webkit-touch-callout: none) {
+    .home-winners,
+    .home-faq { background-attachment: scroll; }
+}
+@media (max-width: 768px) {
+    .home-winners,
+    .home-faq { background-image: url('../images/backgrounds/bg-black-960.webp'); }
 }
 
 .home-winners-title {
@@ -9340,9 +9363,10 @@ body.menu-open::before {
     align-items: center;
     text-align: center;
     padding: 1.4rem 1.25rem 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 12px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.035));
+    /* Opaque surface: the section behind it is a textured image now. */
+    background: var(--bma-dark-200);
     box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
     transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
@@ -9473,7 +9497,6 @@ body.menu-open::before {
 
 /* ===== Home FAQ (mirrors the pools page FAQ pattern) ===== */
 .home-faq {
-    background: #181818;
     padding: clamp(3.5rem, 7vw, 6rem) 0;
     position: relative;
 }
@@ -9496,8 +9519,9 @@ body.menu-open::before {
     text-align: left;
 }
 .home-faq-item {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.035));
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Opaque surface: the section behind it is a textured image now. */
+    background: var(--bma-dark-200);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 8px;
     margin-bottom: 0.75rem;
     overflow: hidden;
@@ -9526,7 +9550,7 @@ body.menu-open::before {
     display: none;
 }
 .home-faq-item summary:hover {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.04);
 }
 .home-faq-item summary:focus-visible {
     outline: 2px solid rgba(0, 230, 118, 0.55);
@@ -9625,9 +9649,9 @@ body.menu-open::before {
 .home-game {
     background-color: var(--bma-dark-100);
     background-image:
-        linear-gradient(180deg, rgba(8, 8, 8, 0.94) 0%, rgba(12, 12, 12, 0.78) 50%, rgba(8, 8, 8, 0.94) 100%),
-        linear-gradient(135deg, rgba(0, 230, 118, 0.1) 0%, transparent 45%, rgba(255, 215, 0, 0.08) 100%),
-        url('https://images.unsplash.com/photo-1762013315117-1c8005ad2b41?fm=jpg&q=80&w=3000&auto=format&fit=crop');
+        linear-gradient(180deg, rgba(8, 8, 8, 0.85) 0%, rgba(12, 12, 12, 0.45) 50%, rgba(8, 8, 8, 0.85) 100%),
+        linear-gradient(135deg, rgba(0, 230, 118, 0.06) 0%, transparent 45%, rgba(255, 215, 0, 0.05) 100%),
+        url('../images/backgrounds/bg-trophies.webp');
     background-size: cover, cover, cover;
     background-position: center, center, center;
     background-repeat: no-repeat, no-repeat, no-repeat;
@@ -10783,8 +10807,8 @@ body.menu-open::before {
 
 .section-rail-chip.is-active,
 .section-rail-chip[aria-current="true"] {
-    color: var(--bma-yellow);
-    border-bottom-color: var(--bma-yellow);
+    color: var(--bma-green-bright);
+    border-bottom-color: var(--bma-green-bright);
 }
 
 .section-rail-chip-icon {
@@ -10812,12 +10836,31 @@ body.menu-open::before {
 /* ── Live Tournaments section (embedded app cards via bmt-embed.js) ── */
 .home-tournaments {
     background-color: var(--bma-dark-100);
+    /* Brand background set: black texture (static/images/backgrounds). */
     background-image:
         radial-gradient(120% 80% at 50% 0%, rgba(0, 230, 118, 0.10) 0%, transparent 55%),
-        linear-gradient(180deg, rgba(8, 8, 8, 0.6) 0%, rgba(12, 12, 12, 0) 40%, rgba(8, 8, 8, 0.6) 100%);
+        linear-gradient(180deg, rgba(8, 8, 8, 0.6) 0%, rgba(12, 12, 12, 0) 40%, rgba(8, 8, 8, 0.6) 100%),
+        url('../images/backgrounds/bg-black.webp');
+    background-size: cover, cover, cover;
+    background-position: center, center, center;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-attachment: scroll, scroll, fixed;
     padding: clamp(3rem, 6vw, 5rem) 0;
     position: relative;
     overflow: hidden;
+}
+/* iOS Safari fallback for fixed attachment (matches .home-game above) */
+@supports (-webkit-touch-callout: none) {
+    .home-tournaments { background-attachment: scroll, scroll, scroll; }
+}
+@media (max-width: 768px) {
+    .home-tournaments {
+        background-image:
+            radial-gradient(120% 80% at 50% 0%, rgba(0, 230, 118, 0.10) 0%, transparent 55%),
+            linear-gradient(180deg, rgba(8, 8, 8, 0.6) 0%, rgba(12, 12, 12, 0) 40%, rgba(8, 8, 8, 0.6) 100%),
+            url('../images/backgrounds/bg-black-960.webp');
+        background-attachment: scroll, scroll, scroll;
+    }
 }
 
 .home-tournaments-cta {
@@ -10872,7 +10915,7 @@ body.menu-open::before {
    ANIMATED HERO — falling TD$ bills + drifting BM trophies
    Markup: layouts/partials/hero-animated-bg.html (inside #home-hero .hero-bg)
    Gating: desktop + no prefers-reduced-motion only. Everyone else keeps
-   the static bmt-auth-stadium.jpg fallback already on .hero-bg.
+   the static TD$ pattern (images/backgrounds/bg-td.webp) already on .hero-bg.
    Transform-only animation (GPU-composited); blur/brightness filters are
    constant per element so each layer rasters once.
    ═══════════════════════════════════════════════════════════════════ */
@@ -10956,3 +10999,275 @@ body.menu-open::before {
 .ha-fb-10 { left: 92%; width: 12%; --dur: 23s; --delay: -9s;  --r0: 6deg;   --r1: -16deg; filter: blur(2px) brightness(0.68); opacity: 0.8;  }
 .ha-fb-11 { left: 8%;  width: 7%;  --dur: 16s; --delay: -12s; --r0: -18deg; --r1: 12deg;  filter: brightness(0.7);            opacity: 0.8;  }
 .ha-fb-12 { left: 52%; width: 8%;  --dur: 20s; --delay: -17s; --r0: 14deg;  --r1: -8deg;  filter: blur(1px) brightness(0.68); opacity: 0.8;  }
+
+/* Footer credit: Bet Max Action in brand green, Mach Five Tech in its own
+   brand orange (--m5-brand in machfivetech_hugo). */
+.footer-copyright a.footer-brand-bma { color: var(--bma-green-bright); }
+.footer-copyright a.footer-brand-mft { color: #DD4124; }
+.footer-copyright a.footer-brand-bma:hover { color: var(--bma-green); }
+.footer-copyright a.footer-brand-mft:hover { color: #F0522F; }
+
+/* Mobile menu CTA: flat brand-green like the hero pills. */
+.mobile-cta,
+.mobile-cta.btn-secondary {
+    background: var(--bma-green-bright);
+    color: #0a0a0a;
+    border-color: transparent;
+    box-shadow: none;
+}
+.mobile-cta:hover,
+.mobile-cta.btn-secondary:hover {
+    background: #19f08a;
+    color: #0a0a0a;
+    border-color: transparent;
+}
+.mobile-cta::before { display: none; }
+
+/* Header mark is now the BMT-White-Tertiary badge (near-square). The earlier
+   .logo-image rules and breakpoint bumps were sized for the wide lockup with
+   negative margins; this late rule fits the stacked mark to the nav pill at
+   every width. header.scrolled keeps its 40px override. */
+.logo-image {
+    height: 58px;
+    max-width: none;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* ===== App Store card, top of the live tournaments section =============== */
+.store-card {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.25rem, 3vw, 2.25rem);
+    max-width: 880px;
+    margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+    padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1.5rem, 3vw, 2.5rem);
+    background: var(--bma-dark-200);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 28px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    text-decoration: none;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    /* Entrance: starts small and over-tilted, springs up to size when it
+       scrolls into view (class added by main.js). No fade. */
+    transform: rotate(-8deg) scale(0.55);
+    transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.35s ease;
+}
+.store-card.is-in { transform: rotate(-1.5deg) scale(1); }
+.store-card.is-in:hover {
+    transform: rotate(0deg) translateY(-4px);
+    transition-duration: 0.35s;
+    border-color: rgba(0, 230, 118, 0.6);
+}
+.store-card-icon, .store-card-text, .store-card-badge {
+    transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.store-card-icon { transform: translateY(-140%) rotate(-14deg); transition-delay: 0.25s; }
+.store-card-text { transform: translateY(160%); transition-delay: 0.35s; }
+.store-card-badge { transform: translateX(220%) rotate(10deg); transition-delay: 0.45s; }
+.store-card.is-in .store-card-icon,
+.store-card.is-in .store-card-text,
+.store-card.is-in .store-card-badge { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+    .store-card, .store-card-icon, .store-card-text, .store-card-badge { transition: none; transform: none; }
+    .store-card.is-in { transform: rotate(-1.5deg); }
+}
+.store-card-icon {
+    width: clamp(96px, 12vw, 148px);
+    height: clamp(96px, 12vw, 148px);
+    border-radius: 22%;
+    display: block;
+    flex: 0 0 auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.store-card-text { display: flex; flex-direction: column; gap: 0.35rem; flex: 1 1 auto; min-width: 0; }
+.store-card-kicker {
+    font-family: var(--font-display);
+    font-size: clamp(0.72rem, 1vw, 0.85rem);
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--bma-green-bright);
+}
+.store-card-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--bma-white);
+}
+.store-card-sub { font-size: clamp(0.95rem, 1.3vw, 1.1rem); color: rgba(255, 255, 255, 0.7); }
+.store-card-badge { height: clamp(48px, 5.5vw, 64px); width: auto; display: block; flex: 0 0 auto; }
+@media (max-width: 768px) {
+    .store-card { flex-direction: column; text-align: center; gap: 1rem; padding: 1.5rem 1.25rem; }
+    .store-card.is-in { transform: rotate(-1deg); }
+    /* Stacked layout: badge rises from below instead of sliding in from the right. */
+    .store-card-badge { transform: translateY(300%) rotate(0deg); }
+    .store-card-text { align-items: center; }
+    .store-card-icon { width: 112px; height: 112px; }
+    .store-card-badge { height: 52px; }
+}
+
+/* ===== Mobile-only bottom app bar (home page) ============================= */
+.app-bar {
+    display: none;
+    position: fixed;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    z-index: 1000;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.6rem 0.6rem 0.7rem;
+    background: rgba(10, 10, 10, 0.92);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 18px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+    transform: translateY(calc(100% + 1.5rem));
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease;
+}
+.app-bar.is-visible { transform: translateY(0); opacity: 1; }
+.app-bar-icon { width: 44px; height: 44px; border-radius: 10px; flex: 0 0 auto; }
+.app-bar-text { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; line-height: 1.2; }
+.app-bar-title { font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; color: var(--bma-white); }
+.app-bar-sub { font-size: 0.78rem; color: rgba(255, 255, 255, 0.7); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.app-bar-cta {
+    flex: 0 0 auto;
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
+    background: var(--bma-green-bright);
+    color: #0a0a0a;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+}
+.app-bar-close {
+    flex: 0 0 auto;
+    width: 32px; height: 32px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: transparent; border: 0; padding: 0;
+    color: rgba(255, 255, 255, 0.55);
+    cursor: pointer;
+}
+@media (max-width: 768px) {
+    .app-bar:not([hidden]) { display: flex; }
+}
+
+/* ===== Live tournaments: horizontal card rail on phones (mirrors the app's
+   .card-rail: snap scroll, 92% cards with the next one peeking, overlay
+   arrows, dot indicators). Desktop keeps the embed's grid. ================= */
+.home-tournaments-rail { position: relative; }
+.tourn-rail-arrow, .tourn-rail-dots { display: none; }
+@media (max-width: 768px) {
+    /* The embed injects .bmt-grid at runtime after this sheet, so the
+       descendant selector here is what wins. Bleed to the screen edges. */
+    .home-tournaments-rail .bmt-grid {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scroll-padding-left: 16px;
+        gap: 12px;
+        padding: 6px 16px;
+        margin: 0 calc(-1 * clamp(1rem, 4vw, 3rem));
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        justify-content: flex-start;
+    }
+    .home-tournaments-rail .bmt-grid::-webkit-scrollbar { display: none; }
+    .home-tournaments-rail .bmt-grid > bma-tournament-card {
+        flex: 0 0 92%;
+        max-width: 92%;
+        scroll-snap-align: start;
+    }
+    .home-tournaments-rail .bmt-grid > .bmt-state { flex: 0 0 100%; }
+    .tourn-rail-arrow {
+        display: flex;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 3;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: opacity 0.15s ease;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .tourn-rail-arrow[data-hidden="true"] { opacity: 0; pointer-events: none; }
+    .tourn-rail-arrow--prev { left: calc(-1 * clamp(1rem, 4vw, 3rem) + 6px); }
+    .tourn-rail-arrow--next { right: calc(-1 * clamp(1rem, 4vw, 3rem) + 6px); }
+    .tourn-rail-dots { display: flex; justify-content: center; gap: 6px; padding: 10px 0 0; }
+    .tourn-rail-dots:empty { display: none; }
+    .tourn-rail-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.22);
+        transition: width 0.2s ease, background 0.2s ease;
+    }
+    .tourn-rail-dot.is-active { width: 16px; background: var(--bma-green-bright); }
+}
+
+/* ===== Game modes module, phone layout rework ==============================
+   Tabs: drop the "Bet Max" prefix and tighten. Panel: badge and title together
+   at the top, copy under them, then the phone, larger and fading into the
+   panel's bottom edge so the card stays a sane height. ====================== */
+@media (max-width: 768px) {
+    .home-modes-tab-prefix { display: none; }
+    .home-modes-tab {
+        font-size: 0.9rem;
+        letter-spacing: 0.05em;
+        padding: 0.7rem 0.85rem;
+        gap: 0.45rem;
+    }
+    .home-modes-tab-icon { width: 18px; height: 18px; }
+    .home-game .home-modes { padding: 0.75rem; }
+
+    .home-modes-panel--feature { padding: 1.25rem 1.1rem 0; gap: 0.75rem; }
+    .home-modes-panel--feature .home-modes-badge-wrap {
+        order: 0;
+        height: 88px;
+        margin: 0 auto 0.25rem;
+    }
+    .home-modes-panel--feature .home-modes-panel-copy h3 {
+        order: 1;
+        margin: 0 0 0.5rem;
+        font-size: clamp(1.5rem, 7vw, 1.9rem) !important;
+    }
+    .home-modes-panel--feature .home-modes-panel-copy p {
+        order: 2;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        max-width: 34em;
+        margin: 0 auto 0.5rem;
+    }
+    .home-modes-panel--feature .home-modes-panel-visual {
+        order: 3;
+        align-items: flex-start;
+        max-height: 330px;
+        overflow: hidden;
+        border-radius: 0;
+        -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 100%);
+        mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 100%);
+    }
+    .home-modes-panel--feature .home-modes-panel-visual .phone-mockup,
+    .home-modes-panel--feature .home-modes-panel-visual .phone-mockup:not(.hero-device-phone) {
+        max-width: min(66vw, 260px) !important;
+        margin: 0.5rem auto 0 !important;
+    }
+}

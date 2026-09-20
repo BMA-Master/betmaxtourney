@@ -2946,3 +2946,102 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// ============================================================================
+// MOBILE APP BAR - slides up after a short scroll, dismiss sticks for session
+// ============================================================================
+document.addEventListener('DOMContentLoaded', function() {
+    var bar = document.getElementById('app-bar');
+    if (!bar) return;
+    var key = 'bmt_app_bar_dismissed';
+    var dismissed = false;
+    try { dismissed = sessionStorage.getItem(key) === '1'; } catch (e) {}
+    if (dismissed) return;
+
+    bar.hidden = false;
+    var shown = false;
+    function reveal() {
+        if (shown || window.scrollY < 240) return;
+        shown = true;
+        bar.classList.add('is-visible');
+        window.removeEventListener('scroll', reveal);
+    }
+    window.addEventListener('scroll', reveal, { passive: true });
+    reveal();
+
+    var close = bar.querySelector('[data-app-bar-close]');
+    if (close) close.addEventListener('click', function() {
+        bar.classList.remove('is-visible');
+        try { sessionStorage.setItem(key, '1'); } catch (e) {}
+        setTimeout(function() { bar.hidden = true; }, 400);
+    });
+});
+
+// ============================================================================
+// APP STORE CARD - springs in when scrolled into view
+// ============================================================================
+document.addEventListener('DOMContentLoaded', function() {
+    var card = document.querySelector('.store-card');
+    if (!card) return;
+    if (!('IntersectionObserver' in window)) { card.classList.add('is-in'); return; }
+    var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (!entry.isIntersecting) return;
+            card.classList.add('is-in');
+            io.disconnect();
+        });
+    }, { threshold: 0.35 });
+    io.observe(card);
+});
+
+// ============================================================================
+// LIVE TOURNAMENTS RAIL - phone-width horizontal scroller with arrows + dots.
+// Cards are mounted asynchronously by bmt-embed.js, so we watch the grid and
+// wire up once cards exist. Desktop hides the controls via CSS.
+// ============================================================================
+document.addEventListener('DOMContentLoaded', function() {
+    var rail = document.querySelector('[data-tourn-rail]');
+    if (!rail) return;
+    var grid = rail.querySelector('[data-bmt-tournaments]');
+    var dots = rail.querySelector('[data-tourn-rail-dots]');
+    var prev = rail.querySelector('[data-tourn-rail-arrow="prev"]');
+    var next = rail.querySelector('[data-tourn-rail-arrow="next"]');
+    if (!grid || !dots || !prev || !next) return;
+    var GAP = 12;
+
+    function cards() { return grid.querySelectorAll('bma-tournament-card'); }
+    function step() { var c = grid.firstElementChild; return (c ? c.offsetWidth : 300) + GAP; }
+
+    function sync() {
+        var n = cards().length;
+        var max = grid.scrollWidth - grid.clientWidth;
+        var x = grid.scrollLeft;
+        prev.setAttribute('data-hidden', (n < 2 || x <= 10) ? 'true' : 'false');
+        next.setAttribute('data-hidden', (n < 2 || x >= max - 10) ? 'true' : 'false');
+        var active = Math.round(x / step());
+        var ds = dots.children;
+        for (var i = 0; i < ds.length; i++) ds[i].classList.toggle('is-active', i === active);
+    }
+
+    function build() {
+        var n = cards().length;
+        dots.innerHTML = '';
+        if (n > 1) {
+            for (var i = 0; i < n; i++) {
+                var d = document.createElement('span');
+                d.className = 'tourn-rail-dot' + (i === 0 ? ' is-active' : '');
+                dots.appendChild(d);
+            }
+        }
+        sync();
+    }
+
+    prev.addEventListener('click', function() { grid.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    next.addEventListener('click', function() { grid.scrollBy({ left: step(), behavior: 'smooth' }); });
+    grid.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+
+    var mo = new MutationObserver(function() { build(); requestAnimationFrame(sync); });
+    mo.observe(grid, { childList: true });
+    build();
+});

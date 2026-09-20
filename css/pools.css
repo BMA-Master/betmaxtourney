@@ -1335,3 +1335,111 @@
         transition: none;
     }
 }
+
+/* ===== Brand background set (static/images/backgrounds), mirroring the home
+   page: TD$ pattern on the hero, arrows under the steps, trophies under the
+   format conveyor (parallax on desktop), black texture under the FAQ. The
+   sports section keeps its own photo. Cards on these textures are opaque. */
+.pools-hero-bg {
+    background:
+        linear-gradient(100deg, rgba(0, 0, 0, 0.5) 0%, rgba(8, 8, 8, 0.25) 45%, rgba(8, 8, 8, 0.05) 100%),
+        url('../images/backgrounds/bg-td.webp') center / cover no-repeat;
+}
+@media (min-width: 769px) and (pointer: fine) {
+    .pools-hero-bg { background-attachment: scroll, fixed; }
+}
+@media (max-width: 768px) {
+    .pools-hero-bg {
+        background:
+            linear-gradient(100deg, rgba(0, 0, 0, 0.5) 0%, rgba(8, 8, 8, 0.25) 45%, rgba(8, 8, 8, 0.05) 100%),
+            url('../images/backgrounds/bg-td-960.webp') center / cover no-repeat;
+    }
+}
+
+.pools-how {
+    background-color: #0d0d0d;
+    background-image:
+        linear-gradient(180deg, rgba(13, 13, 13, 0.75) 0%, rgba(13, 13, 13, 0.45) 50%, rgba(13, 13, 13, 0.85) 100%),
+        url('../images/backgrounds/bg-arrows.webp');
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+}
+
+.pools-modes {
+    background-color: var(--bma-dark-100);
+    background-image:
+        linear-gradient(180deg, rgba(8, 8, 8, 0.85) 0%, rgba(12, 12, 12, 0.45) 50%, rgba(8, 8, 8, 0.85) 100%),
+        url('../images/backgrounds/bg-trophies.webp');
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: scroll, fixed;
+}
+@supports (-webkit-touch-callout: none) {
+    .pools-modes { background-attachment: scroll, scroll; }
+}
+
+.pools-final {
+    background-color: #0d0d0d;
+    background-image: url('../images/backgrounds/bg-black.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+@media (max-width: 768px) {
+    .pools-final { background-image: url('../images/backgrounds/bg-black-960.webp'); }
+}
+
+.pools-step,
+.pools-mode-card,
+.pools-faq-item {
+    background: var(--bma-dark-200);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Hero headline is now the longer line, so it sits a size down from the
+   original two-sentence title. */
+.pools-hero-title { font-size: clamp(2rem, 3.6vw, 3.3rem); max-width: 11em; }
+
+/* Give the mode name clearance from the card's bottom edge. */
+.pools-mode-card { padding-bottom: 1.25rem; }
+.pools-mode-card-label { padding-bottom: 0.25rem; }
+
+/* "Build it once" steps use the home page journey cards (how-to-play.css is
+   loaded on this page for them). Three columns instead of four, opaque cards
+   over the arrows texture, and a chip row as the first step's visual. */
+.pools-journey { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 800px) { .pools-journey { grid-template-columns: 1fr; } }
+.pools-journey .htp-journey-step { background: var(--bma-dark-200); }
+.pools-journey-chips { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.4rem; }
+.pools-journey-chip {
+    font-family: var(--font-display); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--bma-green-bright); padding: 0.35rem 0.7rem; border-radius: 999px;
+    border: 1px solid rgba(0, 230, 118, 0.35); background: rgba(0, 230, 118, 0.06); white-space: nowrap;
+}
+.pools-journey-chip--y { color: var(--bma-white); border-color: rgba(255, 255, 255, 0.25); background: rgba(255, 255, 255, 0.05); }
+
+/* Step 01 visual: a pool card in miniature (format badge, crew avatars,
+   invite link) instead of a chip row. */
+.pools-journey-pool { display: flex; align-items: center; justify-content: center; gap: 0.9rem; }
+.pjp-badge { width: 72px; height: 72px; object-fit: contain; flex: 0 0 auto; }
+.pjp-body { display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+.pjp-crew { display: flex; }
+.pjp-crew span {
+    width: 30px; height: 30px; border-radius: 50%; margin-left: -8px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 0.62rem; font-weight: 800; letter-spacing: 0.04em;
+    color: #0a0a0a; background: var(--bma-green-bright); border: 2px solid var(--bma-dark-200);
+}
+.pjp-crew span:first-child { margin-left: 0; }
+.pjp-crew span:nth-child(2) { background: #19c96f; }
+.pjp-crew span:nth-child(3) { background: #2F794D; color: var(--bma-white); }
+.pjp-crew .pjp-more { background: var(--bma-dark-300); color: rgba(255, 255, 255, 0.8); }
+.pjp-invite {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    font-family: var(--font-display); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--bma-green-bright); padding: 0.32rem 0.7rem; border-radius: 999px;
+    border: 1px dashed rgba(0, 230, 118, 0.5); background: rgba(0, 230, 118, 0.06); white-space: nowrap;
+}
+.pjp-invite svg { width: 14px; height: 14px; }
