@@ -12,19 +12,22 @@ html {
     overflow: hidden;
     padding: clamp(7rem, 12vw, 10rem) 0 clamp(3.5rem, 7vw, 6rem);
     margin-top: -120px;
-    background:
-        linear-gradient(120deg, rgba(0, 0, 0, 0.9) 0%, rgba(10, 10, 10, 0.76) 54%, rgba(47, 121, 77, 0.46) 100%),
-        url('../images/How-To-Play-Hero-Optimized.png') center/cover no-repeat;
+    /* Brand background set: TD$ bills, same text-guard treatment as the home
+       hero (static/images/backgrounds). Mobile gets the 960px cut. */
+    background-color: #0d0d0d;
+    background-image:
+        linear-gradient(100deg, rgba(0, 0, 0, 0.5) 0%, rgba(8, 8, 8, 0.25) 45%, rgba(8, 8, 8, 0.05) 100%),
+        url('../images/backgrounds/bg-td.webp');
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
 }
-
-.htp-hero::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(circle at 20% 25%, rgba(0, 230, 118, 0.12), transparent 30%),
-        radial-gradient(circle at 82% 72%, rgba(255, 215, 0, 0.13), transparent 28%);
-    pointer-events: none;
+@media (max-width: 768px) {
+    .htp-hero {
+        background-image:
+            linear-gradient(100deg, rgba(0, 0, 0, 0.5) 0%, rgba(8, 8, 8, 0.25) 45%, rgba(8, 8, 8, 0.05) 100%),
+            url('../images/backgrounds/bg-td-960.webp');
+    }
 }
 
 .htp-hero .container {
@@ -108,8 +111,7 @@ html {
     padding: clamp(1rem, 2vw, 2rem);
 }
 
-/* Unclip the shared .phone-stage overflow so the decor items (TD$, trophies,
-   X marks) can peek out past the stage edges behind the phone. */
+/* The hero phone sits directly on the section texture. */
 .htp-hero-visual.phone-stage {
     overflow: visible;
 }
@@ -271,8 +273,59 @@ html {
 }
 
 .htp-basics {
-    background:
-        linear-gradient(180deg, #101010 0%, #0d0d0d 100%);
+    /* How to Play page: trophies texture under the four premise steps. */
+    background-color: #0d0d0d;
+    background-image:
+        linear-gradient(180deg, rgba(8, 8, 8, 0.85) 0%, rgba(12, 12, 12, 0.45) 50%, rgba(8, 8, 8, 0.85) 100%),
+        url('../images/backgrounds/bg-trophies.webp');
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+}
+@media (max-width: 768px) {
+    .htp-basics {
+        background-image:
+            linear-gradient(180deg, rgba(8, 8, 8, 0.85) 0%, rgba(12, 12, 12, 0.45) 50%, rgba(8, 8, 8, 0.85) 100%),
+            url('../images/backgrounds/bg-trophies-960.webp');
+    }
+}
+/* Three-step walkthrough sits on the arrows texture (journey treatment). */
+.htp-walkthrough {
+    background-color: #0d0d0d;
+    background-image:
+        linear-gradient(180deg, rgba(13, 13, 13, 0.75) 0%, rgba(13, 13, 13, 0.45) 50%, rgba(13, 13, 13, 0.85) 100%),
+        url('../images/backgrounds/bg-arrows.webp');
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+}
+@media (max-width: 768px) {
+    .htp-walkthrough {
+        background-image:
+            linear-gradient(180deg, rgba(13, 13, 13, 0.75) 0%, rgba(13, 13, 13, 0.45) 50%, rgba(13, 13, 13, 0.85) 100%),
+            url('../images/backgrounds/bg-arrows-960.webp');
+    }
+}
+/* Formats strip, odds guide and glossary sit on the black texture. */
+.htp-strip,
+.htp-odds-guide,
+.htp-glossary {
+    background-color: #0d0d0d;
+    background-image:
+        linear-gradient(180deg, rgba(8, 8, 8, 0.6) 0%, rgba(12, 12, 12, 0.2) 50%, rgba(8, 8, 8, 0.6) 100%),
+        url('../images/backgrounds/bg-black.webp');
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+}
+@media (max-width: 768px) {
+    .htp-strip,
+    .htp-odds-guide,
+    .htp-glossary {
+        background-image:
+            linear-gradient(180deg, rgba(8, 8, 8, 0.6) 0%, rgba(12, 12, 12, 0.2) 50%, rgba(8, 8, 8, 0.6) 100%),
+            url('../images/backgrounds/bg-black-960.webp');
+    }
 }
 /* Home page journey (#how-it-works lives only on the home page) sits on the
    arrows texture from the brand background set. */
@@ -313,13 +366,13 @@ html {
 .htp-td {
     background-image:
         linear-gradient(180deg, rgba(8, 8, 8, 0.94) 0%, rgba(12, 12, 12, 0.78) 50%, rgba(8, 8, 8, 0.94) 100%),
-        linear-gradient(135deg, rgba(0, 230, 118, 0.1) 0%, transparent 45%, rgba(255, 215, 0, 0.08) 100%),
+        linear-gradient(135deg, rgba(0, 198, 141, 0.1) 0%, transparent 45%, rgba(255, 215, 0, 0.08) 100%),
         url('https://images.unsplash.com/photo-1762013315117-1c8005ad2b41?fm=jpg&q=80&w=3000&auto=format&fit=crop');
 }
 .htp-other-modes {
     background-image:
         linear-gradient(180deg, rgba(8, 8, 8, 0.94) 0%, rgba(12, 12, 12, 0.78) 50%, rgba(8, 8, 8, 0.94) 100%),
-        linear-gradient(135deg, rgba(0, 230, 118, 0.1) 0%, transparent 45%, rgba(255, 215, 0, 0.08) 100%),
+        linear-gradient(135deg, rgba(0, 198, 141, 0.1) 0%, transparent 45%, rgba(255, 215, 0, 0.08) 100%),
         url('https://images.unsplash.com/photo-1766756467595-fd3f1f62d562?fm=jpg&q=80&w=3000&auto=format&fit=crop');
 }
 @supports (-webkit-touch-callout: none) {
@@ -329,9 +382,7 @@ html {
     }
 }
 
-.htp-modes,
-.htp-glossary,
-.htp-odds-guide {
+.htp-modes {
     background:
         linear-gradient(180deg, #0d0d0d 0%, #141414 100%);
 }
@@ -378,50 +429,13 @@ html {
 }
 
 /* ===== Premise journey: 4-step visual flow with TD$ coin + trophy podium ===== */
-/* Stage wrapper: same green/yellow pinstripe accents as the phone-stage,
-   anchored top-right (green) and bottom-left (yellow). The journey grid
-   sits on top via z-index. */
+/* Stage wrapper for the journey grid. */
 .htp-journey-stage {
     position: relative;
     overflow: hidden;
     border-radius: 24px;
     padding: clamp(2rem, 4vw, 3rem) clamp(1rem, 2vw, 1.5rem);
     margin-top: clamp(1.5rem, 3vw, 2.5rem);
-}
-.htp-journey-stage::before,
-.htp-journey-stage::after {
-    content: '';
-    position: absolute;
-    width: 60%;
-    height: 75%;
-    pointer-events: none;
-    z-index: 0;
-}
-.htp-journey-stage::before {
-    top: -8%;
-    right: -8%;
-    background: repeating-linear-gradient(
-        135deg,
-        transparent 0,
-        transparent 9px,
-        rgba(0, 230, 118, 0.18) 9px,
-        rgba(0, 230, 118, 0.18) 11px
-    );
-    -webkit-mask-image: radial-gradient(ellipse at top right, black 0%, transparent 70%);
-    mask-image: radial-gradient(ellipse at top right, black 0%, transparent 70%);
-}
-.htp-journey-stage::after {
-    bottom: -8%;
-    left: -8%;
-    background: repeating-linear-gradient(
-        135deg,
-        transparent 0,
-        transparent 9px,
-        rgba(255, 215, 0, 0.14) 9px,
-        rgba(255, 215, 0, 0.14) 11px
-    );
-    -webkit-mask-image: radial-gradient(ellipse at bottom left, black 0%, transparent 70%);
-    mask-image: radial-gradient(ellipse at bottom left, black 0%, transparent 70%);
 }
 
 .htp-journey {
@@ -485,7 +499,7 @@ html {
     width: 1rem;
     height: 14px;
     transform: translateY(-50%);
-    background-image: linear-gradient(90deg, rgba(0, 230, 118, 0.5), rgba(255, 215, 0, 0.5));
+    background-image: linear-gradient(90deg, rgba(0, 198, 141, 0.5), rgba(255, 215, 0, 0.5));
     -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 6l6 6-6 6' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 6l6 6-6 6' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     -webkit-mask-repeat: no-repeat;
@@ -510,7 +524,7 @@ html {
     width: 56px;
     height: 56px;
     color: var(--bma-green-bright);
-    filter: drop-shadow(0 0 14px rgba(0, 230, 118, 0.4));
+    filter: drop-shadow(0 0 14px rgba(0, 198, 141, 0.4));
 }
 
 .htp-journey-image {
@@ -610,7 +624,7 @@ html {
 }
 .htp-pulse-up {
     color: var(--bma-green-bright);
-    filter: drop-shadow(0 0 12px rgba(0, 230, 118, 0.55));
+    filter: drop-shadow(0 0 12px rgba(0, 198, 141, 0.55));
     animation: htp-pulse-up 1.6s ease-in-out infinite;
 }
 .htp-pulse-down {
@@ -726,8 +740,8 @@ html {
     margin-bottom: 1.1rem;
     color: var(--bma-green-bright);
     border-radius: 8px;
-    background: rgba(0, 230, 118, 0.1);
-    box-shadow: 0 0 24px rgba(0, 230, 118, 0.16);
+    background: rgba(0, 198, 141, 0.1);
+    box-shadow: 0 0 24px rgba(0, 198, 141, 0.16);
 }
 
 .htp-icon svg {
@@ -788,9 +802,9 @@ html {
 .htp-mode-card:hover,
 .htp-mode-card:focus-visible {
     transform: translateY(-4px);
-    border-color: rgba(0, 230, 118, 0.34);
+    border-color: rgba(0, 198, 141, 0.34);
     background:
-        linear-gradient(180deg, rgba(0, 230, 118, 0.11), rgba(255, 255, 255, 0.045));
+        linear-gradient(180deg, rgba(0, 198, 141, 0.11), rgba(255, 255, 255, 0.045));
 }
 
 .htp-mode-card-featured {
@@ -983,7 +997,7 @@ html {
     align-items: center;
     padding: 0.3rem 0.75rem;
     border-radius: 999px;
-    background: linear-gradient(135deg, rgba(0, 230, 118, 0.18), rgba(255, 215, 0, 0.18));
+    background: linear-gradient(135deg, rgba(0, 198, 141, 0.18), rgba(255, 215, 0, 0.18));
     border: 1px solid rgba(255, 215, 0, 0.4);
     color: var(--bma-yellow);
     font-family: var(--font-display);
@@ -1315,7 +1329,7 @@ html {
     height: 8px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--bma-green-bright), var(--bma-yellow));
-    box-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
+    box-shadow: 0 0 10px rgba(0, 198, 141, 0.5);
 }
 
 .htp-td-list strong {
@@ -1398,7 +1412,7 @@ html {
     border-left-color: var(--bma-green-bright);
 }
 .htp-outcome-win .htp-outcome-tag {
-    background: rgba(0, 230, 118, 0.14);
+    background: rgba(0, 198, 141, 0.14);
     color: var(--bma-green-bright);
 }
 
@@ -1480,9 +1494,9 @@ html {
 }
 
 .htp-odds-explainer-positive .htp-odds-symbol {
-    background: rgba(0, 230, 118, 0.16);
+    background: rgba(0, 198, 141, 0.16);
     color: var(--bma-green-bright);
-    box-shadow: 0 0 18px rgba(0, 230, 118, 0.18);
+    box-shadow: 0 0 18px rgba(0, 198, 141, 0.18);
 }
 .htp-odds-explainer-negative .htp-odds-symbol {
     background: rgba(220, 20, 60, 0.16);
@@ -1582,7 +1596,7 @@ html {
     height: 8px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--bma-green-bright), var(--bma-yellow));
-    box-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
+    box-shadow: 0 0 10px rgba(0, 198, 141, 0.5);
 }
 
 .htp-mode-points strong {

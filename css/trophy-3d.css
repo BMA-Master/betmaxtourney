@@ -116,7 +116,7 @@
 
 /* Labels */
 .podium-label {
-    font-family: var(--font-display, 'Montserrat', sans-serif);
+    font-family: var(--font-display, 'Clarity City', sans-serif);
     font-weight: 900;
     font-size: clamp(1rem, 2vw, 1.5rem);
     letter-spacing: 0.02em;

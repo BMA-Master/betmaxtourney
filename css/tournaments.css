@@ -28,7 +28,7 @@
     right: 0;
     height: clamp(520px, 62vw, 760px);
     background:
-        radial-gradient(circle at 20% 25%, rgba(0, 230, 118, 0.12), transparent 30%),
+        radial-gradient(circle at 20% 25%, rgba(0, 198, 141, 0.12), transparent 30%),
         radial-gradient(circle at 82% 72%, rgba(255, 215, 0, 0.13), transparent 28%),
         linear-gradient(180deg, rgba(13, 13, 13, 0) 74%, #0d0d0d 100%);
     z-index: 1;
@@ -232,7 +232,7 @@
     gap: 1.5rem;
     padding: 1.25rem 1.5rem;
     background:
-        linear-gradient(135deg, rgba(0, 230, 118, 0.09), rgba(255, 215, 0, 0.035)),
+        linear-gradient(135deg, rgba(0, 198, 141, 0.09), rgba(255, 215, 0, 0.035)),
         rgba(255, 255, 255, 0.035);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -349,7 +349,7 @@
 }
 
 .filter-tab.active .tab-count {
-    background: rgba(0, 230, 118, 0.3);
+    background: rgba(0, 198, 141, 0.3);
     color: var(--bma-green-bright);
 }
 
@@ -472,7 +472,7 @@
 .search-input:focus {
     outline: none;
     border-color: var(--bma-green-bright);
-    box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 198, 141, 0.1);
     width: 100%;
 }
 
@@ -514,7 +514,7 @@
 .sort-select:focus {
     outline: none;
     border-color: var(--bma-green-bright);
-    box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 198, 141, 0.1);
 }
 
 /* Filter Summary */
@@ -563,7 +563,7 @@
 
 .tournament-card-full:hover {
     transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 50px rgba(0, 230, 118, 0.4);
+    box-shadow: 0 20px 50px rgba(0, 198, 141, 0.4);
 }
 
 .tournament-card-full:hover::before {
@@ -581,8 +581,8 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(0, 230, 118, 0.1);
-    border: 1px solid rgba(0, 230, 118, 0.3);
+    background: rgba(0, 198, 141, 0.1);
+    border: 1px solid rgba(0, 198, 141, 0.3);
     border-radius: 8px;
     padding: 0.4rem 0.8rem;
     font-size: 0.85rem;
@@ -689,9 +689,9 @@
 }
 
 .empty-icon {
-    color: rgba(0, 230, 118, 0.35);
+    color: rgba(0, 198, 141, 0.35);
     margin-bottom: 1.5rem;
-    filter: drop-shadow(0 0 12px rgba(0, 230, 118, 0.2));
+    filter: drop-shadow(0 0 12px rgba(0, 198, 141, 0.2));
 }
 
 .tournaments-empty h3 {
@@ -963,7 +963,7 @@
     border-color: var(--bma-green-bright);
     color: var(--bma-white);
     cursor: default;
-    box-shadow: 0 0 20px rgba(0, 230, 118, 0.4);
+    box-shadow: 0 0 20px rgba(0, 198, 141, 0.4);
 }
 
 .page-ellipsis {

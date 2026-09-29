@@ -90,7 +90,7 @@
             rgba(255,255,255,0.015) 2px,
             rgba(255,255,255,0.015) 4px
         ),
-        linear-gradient(135deg, rgba(0, 230, 118, 0.7) 0%, rgba(0, 0, 0, 0.85) 100%),
+        linear-gradient(135deg, rgba(0, 198, 141, 0.7) 0%, rgba(0, 0, 0, 0.85) 100%),
         linear-gradient(45deg, rgba(255, 215, 0, 0.15) 0%, rgba(220, 20, 60, 0.1) 100%);
     z-index: 1;
 }
@@ -165,15 +165,14 @@
     margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
 }
 
+/* Headline: the shared .home-hero-title text block, centred and sized like
+   the old Text-Hero image was. The block keeps the image's aspect ratio so
+   the type scales with the width via container units. */
 .download-title-img {
     width: clamp(260px, 50vw, 720px);
-    height: auto;
-    display: block;
     margin: 0 auto;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-user-drag: none;
-    pointer-events: none;
+    justify-content: center;
+    text-align: center;
 }
 
 /* Phone Mockup (small, centered within left side).
@@ -259,8 +258,8 @@
     width: 20px;
     height: 20px;
     margin-top: 2px;
-    color: var(--bma-green-bright, #00E676);
-    filter: drop-shadow(0 0 6px rgba(0, 230, 118, 0.5));
+    color: var(--bma-green-bright, #00C68D);
+    filter: drop-shadow(0 0 6px rgba(0, 198, 141, 0.5));
 }
 
 /* Right Side: QR Code (large, full side) */
@@ -270,13 +269,23 @@
     justify-content: center;
 }
 
+/* Full lockup above the QR code. */
+.qr-logo {
+    display: block;
+    width: min(82%, 340px);
+    height: auto;
+    margin: 0 auto clamp(1rem, 2vw, 1.5rem);
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+}
 .qr-code-container {
     text-align: center;
     background: rgba(10, 10, 10, 0.7);
     backdrop-filter: blur(20px);
     border: 2px solid rgba(46, 139, 87, 0.3);
     border-radius: 30px;
-    padding: clamp(3rem, 6vw, 5rem) clamp(3rem, 6vw, 4.5rem);
+    padding: clamp(1.75rem, 3vw, 2.25rem) clamp(1.75rem, 3.5vw, 2.5rem) clamp(1.75rem, 3vw, 2.25rem);
     box-shadow:
         0 20px 60px rgba(0, 0, 0, 0.5),
         0 0 40px rgba(46, 139, 87, 0.2),
@@ -309,13 +318,6 @@
     letter-spacing: -0.02em;
 }
 
-.qr-logo {
-    width: clamp(120px, 20vw, 180px);
-    height: auto;
-    display: block;
-    margin: 0 auto clamp(1.25rem, 2.5vw, 2rem);
-}
-
 .qr-code-placeholder {
     width: clamp(280px, 55vw, 400px);
     height: clamp(280px, 55vw, 400px);
@@ -336,9 +338,9 @@
 }
 
 .qr-instruction {
-    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
     color: rgba(255, 255, 255, 0.85);
-    margin: 0;
+    margin: clamp(1rem, 2vw, 1.5rem) 0 0;
     font-weight: 600;
 }
 
@@ -352,7 +354,7 @@
 /* Store badge (Apple's black badge, sized to the block it sits in) */
 .store-badge { display: inline-block; line-height: 0; }
 .store-badge img { height: clamp(44px, 5vw, 56px); width: auto; display: block; }
-.qr-code-container .store-badge { margin-top: clamp(1rem, 2.5vw, 1.5rem); }
+.qr-code-container .store-badge { margin-top: clamp(0.75rem, 1.5vw, 1rem); }
 .store-badge-mobile { margin-bottom: 1rem; }
 .store-badge-mobile img { height: 52px; }
 

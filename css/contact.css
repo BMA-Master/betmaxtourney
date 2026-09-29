@@ -23,17 +23,6 @@
     text-align: center;
 }
 
-.contact-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    color: var(--bma-green-bright);
-    font-size: 0.78rem;
-    font-weight: 900;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-}
 
 .contact-heading h1 {
     margin: 0;

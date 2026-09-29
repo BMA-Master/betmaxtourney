@@ -270,7 +270,7 @@
     inset: 12px;
     border-radius: 26px;
     background:
-        repeating-linear-gradient(135deg, rgba(0, 230, 118, 0.06) 0 12px, rgba(255, 215, 0, 0.04) 12px 24px),
+        repeating-linear-gradient(135deg, rgba(0, 198, 141, 0.06) 0 12px, rgba(255, 215, 0, 0.04) 12px 24px),
         linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
     display: flex;
     align-items: center;
@@ -448,7 +448,7 @@
     background-color: var(--bma-dark-100);
     background-image:
         linear-gradient(180deg, rgba(8, 8, 8, 0.94) 0%, rgba(12, 12, 12, 0.78) 50%, rgba(8, 8, 8, 0.94) 100%),
-        linear-gradient(135deg, rgba(0, 230, 118, 0.1) 0%, transparent 45%, rgba(255, 215, 0, 0.08) 100%),
+        linear-gradient(135deg, rgba(0, 198, 141, 0.1) 0%, transparent 45%, rgba(255, 215, 0, 0.08) 100%),
         url('https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=3000&auto=format');
     background-size: cover, cover, cover;
     background-position: center, center, center;
@@ -706,14 +706,14 @@
     object-fit: contain;
     filter:
         drop-shadow(0 12px 24px rgba(0, 0, 0, 0.55))
-        drop-shadow(0 0 18px rgba(0, 230, 118, 0.18));
+        drop-shadow(0 0 18px rgba(0, 198, 141, 0.18));
     transition: filter 0.3s ease;
     -webkit-user-drag: none;
 }
 .pools-mode-card:hover .pools-mode-card-badge {
     filter:
         drop-shadow(0 14px 28px rgba(0, 0, 0, 0.6))
-        drop-shadow(0 0 26px rgba(0, 230, 118, 0.35))
+        drop-shadow(0 0 26px rgba(0, 198, 141, 0.35))
         drop-shadow(0 0 16px rgba(255, 215, 0, 0.2));
 }
 
@@ -800,7 +800,7 @@
     padding: 0 clamp(1rem, 4vw, 2rem) 1rem;
     scroll-snap-type: x mandatory;
     scrollbar-width: thin;
-    scrollbar-color: rgba(0, 230, 118, 0.4) transparent;
+    scrollbar-color: rgba(0, 198, 141, 0.4) transparent;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -809,7 +809,7 @@
 }
 
 .pools-modes-scroll::-webkit-scrollbar-thumb {
-    background: rgba(0, 230, 118, 0.4);
+    background: rgba(0, 198, 141, 0.4);
     border-radius: 3px;
 }
 
@@ -831,13 +831,13 @@
 
 .pools-mode-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(0, 230, 118, 0.3);
+    border-color: rgba(0, 198, 141, 0.3);
 }
 
 .pools-mode-poster {
     aspect-ratio: 3 / 4;
     background:
-        linear-gradient(135deg, rgba(0, 230, 118, 0.15) 0%, rgba(255, 215, 0, 0.08) 100%),
+        linear-gradient(135deg, rgba(0, 198, 141, 0.15) 0%, rgba(255, 215, 0, 0.08) 100%),
         repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.02) 0 12px, transparent 12px 24px),
         #0a0a0a;
     display: flex;
@@ -874,9 +874,9 @@
 }
 
 .pools-mode-tag-free {
-    background: rgba(0, 230, 118, 0.15);
+    background: rgba(0, 198, 141, 0.15);
     color: var(--bma-green-bright);
-    border: 1px solid rgba(0, 230, 118, 0.4);
+    border: 1px solid rgba(0, 198, 141, 0.4);
 }
 
 .pools-mode-tag-bet-boss {
@@ -1141,10 +1141,7 @@
 }
 
 .pools-tier-bet-boss .pools-tier-header h3 {
-    background: linear-gradient(135deg, var(--bma-green-bright), var(--bma-yellow));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--bma-impact);
 }
 
 .pools-tier-tagline {
@@ -1279,7 +1276,7 @@
 }
 
 .pools-faq-item[open] {
-    border-color: rgba(0, 230, 118, 0.3);
+    border-color: rgba(0, 198, 141, 0.3);
 }
 
 .pools-faq-item summary {
@@ -1416,7 +1413,7 @@
 .pools-journey-chip {
     font-family: var(--font-display); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
     color: var(--bma-green-bright); padding: 0.35rem 0.7rem; border-radius: 999px;
-    border: 1px solid rgba(0, 230, 118, 0.35); background: rgba(0, 230, 118, 0.06); white-space: nowrap;
+    border: 1px solid rgba(0, 198, 141, 0.35); background: rgba(0, 198, 141, 0.06); white-space: nowrap;
 }
 .pools-journey-chip--y { color: var(--bma-white); border-color: rgba(255, 255, 255, 0.25); background: rgba(255, 255, 255, 0.05); }
 
@@ -1440,6 +1437,6 @@
     display: inline-flex; align-items: center; gap: 0.35rem;
     font-family: var(--font-display); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
     color: var(--bma-green-bright); padding: 0.32rem 0.7rem; border-radius: 999px;
-    border: 1px dashed rgba(0, 230, 118, 0.5); background: rgba(0, 230, 118, 0.06); white-space: nowrap;
+    border: 1px dashed rgba(0, 198, 141, 0.5); background: rgba(0, 198, 141, 0.06); white-space: nowrap;
 }
 .pjp-invite svg { width: 14px; height: 14px; }

@@ -20,8 +20,8 @@ var BMT=(function(l){"use strict";class f{constructor(){this._theme="dark",this.
     }
 
     @keyframes bma-glow-pulse {
-      0%, 100% { box-shadow: var(--status-live-glow, 0 0 8px rgba(0,230,118,0.2)); }
-      50% { box-shadow: 0 0 16px rgba(0,230,118,0.4); }
+      0%, 100% { box-shadow: var(--status-live-glow, 0 0 8px rgba(0, 198, 141,0.2)); }
+      50% { box-shadow: 0 0 16px rgba(0, 198, 141,0.4); }
     }
 
     @keyframes bma-fadeIn {
@@ -266,7 +266,7 @@ var BMT=(function(l){"use strict";class f{constructor(){this._theme="dark",this.
         .tc-tag__status { display: inline-flex; align-items: center; gap: 5px; }
         .tc-tag__dot { width: 6px; height: 6px; border-radius: 50%; flex: 0 0 auto; }
         .tc-tag--open .tc-tag__status { color: #4dffa0; }
-        .tc-tag--open .tc-tag__dot { background: #00E676; box-shadow: 0 0 6px rgba(0, 230, 118, 0.85); }
+        .tc-tag--open .tc-tag__dot { background: #00C68D; box-shadow: 0 0 6px rgba(0, 198, 141, 0.85); }
         .tc-tag--live .tc-tag__status { color: #ffd84d; }
         .tc-tag--live .tc-tag__dot { background: #F7C60D; animation: tc-tag-pulse 1.6s ease-out infinite; }
         .tc-tag--done .tc-tag__status { color: #c4c8cc; }
@@ -522,7 +522,7 @@ var BMT=(function(l){"use strict";class f{constructor(){this._theme="dark",this.
         }
 
         .btn-join {
-          background: linear-gradient(135deg, rgb(var(--join-btn-start-rgb, var(--brand-accent-rgb, 0, 230, 118))) 0%, rgb(var(--join-btn-end-rgb, var(--brand-accent-2-rgb, 247, 198, 13))) 100%);
+          background: linear-gradient(135deg, rgb(var(--join-btn-start-rgb, var(--brand-accent-rgb, 0, 198, 141))) 0%, rgb(var(--join-btn-end-rgb, var(--brand-accent-2-rgb, 247, 198, 13))) 100%);
           color: var(--join-btn-fg, #000);
           display: none;
           position: relative;
@@ -556,7 +556,7 @@ var BMT=(function(l){"use strict";class f{constructor(){this._theme="dark",this.
         }
 
         .btn-join:hover {
-          background: linear-gradient(135deg, color-mix(in srgb, rgb(var(--join-btn-start-rgb, var(--brand-accent-rgb, 0, 230, 118))) 88%, #fff) 0%, color-mix(in srgb, rgb(var(--join-btn-end-rgb, var(--brand-accent-2-rgb, 247, 198, 13))) 88%, #fff) 100%);
+          background: linear-gradient(135deg, color-mix(in srgb, rgb(var(--join-btn-start-rgb, var(--brand-accent-rgb, 0, 198, 141))) 88%, #fff) 0%, color-mix(in srgb, rgb(var(--join-btn-end-rgb, var(--brand-accent-2-rgb, 247, 198, 13))) 88%, #fff) 100%);
           transform: translateY(-1px);
           box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 3px 6px rgba(0, 0, 0, 0.2);
         }
@@ -699,7 +699,7 @@ neodigm-marquee pre { color: var( --app-core-color--yellow-1__dark--brand ) !imp
           height: 100%;
           border-radius: var(--progress-radius, var(--radius-sm, 4px));
           animation: fillProgress 3.2s ease-in forwards;
-          background: linear-gradient(90deg, #00E676 0%, #00E676 50%, #00E676 100%);
+          background: linear-gradient(90deg, #00C68D 0%, #00C68D 50%, #00C68D 100%);
           background-size: 200% 100%;
           position: relative;
         }
@@ -816,7 +816,7 @@ neodigm-juicebar[data-n55-show="false"] { visibility: hidden; }
            at the seam and fades upward; the top stays dark. */
         :host([data-bma-tourn-class="UPCOMING"]) .tc-burst {
           background:
-            radial-gradient(125% 105% at 50% 104%, var(--card-tint-upcoming, rgba(0, 230, 118, 0.40)) 0%, rgba(0, 230, 118, 0.11) 46%, transparent 78%),
+            radial-gradient(125% 105% at 50% 104%, var(--card-tint-upcoming, rgba(0, 198, 141, 0.40)) 0%, rgba(0, 198, 141, 0.11) 46%, transparent 78%),
             var(--card-bg, #181818);
         }
         :host([data-bma-tourn-class="LOCKED"]) .tc-burst {

@@ -75,14 +75,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Use a negative delay based on epoch time so the animation
     // picks up at a consistent position across page navigations
     // and avoids the iOS first-interaction jutter.
+    // Speed is a fixed px/sec (not a fixed duration), so the ticker reads at
+    // the same pace whatever the track width or viewport. The phase offset
+    // keeps every page load in step.
     function syncMarqueeAnimation() {
         var track = document.getElementById('marquee-track');
         if (!track) return;
-        var duration = 115; // matches CSS animation duration
+        var halfWidth = track.scrollWidth / 2;
+        var pxPerSec = window.innerWidth <= 768 ? 40 : 65;
+        var duration = halfWidth > 0 ? halfWidth / pxPerSec : 115;
+        track.style.animationDuration = duration.toFixed(1) + 's';
         var offset = (Date.now() / 1000) % duration;
         track.style.animationDelay = '-' + offset.toFixed(2) + 's';
     }
     syncMarqueeAnimation();
+    window.addEventListener('resize', syncMarqueeAnimation);
 
     // ===== Recent Winners bento marquee — clone children for seamless loop =====
     const winnersTrack = document.querySelector('[data-winners-track]');
@@ -151,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const halfWidth = track.scrollWidth / 2;
             if (halfWidth <= 0) return;
             const isMobile = window.innerWidth <= 768;
-            const targetPxPerSec = isMobile ? 35 : 55;
+            const targetPxPerSec = isMobile ? 26 : 45;
             const duration = halfWidth / targetPxPerSec;
             track.style.animationDuration = duration.toFixed(1) + 's';
         };
@@ -474,22 +481,19 @@ document.addEventListener('DOMContentLoaded', function() {
                             variant: 'marquee',
                             labelOverride: labelOverride
                         });
-                        if (index < sports.length - 1) {
-                            sportsHTML += '<span class="marquee-separator">•</span>';
-                        }
                     });
                 }
 
                 const metaParts = [];
                 if (countdown) metaParts.push(countdown);
                 if (sportsHTML) metaParts.push(sportsHTML);
-                const metaHTML = metaParts.join('<span class="marquee-separator">•</span>');
+                const metaHTML = metaParts.join('');
 
                 marqueeHTML += `
                     <div class="marquee-item" ${startDate ? `data-start-time="${startDate.toISOString()}"` : ''}>
                         <span class="marquee-status ${statusClass}">${statusText}</span>
                         <span class="marquee-item-title">${title}</span>
-                        ${metaHTML ? `<span class="marquee-meta-divider">•</span><span class="marquee-item-meta">${metaHTML}</span>` : ''}
+                        ${metaHTML ? `<span class="marquee-item-meta">${metaHTML}</span>` : ''}
                     </div>
                 `;
             });
@@ -2992,6 +2996,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, { threshold: 0.35 });
     io.observe(card);
+});
+
+// ============================================================================
+// BET MAX POOLS HEADLINE - three phrases rise in, staggered, on scroll-in
+// ============================================================================
+document.addEventListener('DOMContentLoaded', function() {
+    var title = document.querySelector('[data-pools-title]');
+    if (!title) return;
+    if (!('IntersectionObserver' in window)) { title.classList.add('is-in'); return; }
+    var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (!entry.isIntersecting) return;
+            title.classList.add('is-in');
+            io.disconnect();
+        });
+    }, { threshold: 0.6 });
+    io.observe(title);
 });
 
 // ============================================================================
