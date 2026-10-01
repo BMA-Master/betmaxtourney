@@ -1,0 +1,236 @@
+{
+  "schemaVersion": 1,
+  "product": "bet-max-tourney",
+  "experience": "redesign",
+  "target": "web",
+  "builtAt": "2026-10-01T22:41:19.155Z",
+  "mode": "production",
+  "base": "/app/",
+  "apiOrigin": "https://machfive-bmacdev-rest.onrender.com",
+  "core": {
+    "commit": "be6396648b5bde65ca6cf99fef9b486858fce1ba",
+    "dirty": true,
+    "sourceSha256": "7137a83bda08119ff668d4c654b9b2c56c535938d7ff771369e683ec1c6922af",
+    "sourceFileCount": 323
+  },
+  "toolchain": {
+    "node": "v25.6.1"
+  },
+  "assets": [
+    {
+      "path": "assets/SportMarkets-C37he7Ah.js",
+      "bytes": 1406,
+      "sha256": "bdbb3596dce16775a920a3357fef962bf9c09d967e9b26200447668360977e33"
+    },
+    {
+      "path": "assets/bet-max-tourney-icon-CKr3UzUb.png",
+      "bytes": 78516,
+      "sha256": "4ebb9c2ee0f8dadedf4e06506841cbb79b6e57daa714700682682fbb87ca5558"
+    },
+    {
+      "path": "assets/bet-max-tourney-white-DStj3FLU.png",
+      "bytes": 105010,
+      "sha256": "b9eef363d80919223548da5b3052c98b6e16ed046b42c77a238fdf4e75207c11"
+    },
+    {
+      "path": "assets/bg-arrows-960-Bpu2XFzi.webp",
+      "bytes": 25080,
+      "sha256": "69ade16738295287f1a2f824bf8eaaf7bb3989d00ced3e1f8804419bd66125f7"
+    },
+    {
+      "path": "assets/bg-arrows-WloBxKVo.webp",
+      "bytes": 274282,
+      "sha256": "bf8b25165c045df58c04f75a0b18333505ec1a07f5d430eff91279f1d820ce74"
+    },
+    {
+      "path": "assets/bg-basketball-court-960-C2a-SQFj.webp",
+      "bytes": 186040,
+      "sha256": "24ad0380045cabe768ee7d13da85cb35393303fada0972f17df044412c176688"
+    },
+    {
+      "path": "assets/bg-basketball-court-DNKMdJtC.webp",
+      "bytes": 525954,
+      "sha256": "b5842968257a77a0cfe0bf72d8dd7c2783dd3e32a154915fc05be6bf9d08a748"
+    },
+    {
+      "path": "assets/bg-black-960-DYH7JNkt.webp",
+      "bytes": 21116,
+      "sha256": "a5b39940f31f14fb0225b0084f0d6c7c8a8f6eeb2f3c33aa1107c5d096e12115"
+    },
+    {
+      "path": "assets/bg-black-zKkoG3MC.webp",
+      "bytes": 287818,
+      "sha256": "b287ec51bd39c843873b2c7b327e841af10151530aedacad82fef71715bb2bde"
+    },
+    {
+      "path": "assets/bg-football-field-960-D_FXxQGh.webp",
+      "bytes": 363928,
+      "sha256": "107b39d921c15ae272a6f64db3391f0e0ecb700fc9e26ab7c5532911661423b2"
+    },
+    {
+      "path": "assets/bg-football-field-jR73HZwy.webp",
+      "bytes": 794840,
+      "sha256": "da19c0f8764eb82e88040bb687cb77f5315b7c79e4343a4573c37b855d07343a"
+    },
+    {
+      "path": "assets/bg-green-960-DzE1_Q1W.webp",
+      "bytes": 23402,
+      "sha256": "2203c8f7262e8dccb50ef9fb4d2eb653fccdac3e54a72d13991df6ae6d383eec"
+    },
+    {
+      "path": "assets/bg-green-cy5hkNP-.webp",
+      "bytes": 270812,
+      "sha256": "c557061d53205fd148e9c3d1f1ad04ef9631fd1b8aa9828360a7bb05f0bff81a"
+    },
+    {
+      "path": "assets/bg-td-960-BgjYFbDu.webp",
+      "bytes": 29266,
+      "sha256": "a3f8e5fe39aef65f84d105ac9922971223c196398c2018c87e91dcfd8599fcbe"
+    },
+    {
+      "path": "assets/bg-td-Bq9GFkVs.webp",
+      "bytes": 315478,
+      "sha256": "a715be0b6a43bdadad680dd46be087f39f5a2d7be438485d1e2242ff450a7b14"
+    },
+    {
+      "path": "assets/bg-trophies-960-BAm9FT52.webp",
+      "bytes": 30582,
+      "sha256": "7a213e709315c387b0ce7f80355ae5521908b4fafc3fc2ff707bf1cf272267ae"
+    },
+    {
+      "path": "assets/bg-trophies-Bge8WNXJ.webp",
+      "bytes": 315930,
+      "sha256": "ff0f62a566385d4b453005a50ced7ed52e7c21049041b2e0736d72af06b4d728"
+    },
+    {
+      "path": "assets/bracket-Blqvq4o2.png",
+      "bytes": 119408,
+      "sha256": "9bddd3f04bc014a81570f397d639b4872fa77c2fb15c4415c290116e278932c3"
+    },
+    {
+      "path": "assets/create-pool-social-D5ulzGf6.png",
+      "bytes": 2451600,
+      "sha256": "1437020c1b19e6de1dafae7ed2bac793d333e6f5a323c4360f1127080f3e0d94"
+    },
+    {
+      "path": "assets/index-BNjE4RnH.css",
+      "bytes": 1125805,
+      "sha256": "07a868cf636c7e0f377527b150164b257e6d44227420f6435f5a23f06580147f"
+    },
+    {
+      "path": "assets/index-DDZDw2rh.js",
+      "bytes": 1579978,
+      "sha256": "12290dc75aa2f8f43a513fc082e41bb4ad98bf8cc2cc1da17408d78dcc8f287b"
+    },
+    {
+      "path": "assets/longshot-nStVytf3.png",
+      "bytes": 220188,
+      "sha256": "aa9d9413d20c35ef7d63b0fa81823d7253433998f1fbef417fe1f794309c87cf"
+    },
+    {
+      "path": "assets/oneshot-CbvMBzFw.png",
+      "bytes": 199720,
+      "sha256": "26abb92c6878d8fb89988bd73a4e276ba998d6da4262b4d3795959b0968930b4"
+    },
+    {
+      "path": "assets/squads-JaAW7Lft.png",
+      "bytes": 287289,
+      "sha256": "99d485e8e416996a2263607bced595912bc380e9f220f67f60b61b5ee06b89eb"
+    },
+    {
+      "path": "assets/streaks-BwwqRf0g.png",
+      "bytes": 301749,
+      "sha256": "a81cd92278d27e676156644c8c824c95929e743cdf6df055db4b297f6605b5a5"
+    },
+    {
+      "path": "assets/survivor-BKwyYA7J.png",
+      "bytes": 319266,
+      "sha256": "ba08773e6512abe8b54db6a0fb9eb6b9f4773da7909d0a30023c8f44b775ff12"
+    },
+    {
+      "path": "assets/td-dollar-DKm2wMe7.webp",
+      "bytes": 145714,
+      "sha256": "3b5fe2f926222817cfd3221adf7e810969706e2c09c6061d4b257b8fcc8ab987"
+    },
+    {
+      "path": "assets/tourney-CIs4R5tl.png",
+      "bytes": 170715,
+      "sha256": "e8e70067758d70cc9c6083b0566bac99042c2eb15a605799776b2fcccd8cb8db"
+    },
+    {
+      "path": "favicon.ico",
+      "bytes": 4286,
+      "sha256": "db74ab0b78338c1f778f8398c45f4103c99aea0e845a3118a7750b4eeafd3445"
+    },
+    {
+      "path": "img/favicon.ico",
+      "bytes": 15406,
+      "sha256": "55ce5f5d692bd4265c9621195e42ca971f54789b261f3e470eb45bee7f06dbfe"
+    },
+    {
+      "path": "img/icons/apple-touch-icon.png",
+      "bytes": 11207,
+      "sha256": "74f22615f81c1378992eff9681a0e1dd5336d99606c1c201fc45f1c0159bc94d"
+    },
+    {
+      "path": "img/icons/icon-192.png",
+      "bytes": 12194,
+      "sha256": "22e6b7021d49da0f86036ff91f44319d89cf575c8e34ecbc3bea3b10b7bf5da1"
+    },
+    {
+      "path": "img/icons/icon-512-maskable.png",
+      "bytes": 25733,
+      "sha256": "c5bd58c92c5326fcf724afbee32c813b6675ff094332772526bfc6a99f845137"
+    },
+    {
+      "path": "img/icons/icon-512.png",
+      "bytes": 31740,
+      "sha256": "23202c2862b8fa119605cc84fe46277771da44695a823d04d7830e8566242af5"
+    },
+    {
+      "path": "img/sport_splash_1.jpg",
+      "bytes": 5019220,
+      "sha256": "94e5c2b1e367d0b5631da19b080237e72db7c6a6876331b98618276f170defa8"
+    },
+    {
+      "path": "img/sport_splash_2.jpg",
+      "bytes": 90393,
+      "sha256": "f7da18f058d61e443ce9432fb9c2ccdf367819a6b055d92ebaf992f2cc9cdf6e"
+    },
+    {
+      "path": "img/sport_splash_3.jpg",
+      "bytes": 611543,
+      "sha256": "52397f69d5afe1f86ffe5b1009f1c516e2bcc3acb16cedb5c8c82abb48eb7174"
+    },
+    {
+      "path": "img/sport_splash_4.jpg",
+      "bytes": 780380,
+      "sha256": "a1cc629de421e5a25863affbf8414fddcb8dd4e66c15e41b88194364df415e7f"
+    },
+    {
+      "path": "img/sport_splash_5.jpg",
+      "bytes": 1122653,
+      "sha256": "71681af58bf2e3653312a166a45333cecd7f18f6df83cf8759c308c35d5ac0dc"
+    },
+    {
+      "path": "img/sport_splash_6.jpg",
+      "bytes": 1027036,
+      "sha256": "402396cc209e1b92e55fbb7c5052de4ddc66e76e8fcc7459ae80a9df260da1ed"
+    },
+    {
+      "path": "index.html",
+      "bytes": 2929,
+      "sha256": "9ae78b9e1b2bc540eeede4f16eb433407cdd09cf17eef788229d8cd70eb1257d"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "bytes": 554,
+      "sha256": "49a1c5ff3e21c7c2374e354d314e84376c37c6f82bb2d6a4fb21e04aada6e2ab"
+    },
+    {
+      "path": "unregister-sw.js",
+      "bytes": 830,
+      "sha256": "80625704f3ea8b2cd2b2ff953142cc0ed609d84277d4273656f6940a0ef60b0f"
+    }
+  ]
+}
