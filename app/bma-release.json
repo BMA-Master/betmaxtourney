@@ -3,14 +3,14 @@
   "product": "bet-max-tourney",
   "experience": "redesign",
   "target": "web",
-  "builtAt": "2026-10-01T22:41:19.155Z",
+  "builtAt": "2026-10-02T00:14:55.598Z",
   "mode": "production",
   "base": "/app/",
   "apiOrigin": "https://machfive-bmacdev-rest.onrender.com",
   "core": {
     "commit": "be6396648b5bde65ca6cf99fef9b486858fce1ba",
     "dirty": true,
-    "sourceSha256": "7137a83bda08119ff668d4c654b9b2c56c535938d7ff771369e683ec1c6922af",
+    "sourceSha256": "e8f059c1a043899c814e9f76580306bdd1c81074452ee76c6fafc08901e1511a",
     "sourceFileCount": 323
   },
   "toolchain": {
@@ -118,9 +118,9 @@
       "sha256": "07a868cf636c7e0f377527b150164b257e6d44227420f6435f5a23f06580147f"
     },
     {
-      "path": "assets/index-DDZDw2rh.js",
-      "bytes": 1579978,
-      "sha256": "12290dc75aa2f8f43a513fc082e41bb4ad98bf8cc2cc1da17408d78dcc8f287b"
+      "path": "assets/index-ClxK-yyQ.js",
+      "bytes": 1579973,
+      "sha256": "3d92348441f62b6e87cc1b50f6496a3e173bf992a5a1370c4acf24c161ef41db"
     },
     {
       "path": "assets/longshot-nStVytf3.png",
@@ -220,7 +220,7 @@
     {
       "path": "index.html",
       "bytes": 2929,
-      "sha256": "9ae78b9e1b2bc540eeede4f16eb433407cdd09cf17eef788229d8cd70eb1257d"
+      "sha256": "69f194cea066dd7dcc695d6470dca68c44d124b2799fdbae356d00110e69aa47"
     },
     {
       "path": "manifest.webmanifest",
