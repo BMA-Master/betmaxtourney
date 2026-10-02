@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.betmaxtourney.app",
+      "sha256_cert_fingerprints": [
+        "B4:73:FB:8F:E3:42:18:80:A3:36:9C:6F:65:DA:AA:8D:4C:AD:96:6C:5F:D8:6C:44:C3:A7:5B:6C:08:75:D5:7E"
+      ]
+    }
+  }
+]
