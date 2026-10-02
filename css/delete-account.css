@@ -1,0 +1,52 @@
+/* Account deletion: a dedicated service page, with one inline Magnet. */
+.deletion-page {
+    position: relative;
+    z-index: 2;
+    background: var(--bma-dark-200, #141414);
+    padding: clamp(2.5rem, 5vw, 4.5rem) 0;
+}
+.deletion-container {
+    max-width: 1180px;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+.deletion-heading { max-width: 780px; margin-bottom: 2rem; }
+.deletion-eyebrow {
+    color: var(--bma-green-bright, #00e676);
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin: 0 0 .75rem;
+}
+.deletion-heading h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4.2vw, 3rem);
+    line-height: 1.12;
+    letter-spacing: -.035em;
+    text-wrap: balance;
+}
+.deletion-intro { max-width: 62ch; margin: 1rem 0 0; color: #c6c6c6; line-height: 1.65; }
+.deletion-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; align-items: start; }
+.deletion-request, .deletion-options { min-width: 0; }
+.deletion-magnet { min-height: 600px; }
+.deletion-magnet [data-m5m-inline] { width: 100%; max-width: 780px; }
+.deletion-fallback { margin: 1rem 0 0; font-size: .875rem; line-height: 1.6; color: #b6b6b6; }
+.deletion-page a { color: var(--bma-green-bright, #00e676); text-underline-offset: .2em; overflow-wrap: anywhere; }
+.deletion-page a:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
+.deletion-options { display: grid; gap: 1.5rem; }
+.deletion-option { padding: 1.5rem; border: 1px solid #333; border-radius: 16px; background: #1a1a1a; }
+.deletion-option h2 { font-size: 1.125rem; margin: 0 0 .85rem; line-height: 1.35; }
+.deletion-option p, .deletion-option li { color: #c6c6c6; font-size: .9375rem; line-height: 1.65; }
+.deletion-option p + p { margin-top: .75rem; }
+.deletion-option ol { margin: .75rem 0 1.25rem; padding-left: 1.2rem; }
+.deletion-option li + li { margin-top: .6rem; }
+.deletion-option strong { color: #efefef; font-weight: 600; }
+.deletion-settings { display: inline-flex; align-items: center; gap: .75rem; min-height: 44px; font-size: .9375rem; font-weight: 600; }
+.deletion-details { margin-top: 2.5rem; border-top: 1px solid #333; padding-top: 2rem; }
+.deletion-details h2 { font-size: 1.5rem; margin: 0 0 1rem; }
+.deletion-details p { max-width: 84ch; margin: 0 0 1rem; color: #c6c6c6; line-height: 1.75; }
+.deletion-details strong { color: #efefef; }
+@media (min-width: 960px) {
+    .deletion-grid { grid-template-columns: minmax(0, 2fr) minmax(270px, 1fr); }
+}
