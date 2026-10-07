@@ -113,14 +113,14 @@
       "sha256": "1437020c1b19e6de1dafae7ed2bac793d333e6f5a323c4360f1127080f3e0d94"
     },
     {
-      "path": "assets/index-BNjE4RnH.css",
-      "bytes": 1125805,
-      "sha256": "07a868cf636c7e0f377527b150164b257e6d44227420f6435f5a23f06580147f"
+      "path": "assets/index-mobile-cc385d466b1d.css",
+      "bytes": 1126783,
+      "sha256": "cc385d466b1d3da202fa46f8fe8817ff5c9fa097b8c1a7f36dff15bdacefe183"
     },
     {
-      "path": "assets/index-DeIm9Uvz.js",
-      "bytes": 1581895,
-      "sha256": "22218ebb2e586bf649984ef80ae79816c7dd68c3c9edec49a5d7add8298b8e5e"
+      "path": "assets/index-mobile-c785d0e9369e.js",
+      "bytes": 1587785,
+      "sha256": "c785d0e9369e003ab0fc758b12fc13b0fae36b2790cfa8b24af75e193b0a7a3c"
     },
     {
       "path": "assets/longshot-nStVytf3.png",
@@ -219,8 +219,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 2929,
-      "sha256": "12ba29f225a74486afc92893d140c8a401d2896543005e29d0a2575c46ac966a"
+      "bytes": 2951,
+      "sha256": "7e69cbdba2596db3684cc54e6ae8fd07ea96d782429a3aafa2b54b44faeb6fe0"
     },
     {
       "path": "manifest.webmanifest",
@@ -232,5 +232,28 @@
       "bytes": 830,
       "sha256": "80625704f3ea8b2cd2b2ff953142cc0ed609d84277d4273656f6940a0ef60b0f"
     }
-  ]
+  ],
+  "hotfix": {
+    "id": "2026-10-07-invites-keyboard",
+    "baseSiteCommit": "7423b0194fd88412244f70cb794d2b84b909ffaf",
+    "sourceFixCommit": "6e0e2e0864868c4bb722d0fcd1e5cdc37a1a4ee3",
+    "apiCommit": "0d08720",
+    "method": "Guarded patch of deployed assets; preserves uncommitted production Back navigation changes.",
+    "changes": [
+      "visual viewport owner",
+      "keyboard scroller",
+      "remove hidden autofocus",
+      "dismiss keyboard on collapse",
+      "all presentations track viewport",
+      "filter invitation pushes",
+      "filter inbox snapshot",
+      "lifecycle push pruning",
+      "prune before rendering",
+      "badges update without inbox DOM",
+      "accept preflight",
+      "specific failure and terminal cleanup",
+      "foreground and periodic refresh",
+      "accurate date label"
+    ]
+  }
 }
