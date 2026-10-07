@@ -118,9 +118,9 @@
       "sha256": "cc385d466b1d3da202fa46f8fe8817ff5c9fa097b8c1a7f36dff15bdacefe183"
     },
     {
-      "path": "assets/index-mobile-1826cfe3a6b5.js",
-      "bytes": 1596856,
-      "sha256": "1826cfe3a6b54c3b01b3825bbf5621b244a25fc2c2cd88583bf4ab22c51de19f"
+      "path": "assets/index-mobile-133b6c229991.js",
+      "bytes": 1596970,
+      "sha256": "133b6c229991d8605cf63798652cf9a85ac049709d18b0722ddfdf68d3bcd76d"
     },
     {
       "path": "assets/longshot-nStVytf3.png",
@@ -234,24 +234,19 @@
     }
   ],
   "hotfix": {
-    "id": "2026-10-07-quiet-cards",
-    "baseSiteCommit": "b7bfc2884a98b13e373b8aa0e25450bda614654b",
-    "sourceFixCommit": "741d550cb9e8960ea985f7d4f52ca62231410fe8",
-    "method": "Guarded AST patch of deployed asset; preserves existing navigation, invitation, and keyboard fixes.",
+    "id": "2026-10-07-play-label",
+    "baseSiteCommit": "0a95e0a165f1e2cc9826d5e41ce9dca4269142d0",
+    "sourceFixCommit": "4778632866cf5d922181728fe17e0e000a901f9d",
     "changes": [
-      "Reconcile tournament grids by tournament identity",
-      "Patch card shadow contents without replacing unchanged elements",
-      "Batch changed attributes and preserve interaction state",
-      "Delegate rail controls to persistent grids",
-      "One home hydration per SSE message",
-      "Preserve independent copies in Featured, sport, and All Open collections"
+      "Play label for joined active tournament cards",
+      "Play label and PLAY destination on joined active tournament preview",
+      "View Results for completed tournament previews"
     ],
     "validation": [
-      "Desktop Chromium and 412px mobile Chromium: exact web bundle passed",
-      "Pixel 8 Android 16 emulator: exact web bundle passed",
-      "iOS bundled JavaScript passed in Chromium; native simulator build succeeded; no TestFlight upload"
-    ],
-    "revision": 2
+      "Existing core checks passed",
+      "Exact bundle label branches verified for web and iOS",
+      "Guarded copy/action replacements preserve prior fixes"
+    ]
   },
   "hotfixHistory": [
     {
@@ -276,6 +271,26 @@
         "foreground and periodic refresh",
         "accurate date label"
       ]
+    },
+    {
+      "id": "2026-10-07-quiet-cards",
+      "baseSiteCommit": "b7bfc2884a98b13e373b8aa0e25450bda614654b",
+      "sourceFixCommit": "741d550cb9e8960ea985f7d4f52ca62231410fe8",
+      "method": "Guarded AST patch of deployed asset; preserves existing navigation, invitation, and keyboard fixes.",
+      "changes": [
+        "Reconcile tournament grids by tournament identity",
+        "Patch card shadow contents without replacing unchanged elements",
+        "Batch changed attributes and preserve interaction state",
+        "Delegate rail controls to persistent grids",
+        "One home hydration per SSE message",
+        "Preserve independent copies in Featured, sport, and All Open collections"
+      ],
+      "validation": [
+        "Desktop Chromium and 412px mobile Chromium: exact web bundle passed",
+        "Pixel 8 Android 16 emulator: exact web bundle passed",
+        "iOS bundled JavaScript passed in Chromium; native simulator build succeeded; no TestFlight upload"
+      ],
+      "revision": 2
     }
   ]
 }
