@@ -1615,3 +1615,15 @@ html {
 }
 
 
+
+/* Keep punctuation with the accented word at every heading breakpoint. */
+.htp-heading-word {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .htp-hero-visual {
+        display: none;
+    }
+}
