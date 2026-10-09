@@ -11222,7 +11222,13 @@ body.menu-open::before {
 
 /* Show both stores as independent, directly actionable download choices. */
 .store-card .store-badges { flex: 0 0 auto; flex-direction: column; }
-.app-bar-other { color: #b0e9d4; font-size: 0.72rem; margin-top: 0.2rem; width: fit-content; text-underline-offset: 2px; }
 @media (max-width: 768px) {
     .store-card .store-badges { flex-direction: row; width: 100%; }
+}
+
+@media (max-width: 380px) {
+    .app-bar { left: 0.5rem; right: 0.5rem; gap: 0.5rem; padding: 0.5rem; }
+    .app-bar-icon { width: 36px; height: 36px; }
+    .app-bar-title { font-size: 0.85rem; }
+    .app-bar-cta { padding-inline: 0.75rem; }
 }
