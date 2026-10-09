@@ -9884,6 +9884,31 @@ body.menu-open::before {
     max-width: 240px;
 }
 
+/* Unreleased modes show brand artwork, never an outdated app interface. */
+.home-modes-coming-soon {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+}
+.home-modes-coming-soon img {
+    width: min(100%, 280px);
+    height: 300px;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.4));
+}
+.home-modes-coming-soon span {
+    color: var(--bma-white);
+    font-family: var(--font-primary);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.65rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
 /* ===== Reusable hand-drawn flow stage =========================================
    Generic Splash-style backdrop: green diagonal pinstripes anchored top-right,
    yellow pinstripes bottom-left, both fading via a radial mask. Wrap any
@@ -10404,39 +10429,12 @@ body.menu-open::before {
     color: var(--bma-yellow);
 }
 
-/* Step 03: the real leaderboard capture with the journey module's trophy
-   podium set in front of it, so the app stays visible and the trophies read
-   as the payoff. The podium sits above the card fade. */
-.home-pools-step-podium { overflow: hidden; }
-.home-pools-podium {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -4px;
-    z-index: 2;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 0.6rem;
-    pointer-events: none;
-}
-.home-pools-step-shot .home-pools-trophy {
-    width: auto;
-    object-fit: contain;
-    filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.7));
-    transition: transform 0.35s ease;
-}
-@media (hover: hover) {
-    .home-pools-step:hover .home-pools-trophy-1 { transform: translateY(-6px); }
-}
-.home-pools-step-shot .home-pools-trophy-1 { height: 118px; }
-.home-pools-step-shot .home-pools-trophy-2 { height: 88px; }
-.home-pools-step-shot .home-pools-trophy-3 { height: 76px; }
-/* Deeper fade on this card so the podium sits on a solid base. */
-.home-pools-step-podium::after {
-    height: 130px;
-    background: linear-gradient(180deg, rgba(12, 12, 12, 0) 0%, rgba(12, 12, 12, 0.85) 55%, rgba(12, 12, 12, 0.98) 100%);
-}
+/* Frame the current mode picker and the app's own trophy podium in the
+   short homepage cards. Full phone captures remain intact elsewhere. */
+.home-pools-step-modes > img { object-position: center 40%; }
+.home-pools-step-podium > img { object-position: center 43%; }
+.home-pools-step-podium::after { height: 50px; }
+
 /* Format badges on a conveyor loop (the Pools page's badge-card treatment).
    main.js clones the track's children and translates it 0 to -50%; the
    keyframes below match the Pools page ones. Edge mask fades the ends. */

@@ -291,8 +291,8 @@
     width: calc(100% - 24px);
     height: calc(100% - 24px);
     border-radius: 26px;
-    object-fit: cover;
-    object-position: top center;
+    object-fit: contain;
+    object-position: center;
     user-select: none;
     -webkit-user-select: none;
     pointer-events: none;
