@@ -527,3 +527,5 @@
         transform: none;
     }
 }
+.qr-code-container .store-badges { margin-top: 1.25rem; }
+.download-mobile-cta .store-badges { margin-bottom: 1.25rem; }

@@ -11219,3 +11219,10 @@ body.menu-open::before {
         height: auto;
     }
 }
+
+/* Show both stores as independent, directly actionable download choices. */
+.store-card .store-badges { flex: 0 0 auto; flex-direction: column; }
+.app-bar-other { color: #b0e9d4; font-size: 0.72rem; margin-top: 0.2rem; width: fit-content; text-underline-offset: 2px; }
+@media (max-width: 768px) {
+    .store-card .store-badges { flex-direction: row; width: 100%; }
+}

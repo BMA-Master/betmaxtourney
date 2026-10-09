@@ -1,0 +1,17 @@
+.store-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+.store-download {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    min-height: 44px;
+    line-height: 0;
+    border-radius: 8px;
+}
+.store-download img { display: block; height: 44px; width: auto; }
+.store-download:focus-visible { outline: 3px solid #00c68d; outline-offset: 5px; }

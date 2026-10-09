@@ -2957,6 +2957,14 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     var bar = document.getElementById('app-bar');
     if (!bar) return;
+    var platform = window.BmtDownloads ? window.BmtDownloads.platform(navigator) : null;
+    var storeLink = platform && document.querySelector('.store-card [data-store="' + platform + '"]');
+    if (storeLink) {
+        var cta = bar.querySelector('.app-bar-cta');
+        cta.href = storeLink.href;
+        cta.setAttribute('aria-label', platform === 'android' ? 'Get Bet Max Tourney on Google Play' : 'Get Bet Max Tourney on the App Store');
+        bar.querySelector('.app-bar-sub').textContent = platform === 'android' ? 'Free on Google Play.' : 'Free on the App Store.';
+    }
     var key = 'bmt_app_bar_dismissed';
     var dismissed = false;
     try { dismissed = sessionStorage.getItem(key) === '1'; } catch (e) {}
