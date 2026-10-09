@@ -2962,8 +2962,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (storeLink) {
         var cta = bar.querySelector('.app-bar-cta');
         cta.href = storeLink.href;
-        cta.setAttribute('aria-label', platform === 'android' ? 'Get Bet Max Tourney on Google Play' : 'Get Bet Max Tourney on the App Store');
-        bar.querySelector('.app-bar-sub').textContent = platform === 'android' ? 'Free on Google Play.' : 'Free on the App Store.';
+        cta.setAttribute('aria-label', platform === 'android' ? 'Download Bet Max Tourney on Google Play' : 'Download Bet Max Tourney on the App Store');
     }
     var key = 'bmt_app_bar_dismissed';
     var dismissed = false;
