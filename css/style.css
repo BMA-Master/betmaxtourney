@@ -3127,6 +3127,55 @@ a.cta-button {
     position: relative;
 }
 
+/* Screenshot devices share the homepage bezel. Scale the corner radius with
+   the phone width and reserve full-height safe areas outside the app capture. */
+.phone-mockup:has(.screenshot-device) {
+    container-type: inline-size;
+}
+.screenshot-device {
+    height: auto;
+    padding: 3cqw;
+    border-radius: 13.5cqw;
+    transform: none;
+}
+.screenshot-device .hero-device-screen {
+    height: auto;
+    aspect-ratio: auto;
+    border-radius: 10.5cqw;
+    container-type: inline-size;
+}
+.screenshot-device .hero-device-status {
+    flex: none;
+    aspect-ratio: 390 / 54;
+}
+.screenshot-device .device-capture {
+    display: block;
+    width: 100%;
+    height: auto;
+    flex: none;
+    border-radius: 0;
+    object-fit: contain;
+    user-select: none;
+    pointer-events: none;
+}
+.screenshot-device .hero-device-island {
+    top: 4cqw;
+    height: 5cqw;
+}
+.device-home-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 390 / 44;
+    flex: none;
+}
+.device-home-area span {
+    width: 34%;
+    height: 1.2cqw;
+    border-radius: 999px;
+    background: #fafafa;
+}
+
 /* No effects - clean phone mockups */
 
 .phone-mockup:hover {
