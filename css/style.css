@@ -9936,6 +9936,8 @@ body.menu-open::before {
 /* Unreleased modes show brand artwork, never an outdated app interface. */
 .home-modes-coming-soon {
     flex-direction: column;
+    align-items: center;
+    text-align: center;
     gap: 1.5rem;
     padding: 2rem 1rem;
 }
@@ -9946,16 +9948,17 @@ body.menu-open::before {
     filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.4));
 }
 .home-modes-coming-soon span {
-    color: var(--bma-white);
+    color: #fafafa;
     font-family: var(--font-primary);
-    font-size: 0.875rem;
-    font-weight: 700;
+    font-size: 1rem;
+    font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 0.65rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.24);
+    white-space: nowrap;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid var(--bma-impact);
     border-radius: 999px;
-    background: rgba(0, 0, 0, 0.3);
+    background: #122a21;
 }
 
 /* ===== Reusable hand-drawn flow stage =========================================
@@ -11196,5 +11199,23 @@ body.menu-open::before {
     .home-modes-panel--feature .home-modes-panel-visual .phone-mockup:not(.hero-device-phone) {
         max-width: min(66vw, 260px) !important;
         margin: 0.5rem auto 0 !important;
+    }
+}
+
+/* Artwork placeholders must not inherit the phone preview's bottom fade or
+   left alignment: both the mode badge and availability label stay visible. */
+@media (max-width: 768px) {
+    .home-modes-panel--feature .home-modes-coming-soon {
+        align-items: center;
+        max-height: none;
+        overflow: visible;
+        -webkit-mask-image: none;
+        mask-image: none;
+        padding: 1rem 0 2rem;
+        gap: 1rem;
+    }
+    .home-modes-coming-soon img {
+        width: min(72%, 240px);
+        height: auto;
     }
 }
