@@ -3,15 +3,15 @@
   "product": "bet-max-tourney",
   "experience": "redesign",
   "target": "web",
-  "builtAt": "2026-10-07T22:23:13.102Z",
+  "builtAt": "2026-10-09T00:07:03.728Z",
   "mode": "production",
   "base": "/app/",
   "apiOrigin": "https://machfive-bmacdev-rest.onrender.com",
   "core": {
-    "commit": "422d6a2eb0585b1373d238058e73298208d25ffb",
+    "commit": "723da331630c7ea0954ca454734a9210bcae182e",
     "dirty": true,
-    "sourceSha256": "ceb8154c468716e1524980faa203637a976f54d3cb89fc7d1430afb2a615ad17",
-    "sourceFileCount": 332
+    "sourceSha256": "ae44b3287e2592db9ee42cfdeae8f74f001be108c091af92ac24e5f24ddbeb04",
+    "sourceFileCount": 333
   },
   "toolchain": {
     "node": "v24.21.0"
@@ -238,6 +238,11 @@
       "sha256": "f14ab9c8ff68e93a2b9005c4171d58a32dddd9594cbe0c70c685945fe2831830"
     },
     {
+      "path": "assets/index-1Gq4mkmX.css",
+      "bytes": 1127575,
+      "sha256": "d4c7ae539fe1c85f89322ec821ba334932caca08ffc80f11cd591abf53ff9e7b"
+    },
+    {
       "path": "assets/index-B3SoG7Cd.js",
       "bytes": 1507509,
       "sha256": "bb370d20f39f532e17c76c8c4398b96b7b5718887e6fcca341406efad991690d"
@@ -316,6 +321,11 @@
       "path": "assets/index-DvYHzGuR.css",
       "bytes": 1095962,
       "sha256": "349c8d933845b2511d51eda6e79a63226f94783593384fdfed731606c1e79227"
+    },
+    {
+      "path": "assets/index-OkPYdPw7.js",
+      "bytes": 1606399,
+      "sha256": "b15b1f5b8f414e7a814833fc585b2083365d203a30893e3b15b27aca79e18b73"
     },
     {
       "path": "assets/index-mobile-133b6c229991.js",
@@ -3315,7 +3325,7 @@
     {
       "path": "index.html",
       "bytes": 2929,
-      "sha256": "42e42f0fc4795fda25551f24d62ee9698142ef60595a19bd80e79d4dc4975274"
+      "sha256": "c839698e9e91464444f51921143add3ae1134c0ad92a87173707856d11af1f69"
     },
     {
       "path": "manifest.webmanifest",
@@ -3329,10 +3339,8 @@
     }
   ],
   "deployment": {
-    "previousSiteCommit": "24dd374",
-    "apiCommit": "176d04f",
-    "migration": "design/notificationCopy.sql",
-    "retainedAssetsForExistingSessions": [
+    "previousCoreCommit": "422d6a2eb0585b1373d238058e73298208d25ffb",
+    "retainedAssets": [
       "assets/GameTypeLifeCycle-7sFhqknt.js",
       "assets/GameTypeLifeCycle-B95fHNMS.js",
       "assets/GameTypeLifeCycle-BCrjdUXA.js",
@@ -3364,7 +3372,9 @@
       "assets/index-BTd37svQ.js",
       "assets/index-BX8znKxX.js",
       "assets/index-BxA3QtKV.js",
+      "assets/index-C2rt2EP7.js",
       "assets/index-ClxK-yyQ.js",
+      "assets/index-CtqdILsC.css",
       "assets/index-CvKcyC-3.js",
       "assets/index-DDZDw2rh.js",
       "assets/index-DMN8zg19.js",
@@ -3953,7 +3963,7 @@
       "img/pwa-720x1280.png",
       "img/pwa-720x540.png"
     ],
-    "sourceReconciledFrom": "BMA-Master/bma_tournament_core main b4df8bf",
+    "purpose": "Inline public username validation with availability, retry, and submit checks",
     "testFlight": "held at user request"
   }
 }
