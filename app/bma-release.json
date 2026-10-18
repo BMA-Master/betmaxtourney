@@ -3,14 +3,14 @@
   "product": "bet-max-tourney",
   "experience": "redesign",
   "target": "web",
-  "builtAt": "2026-10-18T00:53:42.345Z",
+  "builtAt": "2026-10-18T01:28:28.073Z",
   "mode": "production",
   "base": "/app/",
   "apiOrigin": "https://machfive-bmacdev-rest.onrender.com",
   "core": {
-    "commit": "ec4304ac3b32c2228a108954a5d67a81a6de62db",
+    "commit": "7d4cc02c39917b0a49803dd0c61559f2aa68d75d",
     "dirty": false,
-    "sourceSha256": "b93a2cde0d7a3666b3eeb5bf50084f9682e0f2e5eaf3ef51d39bb7f8e635da1b",
+    "sourceSha256": "a6bff1db49446ed5ff9c9e96390dc01acdf3293aa3d00d0f9898dba9cd8cda17",
     "sourceFileCount": 417
   },
   "toolchain": {
@@ -248,6 +248,11 @@
       "sha256": "c93c59692ca9e131bc0a98ab03589ddb089a5e8ab882837b3ebeb1fe0bd05480"
     },
     {
+      "path": "assets/general_tutorial_route-DrqoyaGN.js",
+      "bytes": 8765,
+      "sha256": "c709db7fb1a23bfa0f44bf988fa769586cb4592e10fe8c8515cc6e58a0880ffe"
+    },
+    {
       "path": "assets/general_tutorial_route-EFqm0n9-.js",
       "bytes": 8765,
       "sha256": "90a1ee24e04b538f07baa88e15d137f42875f079b941aec798b07a113da55234"
@@ -291,6 +296,11 @@
       "path": "assets/guides_route-Cmr34I50.js",
       "bytes": 389,
       "sha256": "12a9f57927f83c98e9fdb81597796af9f0745463f9019d92eb82b2f7ecc8ea85"
+    },
+    {
+      "path": "assets/guides_route-KrPyXXr9.js",
+      "bytes": 389,
+      "sha256": "34ab77002f3d283821a74ad08afcbb2f5c79f98da2cb1d0594bad5ccbfb28cee"
     },
     {
       "path": "assets/guides_route-TPDHVcZ1.js",
@@ -396,6 +406,11 @@
       "path": "assets/index-CvKcyC-3.js",
       "bytes": 1509161,
       "sha256": "e154c71946700785adbc6b89d41f821e06a000c848638f7d1e8b4bb879a75918"
+    },
+    {
+      "path": "assets/index-D2T-B1bb.js",
+      "bytes": 1698930,
+      "sha256": "582e60ea9bc0cb1d503afdde8bf9d9711d454cbdc3d9f183c5f89cca6628d6ee"
     },
     {
       "path": "assets/index-DDZDw2rh.js",
@@ -3293,6 +3308,11 @@
       "sha256": "04797af52b324b67ffdc300a03f39d4d1b875132ec65b95bce20727c5d0b4418"
     },
     {
+      "path": "assets/practice-tournament-C-TrUXd3.js",
+      "bytes": 6277,
+      "sha256": "6b596d26df5995e09fe8658c134cee9df4bf3ca93dd42076c5c527869ecdf77d"
+    },
+    {
       "path": "assets/practice-tournament-Coj7TBtf.css",
       "bytes": 4577,
       "sha256": "d8ef025cab7b64fcf40b9675359877b6758ec8bcc2a7aab26cb2fd375792047e"
@@ -3331,6 +3351,11 @@
       "path": "assets/practice_route-CwJC_pLc.js",
       "bytes": 19974,
       "sha256": "c44081bae443b6f2c87b17b985dea7aac33f3bef1d6a849dc9df3c7b9538282e"
+    },
+    {
+      "path": "assets/practice_route-DLRewxO5.js",
+      "bytes": 19974,
+      "sha256": "6fad42799a7540bf6e2228a2ed5894dcac589c1139b8564f532cef00b3784538"
     },
     {
       "path": "assets/practice_route-DT6ycO8x.js",
@@ -3515,7 +3540,7 @@
     {
       "path": "index.html",
       "bytes": 2929,
-      "sha256": "a2b023281b2d496c3d57ddc06e9c171825929ec0921def4dabe29577c1ea16ae"
+      "sha256": "adaa626f75761967f698e60ecf2b7e7badc3f04886d3d13bee09ef1a883dabab"
     },
     {
       "path": "manifest.webmanifest",
