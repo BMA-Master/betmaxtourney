@@ -5,6 +5,8 @@
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then(function(registrations) {
     for(let registration of registrations) {
+      const worker = registration.active || registration.waiting || registration.installing
+      if (worker && new URL(worker.scriptURL).pathname.endsWith('/notifications-sw.js')) continue
       console.log('[SW Cleanup] Unregistering service worker:', registration.scope)
       registration.unregister()
     }
