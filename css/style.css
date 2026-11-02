@@ -11100,6 +11100,7 @@ body.menu-open::before {
     /* The embed injects .bmt-grid at runtime after this sheet, so the
        descendant selector here is what wins. Bleed to the screen edges. */
     .home-tournaments-rail .bmt-grid {
+        width: auto;
         display: flex;
         overflow-x: auto;
         overflow-y: hidden;
@@ -11114,8 +11115,8 @@ body.menu-open::before {
     }
     .home-tournaments-rail .bmt-grid::-webkit-scrollbar { display: none; }
     .home-tournaments-rail .bmt-grid > bma-tournament-card {
-        flex: 0 0 92%;
-        max-width: 92%;
+        flex: 0 0 min(92%, 360px);
+        max-width: 360px;
         scroll-snap-align: start;
     }
     .home-tournaments-rail .bmt-grid > .bmt-state { flex: 0 0 100%; }
@@ -11125,8 +11126,8 @@ body.menu-open::before {
         top: 50%;
         transform: translateY(-50%);
         z-index: 3;
-        width: 36px;
-        height: 36px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         border: 1px solid rgba(255, 255, 255, 0.12);
         background: rgba(0, 0, 0, 0.7);

@@ -162,3 +162,37 @@
   --game-mode-streaks:  url('/images/game-modes/streaks.png');
   --game-mode-survivor: url('/images/game-modes/survivor.png');
 }
+
+/* Current app chrome, scoped to the live card surface. */
+[data-bmt-tournaments] {
+  --font-primary: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --tourney-card-join-bg: #f7c60d;
+  --tourney-card-join-text: #101211;
+  --tourney-card-play-text: #fff;
+  --brand-accent-rgb: 47, 163, 114;
+  --brand-accent-2-rgb: 247, 198, 13;
+  --action-primary-text: #fff;
+  --action-primary-bg: #247c57;
+  --action-accent-text: #2fa372;
+  --action-secondary-text: #f7c60d;
+  --border-default: #333;
+  --border-subtle: #ffffff12;
+  --surface-sunken: #0a0a0a;
+  --surface-raised: #222;
+  --card-radius: 16px;
+  --app-info-art: url('/images/backgrounds/bg-trophies-960.webp');
+  --app-chat-art: url('/images/backgrounds/bg-black-960.webp');
+  --td-bill: url('/images/game-modes/td-dollar.webp');
+}
+.bmt-state button {
+  display: block;
+  margin: 16px auto 0;
+  min-height: 44px;
+  padding: 10px 22px;
+  border: 1px solid #2fa372;
+  border-radius: 10px;
+  background: #247c57;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
