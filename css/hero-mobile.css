@@ -140,3 +140,30 @@
         height: calc(100% + 110px) !important;
     }
 }
+
+.tourney-home { --hero-marquee-height: 0px; }
+#public-tourney-list { max-width: 52rem; margin-inline: auto; }
+#public-tourney-list ul { list-style: none; padding: 0; margin: 0; }
+#public-tourney-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .25rem 1rem;
+    padding: .6rem 0;
+    border-bottom: 1px solid #444;
+    text-align: left;
+}
+#public-tourney-list li a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: #fff;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+#public-tourney-list li span { font-size: .9rem; color: #d6d6d6; }
+#public-tourney-list [role="status"]:empty { display: none; }
+@media (max-width: 600px) {
+    #public-tourney-list li { display: grid; justify-content: start; }
+}

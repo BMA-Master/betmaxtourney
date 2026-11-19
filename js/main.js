@@ -347,17 +347,35 @@ document.addEventListener('DOMContentLoaded', function() {
         return !!(el && el.textContent && el.textContent.trim().toLowerCase() === 'true');
     }
 
+    // RSS supplies the schedule. The public lobby supplies the class, which
+    // the RSS schema omits even for tournaments with identical captions.
+    const retiredOffer = /(?:^|[^a-z0-9])(?:pools?|long[ _-]?shots?|streaks?|brackets?|survivors?|squads?|one[ _-]?shot|team[ _-]?mode|pick[ ’'-]?em)(?:$|[^a-z0-9])/i;
+    async function publicTourneyItems() {
+        const options = {signal: AbortSignal.timeout(20000)};
+        const [feed, catalog] = await Promise.all([
+            fetch('https://machfive-bmacdev-rest.onrender.com/rss/tournaments.xml', options),
+            fetch('https://machfive-bmacdev-rest.onrender.com/m5t/v5/tournaments/public', options),
+        ]);
+        if (!feed.ok || !catalog.ok) throw new Error('Tournament data unavailable');
+        const [xml, lobby] = await Promise.all([feed.text(), catalog.json()]);
+        const doc = new DOMParser().parseFromString(xml, 'application/xml');
+        if (!doc.querySelector('rss > channel') || doc.querySelector('parsererror') || !Array.isArray(lobby.rows)) {
+            throw new Error('Invalid tournament data');
+        }
+        const standard = new Set(lobby.rows.filter(t => t.guid && !t.is_private && !t.created_by_user &&
+            (t.class || 'DEFAULT_FORMAT') === 'DEFAULT_FORMAT').map(t => t.guid));
+        return Array.from(doc.querySelectorAll('channel > item')).filter(item =>
+            standard.has(item.querySelector('guid')?.textContent.trim()) &&
+            !isPrivateTournament(item) && !retiredOffer.test(item.querySelector('title')?.textContent || ''));
+    }
+
     // ===== Live Tournament Marquee =====
     async function loadTournamentMarquee() {
         const marqueeTrack = document.getElementById('marquee-track');
         if (!marqueeTrack) return;
 
         try {
-            const response = await fetch('https://machfive-bmacdev-rest.onrender.com/rss/tournaments.xml');
-            const xmlText = await response.text();
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-            const items = xmlDoc.querySelectorAll('item');
+            const items = await publicTourneyItems();
 
             if (items.length === 0) {
                 marqueeTrack.innerHTML = '<div class="marquee-item"><span class="marquee-item-title">No live tournaments</span></div>';
@@ -520,12 +538,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ===== Shared Tournament Data =====
     async function fetchTournamentData() {
-        const response = await fetch('https://machfive-bmacdev-rest.onrender.com/rss/tournaments.xml');
-        const xmlText = await response.text();
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-        const items = xmlDoc.querySelectorAll('item');
-
+        const items = await publicTourneyItems();
         const tournaments = [];
         items.forEach((item) => {
             const title = item.querySelector('title')?.textContent || 'Tournament';
@@ -1289,7 +1302,60 @@ document.addEventListener('DOMContentLoaded', function() {
         updateFilterSummary();
     }
 
+    function initHomeTourneyList() {
+        const section = document.getElementById('public-tourney-list');
+        if (!section) return;
+        const list = section.querySelector('ul');
+        const notice = section.querySelector('[role=status]');
+        const retry = section.querySelector('button');
+        const date = new Intl.DateTimeFormat(undefined, {
+            month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short',
+        });
+        let loading = false;
+        let previousRows;
+        async function refresh() {
+            if (loading) return;
+            loading = true;
+            retry.disabled = true;
+            try {
+                const tournaments = await fetchTournamentData();
+                const rows = tournaments.filter(t => ['locked', 'live', 'upcoming'].includes(t.status))
+                    .sort((a, b) => Number(a.status === 'upcoming') - Number(b.status === 'upcoming') ||
+                        (a.startDate?.getTime() ?? Infinity) - (b.startDate?.getTime() ?? Infinity))
+                    .slice(0, 9);
+                const content = document.createDocumentFragment();
+                for (const t of rows) {
+                    const item = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.href = tournamentPreviewUrl(t.guid);
+                    link.textContent = t.title;
+                    const meta = document.createElement('span');
+                    meta.textContent = [t.status === 'upcoming' ? 'Upcoming' : 'Live',
+                        ...t.sports.map(sport => sport.label || sport), t.startDate && date.format(t.startDate)]
+                        .filter(Boolean).join(' · ');
+                    item.append(link, meta);
+                    content.append(item);
+                }
+                const signature = JSON.stringify(rows.map(t => [t.guid, t.status, t.title, t.startDate, t.sports]));
+                if (signature !== previousRows) list.replaceChildren(content);
+                previousRows = signature;
+                notice.textContent = rows.length ? '' : 'No live or upcoming tournaments.';
+                retry.hidden = true;
+            } catch {
+                notice.textContent = list.childElementCount ? 'Tournament updates are temporarily unavailable.' : 'Unable to load tournaments.';
+                retry.hidden = false;
+            } finally {
+                loading = false;
+                retry.disabled = false;
+            }
+        }
+        retry.addEventListener('click', refresh);
+        refresh();
+        setInterval(() => { if (!document.hidden) refresh(); }, 60000);
+    }
+
     async function initTournamentTables() {
+        if (!document.querySelector('#starting-soon-table, #tournaments-table')) return;
         try {
             const tournaments = await fetchTournamentData();
             const rows = buildTabulatorRows(tournaments);
@@ -1314,7 +1380,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const items = xmlDoc.querySelectorAll('item');
 
             if (items.length === 0) {
-                carouselEl.closest('.promotions-carousel-section').style.display = 'none';
+                carouselEl.closest('section').style.display = 'none';
                 return;
             }
 
@@ -1328,7 +1394,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const enclosure = item.querySelector('enclosure');
                 const imageUrl = enclosure ? enclosure.getAttribute('url') : '';
 
-                if (!imageUrl) return;
+                const description = item.querySelector('description')?.textContent || '';
+                if (!imageUrl || retiredOffer.test([title, description, link, imageUrl].join(' '))) return;
                 if (/(?:^|[?&/=._-])gbp(?:[?&/=._-]|$)/i.test(link)) return;
 
                 slidesHTML += '<div class="promo-slide">' +
@@ -1339,7 +1406,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (!slidesHTML) {
-                carouselEl.closest('.promotions-carousel-section').style.display = 'none';
+                carouselEl.closest('section').style.display = 'none';
                 return;
             }
 
@@ -1375,13 +1442,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (error) {
             console.error('Promotions carousel failed:', error);
-            var section = carouselEl.closest('.promotions-carousel-section');
+            var section = carouselEl.closest('section');
             if (section) section.style.display = 'none';
         }
     }
 
     // Load marquee and tables on page load
     loadTournamentMarquee();
+    initHomeTourneyList();
     initTournamentTables();
     loadPromotionsCarousel();
 
