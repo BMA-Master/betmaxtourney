@@ -82,8 +82,8 @@
     --bp-lg: 1080px;
     --bp-xl: 1280px;
 
-    /* Hero top offset - marquee (48px) + nav floats over hero */
-    --hero-marquee-height: 48px;
+    /* The navigation is the only element above the hero. */
+    --hero-marquee-height: 0px;
     --hero-header-height: 110px;
 }
 
@@ -599,171 +599,11 @@ article.container .content a:hover {
 }
 
 
-/* ===== Live Tournament Marquee (broadcast-style ticker) =====
-   Flat bar, hairline dividers between entries (no cards), a small status
-   dot with a caps label, muted meta, and small unglowed sport icons. Height
-   stays at --hero-marquee-height so the hero offsets are untouched. */
-.tournament-marquee {
-    position: sticky;
-    top: 0;
-    z-index: 1001;
-    height: var(--hero-marquee-height);
-    background: rgba(8, 8, 8, 0.86);
-    backdrop-filter: blur(16px) saturate(140%);
-    -webkit-backdrop-filter: blur(16px) saturate(140%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    overflow: hidden;
-}
-
-.marquee-content {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.marquee-track {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    height: 100%;
-    flex: 1;
-    white-space: nowrap;
-    animation: marqueeScroll 115s linear infinite;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 56px, #000 calc(100% - 56px), transparent 100%);
-    mask-image: linear-gradient(90deg, transparent 0, #000 56px, #000 calc(100% - 56px), transparent 100%);
-}
-
-@media (hover: hover) {
-    .marquee-track:hover { animation-play-state: paused; }
-}
-
-@keyframes marqueeScroll {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
-
-/* One ticker entry: status, title, meta, then a hairline divider. */
-.marquee-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    height: 100%;
-    padding: 0 1.5rem 0 1.375rem;
-    position: relative;
-    color: rgba(255, 255, 255, 0.92);
-    transition: color 0.2s ease;
-}
-.marquee-item::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 50%;
-    height: 16px;
-    width: 1px;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.12);
-}
-.marquee-item:hover { cursor: pointer; color: #fff; }
-
-.marquee-item.loading {
-    width: 100%;
-    justify-content: center;
-    color: rgba(255, 255, 255, 0.55);
-}
-.marquee-item.loading::after { display: none; }
-
-/* Status: small dot + caps label, no chip chrome. */
-.marquee-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-family: var(--font-display);
-    font-size: 0.62rem;
-    font-weight: 800;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    line-height: 1;
-    white-space: nowrap;
-    flex-shrink: 0;
-    user-select: none;
-    -webkit-user-select: none;
-}
-.marquee-status::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-    flex: none;
-}
-.marquee-status-live { color: #ff4d6a; }
-.marquee-status-live::before {
-    background: #ff4d6a;
-    box-shadow: 0 0 0 0 rgba(255, 77, 106, 0.6);
-    animation: liveDot 2s ease-out infinite;
-}
-.marquee-status-upcoming { color: var(--bma-yellow); }
-.marquee-status-ending { color: var(--bma-yellow-bright); }
-.marquee-status-completed { color: rgba(255, 255, 255, 0.45); }
-
-@keyframes liveDot {
-    0%   { box-shadow: 0 0 0 0 rgba(255, 77, 106, 0.55); }
-    70%  { box-shadow: 0 0 0 6px rgba(255, 77, 106, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 77, 106, 0); }
-}
-@media (prefers-reduced-motion: reduce) {
-    .marquee-status-live::before { animation: none; }
-}
-
-/* Typography */
-.marquee-tournament,
-.marquee-item-title {
-    font-family: var(--font-primary);
-    font-weight: 700;
-    font-size: 0.84rem;
-    letter-spacing: 0.01em;
-    color: inherit;
-    text-transform: none;
-}
-
-.marquee-item-meta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.74rem;
-    font-weight: 600;
-}
-.marquee-meta-divider,
-.marquee-separator { display: none; }
-
-.marquee-countdown {
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.02em;
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-.marquee-sport {
-    font-family: var(--font-display);
-    color: rgba(255, 255, 255, 0.6);
-    font-weight: 700;
-    font-size: 0.68rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-}
-
-.marquee-sport-icon { display: inline-flex; align-items: center; color: rgba(255, 255, 255, 0.6); }
-.marquee-sport-icon svg { width: 14px; height: 14px; }
-
-
 /* ===== Pill-Shaped Header - Clean & Professional ===== */
 header {
     padding: 1.5rem 2rem;
     position: sticky;
-    top: 48px;
+    top: 0;
     z-index: 1000;
     background: transparent;
 }
@@ -5526,7 +5366,7 @@ footer::before {
 
     .hero {
         margin-top: 0;
-        padding-top: calc(48px + 44px + 0.25rem);
+        padding-top: calc(44px + 0.25rem);
     }
 
     .cta-trust {
@@ -7349,10 +7189,6 @@ footer::before {
         right: 0;
     }
     
-    .tournament-marquee {
-        position: relative !important;
-    }
-    
     header {
         position: relative !important;
     }
@@ -7480,10 +7316,6 @@ footer::before {
 
 header {
     z-index: 1000;
-}
-
-.tournament-marquee {
-    z-index: 999;
 }
 
 /* Sticky header optimization on mobile */
@@ -8014,7 +7846,7 @@ RESET AND REBUILD APPROACH
     }
 
     .hero {
-        padding: calc(48px + 44px + 0.25rem) 0 3rem !important;
+        padding: calc(44px + 0.25rem) 0 3rem !important;
     }
 
     .value-props {
@@ -8663,31 +8495,7 @@ section {
 
 /* 4. COMPONENT-SPECIFIC MOBILE FIXES */
 
-/* Tournament Marquee - restore horizontal flex layout on mobile */
 @media (max-width: 768px) {
-    .tournament-marquee {
-        height: 48px !important;
-        min-height: 48px !important;
-        position: relative !important;
-        padding: 0 !important;
-        overflow: hidden;
-    }
-
-    .marquee-content {
-        display: flex !important;
-        align-items: center;
-        overflow: hidden;
-    }
-
-    .marquee-track {
-        min-width: fit-content;
-        flex: 1 1 auto;
-        will-change: transform;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-        animation-play-state: running;
-    }
-
     /* Tournament Types - Stack vertically on mobile */
     .tournament-types {
         grid-template-columns: 1fr !important;

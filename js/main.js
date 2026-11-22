@@ -71,26 +71,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ===== Marquee animation sync =====
-    // Use a negative delay based on epoch time so the animation
-    // picks up at a consistent position across page navigations
-    // and avoids the iOS first-interaction jutter.
-    // Speed is a fixed px/sec (not a fixed duration), so the ticker reads at
-    // the same pace whatever the track width or viewport. The phase offset
-    // keeps every page load in step.
-    function syncMarqueeAnimation() {
-        var track = document.getElementById('marquee-track');
-        if (!track) return;
-        var halfWidth = track.scrollWidth / 2;
-        var pxPerSec = window.innerWidth <= 768 ? 40 : 65;
-        var duration = halfWidth > 0 ? halfWidth / pxPerSec : 115;
-        track.style.animationDuration = duration.toFixed(1) + 's';
-        var offset = (Date.now() / 1000) % duration;
-        track.style.animationDelay = '-' + offset.toFixed(2) + 's';
-    }
-    syncMarqueeAnimation();
-    window.addEventListener('resize', syncMarqueeAnimation);
-
     // ===== Pools sports conveyor =====
     // Clone each row's children so translateX(-50%) loops seamlessly, then
     // compute animation-duration from the measured track width so the
@@ -334,173 +314,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return Array.from(doc.querySelectorAll('channel > item')).filter(item =>
             standard.has(item.querySelector('guid')?.textContent.trim()) &&
             !isPrivateTournament(item) && !retiredOffer.test(item.querySelector('title')?.textContent || ''));
-    }
-
-    // ===== Live Tournament Marquee =====
-    async function loadTournamentMarquee() {
-        const marqueeTrack = document.getElementById('marquee-track');
-        if (!marqueeTrack) return;
-
-        try {
-            const items = await publicTourneyItems();
-
-            if (items.length === 0) {
-                marqueeTrack.innerHTML = '<div class="marquee-item"><span class="marquee-item-title">No live tournaments</span></div>';
-                syncMarqueeAnimation();
-                return;
-            }
-
-            // Build marquee items (filter for LOCKED, upcoming, and recently completed)
-            let marqueeHTML = '';
-            items.forEach((item, index) => {
-                const title = item.querySelector('title')?.textContent || 'Tournament';
-                if (isTestTournament(title)) return;
-                if (isPrivateTournament(item)) return;
-                const description = item.querySelector('description')?.textContent || '';
-                const pubDate = item.querySelector('pubDate')?.textContent || '';
-
-                // Parse status using helper function
-                const status = parseStatus(item);
-
-                // Parse description for sport, start time, end time
-                const sportMatch = description.match(/Sports?:\s*([^\n|]+)/i); // Match "Sport:" or "Sports:" and capture everything until newline or pipe
-                const startTimeMatch = description.match(/Start(?:\s+Time)?:\s*([^\n|]+)/i); // Matches both "Start:" and "Start Time:"
-                const endTimeMatch = description.match(/End(?:\s+Time)?:\s*([^\n|]+)/i); // Matches both "End:" and "End Time:"
-
-                // Parse multiple sports from the RSS feed (e.g., "icehockey_nhl, boxing_boxing")
-                let sports = [];
-                if (sportMatch) {
-                    // Split by comma and trim whitespace, then map to icon classes
-                    sports = sportMatch[1].split(',').map(s => {
-                        const sportCode = s.trim().toLowerCase();
-                        return mapSportToIcon(sportCode);
-                    }).filter(s => s);
-                }
-
-                // If no sport in description, infer from title
-                if (sports.length === 0) {
-                    sports = inferSportsFromTitle(title);
-                }
-
-                const startTimeStr = startTimeMatch ? startTimeMatch[1].trim() : '';
-                const endDate = endTimeMatch ? new Date(endTimeMatch[1]) : null;
-
-                // Parse start date properly
-                let startDate = null;
-                if (startTimeStr) {
-                    startDate = new Date(startTimeStr);
-                    if (isNaN(startDate.getTime())) {
-                        // Try replacing UTC with GMT if parsing failed
-                        const altDateStr = startTimeStr.replace(/UTC/i, 'GMT');
-                        startDate = new Date(altDateStr);
-                        if (isNaN(startDate.getTime())) {
-                            startDate = null;
-                        }
-                    }
-                }
-
-                // Filter: Only show LOCKED, upcoming, and recently completed (last 7 days)
-                if (!isRecentlyCompleted(status, endDate)) {
-                    return; // Skip tournaments completed more than 7 days ago
-                }
-
-                // Calculate countdown for upcoming tournaments only
-                let countdown = '';
-                if (startDate && !isNaN(startDate.getTime())) {
-                    const now = new Date();
-                    const diff = startDate - now;
-
-                    // Only show countdown if tournament hasn't started yet
-                    if (diff > 0) {
-                        const hours = Math.floor(diff / (1000 * 60 * 60));
-                        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-
-                        if (hours > 24) {
-                            const days = Math.floor(hours / 24);
-                            countdown = `<span class="marquee-countdown">Locks in ${days}d ${hours % 24}h</span>`;
-                        } else {
-                            countdown = `<span class="marquee-countdown">Locks in ${hours}h ${minutes}m</span>`;
-                        }
-                    }
-                }
-
-                // Determine status display based on both RSS status and actual time
-                let statusClass = 'marquee-status-live';
-                let statusText = 'LIVE';
-                let actualStatus = status;
-
-                // Only override status if tournament marked as upcoming but has started
-                if (status === 'upcoming' && startDate && !isNaN(startDate.getTime())) {
-                    const now = new Date();
-                    const diff = startDate - now;
-
-                    console.log(`Tournament "${title}" - Status: ${status}, Start: ${startTimeStr} -> ${startDate}, Now: ${now}, Diff: ${diff}ms (${diff/3600000}h)`);
-
-                    // If start time has passed, mark as live (RSS will update to completed when done)
-                    if (diff < 0) {
-                        actualStatus = 'live';
-                    }
-                } else if (!startDate) {
-                    console.log(`Tournament "${title}" - No start time available, using RSS status: ${status}`);
-                }
-
-                if (actualStatus === 'locked' || actualStatus === 'live') {
-                    // LOCKED or LIVE means active/live
-                    statusClass = 'marquee-status-live';
-                    statusText = 'LIVE';
-                } else if (actualStatus === 'upcoming') {
-                    statusClass = 'marquee-status-upcoming';
-                    statusText = 'OPEN';
-                } else if (actualStatus === 'completed') {
-                    statusClass = 'marquee-status-completed';
-                    statusText = 'COMPLETED';
-                }
-
-                // Generate sport icons HTML (icon + label for each sport)
-                let sportsHTML = '';
-                if (sports.length > 0) {
-                    sports.forEach((sport, index) => {
-                        const code = (typeof sport === 'object' && sport) ? sport.code : sport;
-                        const labelOverride = (typeof sport === 'object' && sport) ? sport.label : null;
-                        sportsHTML += window.SportRegistry.renderChip(code, {
-                            variant: 'marquee',
-                            labelOverride: labelOverride
-                        });
-                    });
-                }
-
-                const metaParts = [];
-                if (countdown) metaParts.push(countdown);
-                if (sportsHTML) metaParts.push(sportsHTML);
-                const metaHTML = metaParts.join('');
-
-                marqueeHTML += `
-                    <div class="marquee-item" ${startDate ? `data-start-time="${startDate.toISOString()}"` : ''}>
-                        <span class="marquee-status ${statusClass}">${statusText}</span>
-                        <span class="marquee-item-title">${title}</span>
-                        ${metaHTML ? `<span class="marquee-item-meta">${metaHTML}</span>` : ''}
-                    </div>
-                `;
-            });
-
-            // Count how many items actually passed the filter
-            const filteredCount = (marqueeHTML.match(/class="marquee-item"/g) || []).length;
-
-            // Repeat items within each set so it always looks full (min 6 per set)
-            const repsPerSet = filteredCount > 0 ? Math.max(1, Math.ceil(6 / filteredCount)) : 1;
-            const oneSet = Array(repsPerSet).fill(marqueeHTML).join('');
-
-            // CSS animation is translateX(-50%), so we always need exactly 2 identical sets
-            const finalMarqueeHTML = oneSet + oneSet;
-
-            marqueeTrack.innerHTML = finalMarqueeHTML;
-            syncMarqueeAnimation();
-
-        } catch (error) {
-            console.error('Failed to load tournaments:', error);
-            marqueeTrack.innerHTML = '<div class="marquee-item"><span class="marquee-item-title">Unable to load tournaments</span></div>';
-            syncMarqueeAnimation();
-        }
     }
 
     // ===== Shared Tournament Data =====
@@ -1282,10 +1095,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    if (document.getElementById('marquee-track')) {
-        loadTournamentMarquee();
-        setInterval(loadTournamentMarquee, 60000);
-    }
     initTournamentTables();
 
     // Disable bfcache entirely. Flickity and other widgets leave touch event
@@ -1955,26 +1764,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Update marquee countdowns
-        const marqueeCountdowns = document.querySelectorAll('.marquee-item[data-start-time]');
-        marqueeCountdowns.forEach(item => {
-            const startTime = item.getAttribute('data-start-time');
-            if (startTime) {
-                const startDate = new Date(startTime);
-                const now = new Date();
-                const diff = startDate - now;
-
-                if (diff > 0) {
-                    const hours = Math.floor(diff / (1000 * 60 * 60));
-                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-
-                    const countdownSpan = item.querySelector('.marquee-countdown');
-                    if (countdownSpan) {
-                        countdownSpan.textContent = `Locks in ${hours}h ${minutes}m`;
-                    }
-                }
-            }
-        });
     }
 
     // ============================================
