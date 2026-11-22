@@ -91,39 +91,6 @@ document.addEventListener('DOMContentLoaded', function() {
     syncMarqueeAnimation();
     window.addEventListener('resize', syncMarqueeAnimation);
 
-    // ===== Recent Winners bento marquee — clone children for seamless loop =====
-    const winnersTrack = document.querySelector('[data-winners-track]');
-    if (winnersTrack && winnersTrack.children.length && !winnersTrack.dataset.cloned) {
-        winnersTrack.dataset.cloned = 'true';
-        const original = Array.from(winnersTrack.children);
-        original.forEach(function (el) {
-            const clone = el.cloneNode(true);
-            clone.setAttribute('aria-hidden', 'true');
-            winnersTrack.appendChild(clone);
-        });
-
-        // Lock the marquee speed to a constant px/sec regardless of viewport
-        // so phone screens don't whip the cards by faster than they can be
-        // read. Animation translates -50%, which equals the single-set width.
-        // Mobile gets an even slower target since each card occupies more of
-        // the visible window — a card that flies past in 4s on desktop should
-        // feel like 8s on a phone for parity.
-        const setDuration = function () {
-            const singleSetWidth = winnersTrack.scrollWidth / 2;
-            if (singleSetWidth <= 0) return;
-            const isMobile = window.innerWidth <= 768;
-            const targetPxPerSec = isMobile ? 25 : 32;
-            const duration = singleSetWidth / targetPxPerSec;
-            winnersTrack.style.animationDuration = duration.toFixed(1) + 's';
-            // eslint-disable-next-line no-console
-            console.log('[winners-marquee] vw=' + window.innerWidth + ' singleSetWidth=' + singleSetWidth.toFixed(0) + 'px target=' + targetPxPerSec + 'px/s → duration=' + duration.toFixed(1) + 's');
-        };
-        // Layout may not be fully settled at DOMContentLoaded; defer one frame.
-        requestAnimationFrame(setDuration);
-        window.addEventListener('load', setDuration);
-        window.addEventListener('resize', setDuration);
-    }
-
     // ===== Pools sports conveyor =====
     // Clone each row's children so translateX(-50%) loops seamlessly, then
     // compute animation-duration from the measured track width so the
@@ -1302,58 +1269,6 @@ document.addEventListener('DOMContentLoaded', function() {
         updateFilterSummary();
     }
 
-    function initHomeTourneyList() {
-        const section = document.getElementById('public-tourney-list');
-        if (!section) return;
-        const list = section.querySelector('ul');
-        const notice = section.querySelector('[role=status]');
-        const retry = section.querySelector('button');
-        const date = new Intl.DateTimeFormat(undefined, {
-            month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short',
-        });
-        let loading = false;
-        let previousRows;
-        async function refresh() {
-            if (loading) return;
-            loading = true;
-            retry.disabled = true;
-            try {
-                const tournaments = await fetchTournamentData();
-                const rows = tournaments.filter(t => ['locked', 'live', 'upcoming'].includes(t.status))
-                    .sort((a, b) => Number(a.status === 'upcoming') - Number(b.status === 'upcoming') ||
-                        (a.startDate?.getTime() ?? Infinity) - (b.startDate?.getTime() ?? Infinity))
-                    .slice(0, 9);
-                const content = document.createDocumentFragment();
-                for (const t of rows) {
-                    const item = document.createElement('li');
-                    const link = document.createElement('a');
-                    link.href = tournamentPreviewUrl(t.guid);
-                    link.textContent = t.title;
-                    const meta = document.createElement('span');
-                    meta.textContent = [t.status === 'upcoming' ? 'Upcoming' : 'Live',
-                        ...t.sports.map(sport => sport.label || sport), t.startDate && date.format(t.startDate)]
-                        .filter(Boolean).join(' · ');
-                    item.append(link, meta);
-                    content.append(item);
-                }
-                const signature = JSON.stringify(rows.map(t => [t.guid, t.status, t.title, t.startDate, t.sports]));
-                if (signature !== previousRows) list.replaceChildren(content);
-                previousRows = signature;
-                notice.textContent = rows.length ? '' : 'No live or upcoming tournaments.';
-                retry.hidden = true;
-            } catch {
-                notice.textContent = list.childElementCount ? 'Tournament updates are temporarily unavailable.' : 'Unable to load tournaments.';
-                retry.hidden = false;
-            } finally {
-                loading = false;
-                retry.disabled = false;
-            }
-        }
-        retry.addEventListener('click', refresh);
-        refresh();
-        setInterval(() => { if (!document.hidden) refresh(); }, 60000);
-    }
-
     async function initTournamentTables() {
         if (!document.querySelector('#starting-soon-table, #tournaments-table')) return;
         try {
@@ -1367,94 +1282,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ===== Promotions Carousel =====
-    async function loadPromotionsCarousel() {
-        const carouselEl = document.getElementById('promotions-carousel');
-        if (!carouselEl) return;
-
-        try {
-            const response = await fetch('https://machfive-bmacdev-rest.onrender.com/rss/promotions.xml');
-            const xmlText = await response.text();
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-            const items = xmlDoc.querySelectorAll('item');
-
-            if (items.length === 0) {
-                carouselEl.closest('section').style.display = 'none';
-                return;
-            }
-
-            // Build slides from RSS items. Filter out promotions whose CTA
-            // link contains a `gbp` token (Bet Max Action B2B promos that
-            // shouldn't surface on the consumer Bet Max Tourney site).
-            let slidesHTML = '';
-            items.forEach(function(item) {
-                const title = item.querySelector('title')?.textContent || '';
-                const link = item.querySelector('link')?.textContent || '#';
-                const enclosure = item.querySelector('enclosure');
-                const imageUrl = enclosure ? enclosure.getAttribute('url') : '';
-
-                const description = item.querySelector('description')?.textContent || '';
-                if (!imageUrl || retiredOffer.test([title, description, link, imageUrl].join(' '))) return;
-                if (/(?:^|[?&/=._-])gbp(?:[?&/=._-]|$)/i.test(link)) return;
-
-                slidesHTML += '<div class="promo-slide">' +
-                    '<a href="' + link + '" target="_blank" rel="noopener noreferrer">' +
-                    '<img src="' + imageUrl + '" alt="' + title.replace(/"/g, '&quot;').replace(/</g, '&lt;') + '" loading="lazy">' +
-                    '</a>' +
-                    '</div>';
-            });
-
-            if (!slidesHTML) {
-                carouselEl.closest('section').style.display = 'none';
-                return;
-            }
-
-            carouselEl.innerHTML = slidesHTML;
-
-            // Initialize Flickity
-            if (typeof Flickity !== 'undefined') {
-                var flkty = new Flickity(carouselEl, {
-                    cellAlign: 'center',
-                    contain: false,
-                    wrapAround: true,
-                    autoPlay: 4000,
-                    pauseAutoPlayOnHover: true,
-                    prevNextButtons: true,
-                    pageDots: true,
-                    draggable: true,
-                    freeScroll: false,
-                    imagesLoaded: true,
-                    accessibility: true
-                });
-
-
-                // Fade in once Flickity is ready
-                flkty.on('ready', function() {
-                    carouselEl.classList.add('is-ready');
-                });
-                // Fallback in case ready already fired synchronously
-                if (!carouselEl.classList.contains('is-ready')) {
-                    requestAnimationFrame(function() {
-                        carouselEl.classList.add('is-ready');
-                    });
-                }
-            }
-        } catch (error) {
-            console.error('Promotions carousel failed:', error);
-            var section = carouselEl.closest('section');
-            if (section) section.style.display = 'none';
-        }
+    if (document.getElementById('marquee-track')) {
+        loadTournamentMarquee();
+        setInterval(loadTournamentMarquee, 60000);
     }
-
-    // Load marquee and tables on page load
-    loadTournamentMarquee();
-    initHomeTourneyList();
     initTournamentTables();
-    loadPromotionsCarousel();
-
-    // Refresh marquee every 60 seconds
-    setInterval(loadTournamentMarquee, 60000);
 
     // Disable bfcache entirely. Flickity and other widgets leave touch event
     // listeners attached when the page is cached, which traps scroll on return.

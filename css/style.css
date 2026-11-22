@@ -10716,8 +10716,8 @@ body.menu-open::before {
     }
 }
 
-/* ── Live Tournaments section (embedded app cards via bmt-embed.js) ── */
-.home-tournaments {
+/* ── Homepage app download section ── */
+.home-download {
     background-color: var(--bma-dark-100);
     /* Brand background set: black texture (static/images/backgrounds). */
     background-image:
@@ -10734,22 +10734,16 @@ body.menu-open::before {
 }
 /* iOS Safari fallback for fixed attachment (matches .home-game above) */
 @supports (-webkit-touch-callout: none) {
-    .home-tournaments { background-attachment: scroll, scroll, scroll; }
+    .home-download { background-attachment: scroll, scroll, scroll; }
 }
 @media (max-width: 768px) {
-    .home-tournaments {
+    .home-download {
         background-image:
             radial-gradient(120% 80% at 50% 0%, rgba(0, 198, 141, 0.10) 0%, transparent 55%),
             linear-gradient(180deg, rgba(8, 8, 8, 0.6) 0%, rgba(12, 12, 12, 0) 40%, rgba(8, 8, 8, 0.6) 100%),
             url('../images/backgrounds/bg-black-960.webp');
         background-attachment: scroll, scroll, scroll;
     }
-}
-
-.home-tournaments-cta {
-    display: flex;
-    justify-content: center;
-    margin-top: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 /* ============================================
@@ -10956,13 +10950,13 @@ body.menu-open::before {
     }
 }
 
-/* ===== App Store card, top of the live tournaments section =============== */
+/* ===== Homepage app store card =============== */
 .store-card {
     display: flex;
     align-items: center;
     gap: clamp(1.25rem, 3vw, 2.25rem);
     max-width: 880px;
-    margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+    margin: 0 auto;
     padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1.5rem, 3vw, 2.5rem);
     background: var(--bma-dark-200);
     border: 1px solid rgba(255, 255, 255, 0.14);

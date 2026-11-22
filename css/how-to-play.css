@@ -327,29 +327,36 @@ html {
             url('../images/backgrounds/bg-black-960.webp');
     }
 }
-/* Home page journey (#how-it-works lives only on the home page) sits on the
-   arrows texture from the brand background set. */
 .htp-basics#how-it-works {
-    background-color: #0d0d0d;
-    background-image:
-        linear-gradient(180deg, rgba(13, 13, 13, 0.75) 0%, rgba(13, 13, 13, 0.45) 50%, rgba(13, 13, 13, 0.85) 100%),
-        url('../images/backgrounds/bg-arrows.webp');
-    background-size: cover, cover;
-    background-position: center, center;
-    background-repeat: no-repeat, no-repeat;
-    background-attachment: scroll, fixed;
+    background: var(--bma-dark-100);
 }
-/* iOS Safari fallback for fixed attachment */
-@supports (-webkit-touch-callout: none) {
-    .htp-basics#how-it-works { background-attachment: scroll, scroll; }
+
+#how-it-works .container {
+    max-width: 880px;
 }
-@media (max-width: 768px) {
-    .htp-basics#how-it-works {
-        background-image:
-            linear-gradient(180deg, rgba(13, 13, 13, 0.75) 0%, rgba(13, 13, 13, 0.45) 50%, rgba(13, 13, 13, 0.85) 100%),
-            url('../images/backgrounds/bg-arrows-960.webp');
-        background-attachment: scroll, scroll;
-    }
+
+.home-rules {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem 3rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.home-rules h3 {
+    margin: 0 0 0.4rem;
+    color: var(--bma-white);
+}
+
+.home-rules p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+    .home-rules { grid-template-columns: 1fr; }
 }
 
 /* Parallax background — mirrors the .home-game treatment on the home page:
